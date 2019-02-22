@@ -568,7 +568,7 @@ public class HomeForm extends javax.swing.JFrame {
 
     private void cmd_baseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmd_baseActionPerformed
         if (cmd_base.getSelectedIndex() < 0) {
-            JOptionPane.showMessageDialog(null, "Please select base price");
+            //JOptionPane.showMessageDialog(null, "Please select base price");
         } else {
             setPrice();
         }
@@ -615,8 +615,8 @@ public class HomeForm extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_downKeyPressed
 
     private void btn_printActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_printActionPerformed
-        if (cmd_customer.getSelectedIndex() <= 0) {
-            JOptionPane.showMessageDialog(null, "Select Customer");
+        if (cmd_customer.getSelectedIndex() <= 0 || txt_top.getText().isEmpty() || txt_down.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Some required fields are empty");
         } else {
             PrintForm prt = new PrintForm(this, true);
             prt.setVisible(true);

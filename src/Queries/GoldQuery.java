@@ -215,23 +215,25 @@ public class GoldQuery implements GoldInterface {
             JLabel cus_id,
             JLabel use_id, JComboBox customer) {
 
-        double tp = Double.parseDouble(top.getText());
-        double dow = Double.parseDouble(down.getText());
-        double den = Double.parseDouble(density.getText());
-        double kar = Double.parseDouble(karat.getText());
-        double bas = Double.parseDouble(base.getSelectedItem().toString());
-        double val = Double.parseDouble(value.getText());
-        double mon = Double.parseDouble(money.getText());
-        int c_id = Integer.parseInt(cus_id.getText());
-        int u_id = Integer.parseInt(use_id.getText());
-
         DateFormat dateFormat = new SimpleDateFormat("MMMM EE dd, yyyy");
         Calendar cal = Calendar.getInstance();
         String date = dateFormat.format(cal.getTime());
 
-        if (customer.getSelectedIndex() <= 0) {
-            JOptionPane.showMessageDialog(null, "Please Select Customer before saving");
+        if (customer.getSelectedIndex() <= 0 || top.getText().isEmpty() || down.getText().isEmpty() || base.getSelectedIndex() <= 0) {
+            JOptionPane.showMessageDialog(null, "Fill all required fields before saving");
         } else {
+
+            double tp = Double.parseDouble(top.getText());
+            double dow = Double.parseDouble(down.getText());
+            double den = Double.parseDouble(density.getText());
+            double kar = Double.parseDouble(karat.getText());
+            double bas = Double.parseDouble(base.getSelectedItem().toString());
+            double val = Double.parseDouble(value.getText());
+            double mon = Double.parseDouble(money.getText());
+
+            int c_id = Integer.parseInt(cus_id.getText());
+            int u_id = Integer.parseInt(use_id.getText());
+
             Gold g = new Gold(c_id, u_id, tp, dow, den, kar, bas, val, mon, date);
             save(g);
         }
@@ -269,7 +271,7 @@ public class GoldQuery implements GoldInterface {
             String date = gol.getCreated_at();
 
             id++;
-            object = new Object[]{id, mets.capitalizer(customer), top, pounds, down, density, karat, base, money, user, date};
+            object = new Object[]{id, mets.capitalizer(customer), top, pounds, down, density, karat, base, money, mets.capitalizer(user), date};
             tmodel.addRow(object);
         }
     }
@@ -305,14 +307,14 @@ public class GoldQuery implements GoldInterface {
             double density = gol.getDensity();
             double karat = gol.getKarat();
             double base = gol.getBase();
-            double value = gol.getValue();
+            double pound = gol.getValue();
             double money = gol.getMoney();
             String customer = cusQ.returnName(gol.getCustomer_id());
             String user = useQ.returnName(gol.getUser_id());
             String date = gol.getCreated_at();
 
             id++;
-            object = new Object[]{id, customer.substring(0, 1).toUpperCase() + customer.substring(1), top, down, density, karat, base, money, user, date};
+            object = new Object[]{id, mets.capitalizer(customer), top, pound, down, density, karat, base, money, mets.capitalizer(user), date};
             tmodel.addRow(object);
         }
     }

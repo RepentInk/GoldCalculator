@@ -76,7 +76,9 @@ public class AllRecordsForm extends java.awt.Dialog {
 
     public void search() {
         if (cmb_date.getSelectedIndex() <= 0) {
-
+            allRecords();
+            Colors();
+            sumupTotalSale();
         } else {
             goldQ.setGoldToTableSale(gold_table, cmb_date);
             sumupTotalSale();
@@ -146,11 +148,11 @@ public class AllRecordsForm extends java.awt.Dialog {
         if (gold_table.getColumnModel().getColumnCount() > 0) {
             gold_table.getColumnModel().getColumn(0).setMaxWidth(25);
             gold_table.getColumnModel().getColumn(1).setPreferredWidth(120);
-            gold_table.getColumnModel().getColumn(2).setMaxWidth(50);
+            gold_table.getColumnModel().getColumn(2).setMaxWidth(70);
             gold_table.getColumnModel().getColumn(3).setMaxWidth(70);
             gold_table.getColumnModel().getColumn(4).setMaxWidth(50);
             gold_table.getColumnModel().getColumn(6).setMaxWidth(50);
-            gold_table.getColumnModel().getColumn(7).setMaxWidth(50);
+            gold_table.getColumnModel().getColumn(7).setMaxWidth(70);
             gold_table.getColumnModel().getColumn(9).setPreferredWidth(100);
             gold_table.getColumnModel().getColumn(10).setPreferredWidth(170);
         }

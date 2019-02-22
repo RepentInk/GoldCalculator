@@ -72,7 +72,7 @@ public class PrintForm extends java.awt.Dialog {
             // create htm file contents for testing
             FileWriter writer = new FileWriter(doc);
             writer.write("<h2 style='margin-bottom:-150px;margin-top:-50px;font-size:11px;margin-left:2px'>" + "BEST BRAIN GOLD BUYING AGENT" + "</h2>"
-                    + "<h4 style='margin-bottom:-150px;margin-top:-50px;margin-left:3px'>" + " Obaapa Junction Opposite Sephem Oil </h4>"
+                    + "<h4 style='margin-bottom:-150px;margin-top:-50px;margin-left:10px'>" + " Obaapa Junction Opposite Sephem Oil </h4>"
                     + "<h4 style='margin-bottom:-150px;margin-top:-50px;margin-left:50px'>" + " Asankrangwa</h4>"
                     + "<h4 style='letter-spacing:5pxmargin-bottom:-150px;margin-top:-50px;'>" + " 0244795859/0200124065/0322496150/0545550000</h4>"
                     + "<table><tbody style='font-size:8px;'>"
@@ -93,7 +93,7 @@ public class PrintForm extends java.awt.Dialog {
             val += "<table style='font-size:11px; border-bottom: 1px solid black'>"
                     + "<thead style='border-bottom: 1px dotted black; border-top: 1px dotted black'>"
                     + "<tr>"
-                    + "<th style='text-align: left; width:135px'>Sub Titles</th>"
+                    + "<th style='text-align: left; width:130px'>Sub Titles</th>"
                     + "<th >" + " " + "</th>"
                     + "<th style='text-align: left;'>Values</th>"
                     + "</tr><hr>"
