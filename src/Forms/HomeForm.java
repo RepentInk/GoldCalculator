@@ -1,25 +1,14 @@
 package Forms;
 
-import Queries.Connect;
-import Queries.CustomerQuery;
-import Queries.GoldQuery;
-import Queries.PriceQuery;
-import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.text.DecimalFormat;
-import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 public class HomeForm extends javax.swing.JFrame {
-
-    Connect mets = new Connect();
-    PriceQuery priceQ = new PriceQuery();
-    CustomerQuery cusQ = new CustomerQuery();
-    GoldQuery goldQ = new GoldQuery();
 
     Connection conn = null;
     ResultSet rs = null;
@@ -29,16 +18,9 @@ public class HomeForm extends javax.swing.JFrame {
 
     public HomeForm() {
         initComponents();
-        conn = Connect.ConnecrDb();
-        setIconImage(mets.myImage("/Images/coin.png"));
-
-        //method call start here
-        allPrice();
-        allCustomers();
 
         cus_iddd.setVisible(false);
         user_id.setVisible(false);
-
     }
 
     public double truncateTo(double unroundedNumber, int decimalPlaces) {
@@ -72,36 +54,6 @@ public class HomeForm extends javax.swing.JFrame {
         return money;
     }
 
-    public void customer() {
-        CustomerForm nd = new CustomerForm(this, true);
-        nd.setVisible(true);
-    }
-
-    public void user() {
-        UserForm usf = new UserForm(this, true);
-        usf.setVisible(true);
-    }
-
-    public void price() {
-        PriceForm prf = new PriceForm(this, true);
-        prf.setVisible(true);
-    }
-
-    public void allRecords() {
-        AllCustomerForm rec = new AllCustomerForm(this, true);
-        rec.setVisible(true);
-    }
-
-    public void allUsers() {
-        AllUserForm alluser = new AllUserForm(this, true);
-        alluser.setVisible(true);
-    }
-
-    public void allRecordSales() {
-        AllRecordsForm allrec = new AllRecordsForm(this, true);
-        allrec.setVisible(true);
-    }
-
     public void setTop() {
         if (txt_top.getText().isEmpty()) {
         } else {
@@ -132,14 +84,6 @@ public class HomeForm extends javax.swing.JFrame {
 
             lbl_totalAmount.setText("" + money(value(karat(density(topv, down)), top(topv)), base));
         }
-    }
-
-    public void allPrice() {
-        priceQ.setPriceToCombo(cmd_base, "Select Base");
-    }
-
-    public void allCustomers() {
-        cusQ.setCustomerToCombo(cmd_customer, "Select Customer");
     }
 
     /**
@@ -520,19 +464,19 @@ public class HomeForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void add_customerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_add_customerActionPerformed
-        customer();
+
     }//GEN-LAST:event_add_customerActionPerformed
 
     private void txt_topKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_topKeyTyped
-        mets.keyType(evt);
+
     }//GEN-LAST:event_txt_topKeyTyped
 
     private void txt_downKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_downKeyTyped
-        mets.keyType(evt);
+
     }//GEN-LAST:event_txt_downKeyTyped
 
     private void userActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userActionPerformed
-        user();
+
     }//GEN-LAST:event_userActionPerformed
 
     private void exitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitActionPerformed
@@ -540,15 +484,15 @@ public class HomeForm extends javax.swing.JFrame {
     }//GEN-LAST:event_exitActionPerformed
 
     private void customerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_customerActionPerformed
-        customer();
+
     }//GEN-LAST:event_customerActionPerformed
 
     private void add_baseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_add_baseActionPerformed
-        price();
+
     }//GEN-LAST:event_add_baseActionPerformed
 
     private void priceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_priceActionPerformed
-        price();
+
     }//GEN-LAST:event_priceActionPerformed
 
     private void txt_topFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_topFocusLost
@@ -575,23 +519,23 @@ public class HomeForm extends javax.swing.JFrame {
     }//GEN-LAST:event_cmd_baseActionPerformed
 
     private void cmd_customerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmd_customerActionPerformed
-        cus_iddd.setText("" + cusQ.getCusID(cmd_customer));
+
     }//GEN-LAST:event_cmd_customerActionPerformed
 
     private void btn_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_saveActionPerformed
-        goldQ.saveGold(txt_top, txt_down, txt_density, txt_karat, cmd_base, txt_tot_top, lbl_totalAmount, cus_iddd, user_id, cmd_customer);
+
     }//GEN-LAST:event_btn_saveActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        allRecords();
+
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        allUsers();
+
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        allRecordSales();
+
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void txt_topKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_topKeyPressed
@@ -615,12 +559,7 @@ public class HomeForm extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_downKeyPressed
 
     private void btn_printActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_printActionPerformed
-        if (cmd_customer.getSelectedIndex() <= 0 || txt_top.getText().isEmpty() || txt_down.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Some required fields are empty");
-        } else {
-            PrintForm prt = new PrintForm(this, true);
-            prt.setVisible(true);
-        }
+
     }//GEN-LAST:event_btn_printActionPerformed
 
     /**
