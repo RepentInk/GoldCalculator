@@ -1,5 +1,7 @@
 package Screen;
 
+import Dialogs.PaymentsForm;
+import Main.Dashboard;
 import java.util.Vector;
 
 /**
@@ -17,9 +19,9 @@ public class PaymentsScreen extends javax.swing.JPanel {
         initComponents();
     }
 
-    private void addUser() {
-//        UserForm userForm = new UserForm(new Dashboard(), true);
-//        userForm.setVisible(true);
+    private void addForm() {
+        PaymentsForm paymentsForm = new PaymentsForm(new Dashboard(), true);
+        paymentsForm.setVisible(true);
     }
 
     private void populateData() {
@@ -244,7 +246,7 @@ public class PaymentsScreen extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_addUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_addUserActionPerformed
-        this.addUser();
+        this.addForm();
     }//GEN-LAST:event_btn_addUserActionPerformed
 
     private void txtSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyReleased

@@ -10,7 +10,7 @@ public class connectDB {
     public static Connection ConnecrDb() {
         try {
             Class.forName("org.sqlite.JDBC");
-            Connection conn = DriverManager.getConnection("jdbc:sqlite:GoldApp.sqlite");
+            Connection conn = DriverManager.getConnection("jdbc:sqlite:GoldCalculator.sqlite");
             return conn;
         } catch (ClassNotFoundException | SQLException e) {
             JOptionPane.showMessageDialog(null, e);
