@@ -29,13 +29,13 @@ public class BuyGoldRepository implements AnonymousInterface<BuyGold> {
     }
 
     @Override
-    public List<BuyGold> list(int year) {
+    public List<BuyGold> list(String year) {
         List<BuyGold> buyGoldsList = new ArrayList<>();
         try {
-            String query = "SELECT *,user.fullname AS user,customer.fullname AS customer FROM " + BuyGoldDTO.getBUY_GOLD_DB() + " gold "
+            String query = "SELECT gold.*,user.fullname AS user,customer.fullname AS customer FROM " + BuyGoldDTO.getBUY_GOLD_DB() + " gold "
                     + "LEFT JOIN " + UserDTO.getUSERS_DB() + " user ON gold.user_id=user.id "
                     + "LEFT JOIN " + CustomerDTO.getCUSTOMER_DB() + " customer ON gold.customer_id=customer.id "
-                    + "WHERE strftime('%Y', gold.raw_date) = '" + year + "' ORDER BY " + CustomerDTO.getID() + " DESC";
+                    + "WHERE strftime('%Y', gold.raw_date) = '" + year + "' ORDER BY " + BuyGoldDTO.getID() + " DESC";
             pst = conn.prepareStatement(query);
             rs = pst.executeQuery();
 
@@ -133,10 +133,10 @@ public class BuyGoldRepository implements AnonymousInterface<BuyGold> {
         BuyGold buyGold = new BuyGold();
 
         try {
-            String query = "SELECT *,user.fullname AS user,customer.fullname AS customer FROM " + BuyGoldDTO.getBUY_GOLD_DB() + " gold "
+            String query = "SELECT gold.*,user.fullname AS user,customer.fullname AS customer FROM " + BuyGoldDTO.getBUY_GOLD_DB() + " gold "
                     + "LEFT JOIN " + UserDTO.getUSERS_DB() + " user ON gold.user_id=user.id "
                     + "LEFT JOIN " + CustomerDTO.getCUSTOMER_DB() + " customer ON gold.customer_id=customer.id "
-                    + "WHERE " + BuyGoldDTO.getID() + " = '" + id + "' ORDER BY " + CustomerDTO.getID() + " DESC";
+                    + "WHERE gold.id = '" + id + "'";
             pst = conn.prepareStatement(query);
             rs = pst.executeQuery();
 

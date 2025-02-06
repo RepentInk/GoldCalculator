@@ -13,6 +13,7 @@ public class UserDTO {
     private static final String PASSWORD = "password";
     private static final String CREATED_AT = "created_at";
     private static final String UPDATED_AT = "updated_at";
+    private static final String USER_TYPE = "user_type";
 
     private static final String USERS_DB = "users";
 
@@ -46,6 +47,10 @@ public class UserDTO {
 
     public static String getUSERS_DB() {
         return USERS_DB;
+    }
+
+    public static String getUSER_TYPE() {
+        return USER_TYPE;
     }
 
 }

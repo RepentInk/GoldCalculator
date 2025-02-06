@@ -15,6 +15,7 @@ import javax.swing.JTextField;
 public class LoginController {
 
     UserRepository userRepository = new UserRepository();
+    SetStaticDataController setStaticDataController = new SetStaticDataController();
 
     public void loginUser(JTextField userName, JPasswordField password, JFrame frame) {
         String user_name = userName.getText().trim();
@@ -24,6 +25,10 @@ public class LoginController {
         User authUser = userRepository.login(user);
 
         if (authUser.getId() > 0) {
+            setStaticDataController.setAuthUser(authUser);
+            setStaticDataController.setPricing();
+            setStaticDataController.setShopDetail();
+
             Dashboard dashboard = new Dashboard();
             dashboard.setExtendedState(JFrame.MAXIMIZED_BOTH);
             dashboard.setVisible(true);

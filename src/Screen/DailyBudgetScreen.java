@@ -1,8 +1,17 @@
 package Screen;
 
+import Components.AddButton;
+import Controllers.BudgetController;
 import Dialogs.BudgetForm;
+import Helpers.ActionsColumns;
+import Helpers.HelperFunctions;
+import Helpers.ModelType;
+import Helpers.ShopData;
 import Main.Dashboard;
+import java.util.ArrayList;
 import java.util.Vector;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -10,13 +19,20 @@ import java.util.Vector;
  */
 public class DailyBudgetScreen extends javax.swing.JPanel {
 
+    BudgetController budgetController = new BudgetController();
     Vector searchTableVector;
+    HelperFunctions helper = new HelperFunctions();
 
     /**
      * Creates new form DailyBudgetScreen
      */
     public DailyBudgetScreen() {
         initComponents();
+
+        this.populateData(helper.returnCurrentYear());
+        this.populateYears();
+
+        cmbYears.setSelectedItem(helper.returnCurrentYear());
     }
 
     private void addForm() {
@@ -24,45 +40,55 @@ public class DailyBudgetScreen extends javax.swing.JPanel {
         budgetForm.setVisible(true);
     }
 
-    private void populateData() {
-//        userController.populateTable(usersTable);
-//        helper.TableColor(usersTable);
-//
-//        new AddButton().addBtnItemsTable(usersTable, ActionsColumns.tableActionColumn(ModelType.Users));
-//        searchTableVector = (Vector) ((DefaultTableModel) usersTable.getModel()).getDataVector().clone();
-//        this.countRow();
+    private void populateYears() {
+        ArrayList<String> years = helper.getYearList(ShopData.getYearLimit());
+
+        cmbYears.addItem("Years");
+
+        for (int year = 0; year < years.size(); year++) {
+            cmbYears.addItem(years.get(year));
+        }
+    }
+
+    private void populateData(String year) {
+        budgetController.populateTable(dailyBudgetTable, year);
+        helper.TableColor(dailyBudgetTable);
+
+        new AddButton().addBtnItemsTable(dailyBudgetTable, ActionsColumns.tableActionColumn(ModelType.Budget));
+        searchTableVector = (Vector) ((DefaultTableModel) dailyBudgetTable.getModel()).getDataVector().clone();
+        this.countRow();
     }
 
     private void searchTable(String searchItem) {
-//        helper.searchItem(usersTable, searchItem, searchTableVector);
-//        this.countRow();
+        helper.searchItem(dailyBudgetTable, searchItem, searchTableVector);
+        this.countRow();
     }
 
     public void onTableClicked() {
-//        int[] columns = ActionsColumns.tableActionColumn(ModelType.Users);
-//        String tableID = usersTable.getModel().getValueAt(usersTable.getSelectedRow(), 0).toString();
-//
-//        if (usersTable.getSelectedColumn() == columns[0]) {
-//            int table_id = Integer.parseInt(tableID);
-//            UserForm userForm = new UserForm(new Dashboard(), true);
-//            userForm.viewDetails(table_id, usersTable.getSelectedRow());
-//            userForm.setVisible(true);
-//        } else if (usersTable.getSelectedColumn() == columns[1]) {
-//            int ask = JOptionPane.showConfirmDialog(null, "Are you sure you want to remove this record?", "DELETE RECORDS", JOptionPane.YES_NO_OPTION);
-//            if (ask == 0) {
-//                userController.deleteItem(usersTable, tableID, usersTable.getSelectedRow());
-//            }
-//        }
-//
-//        this.countRow();
+        int[] columns = ActionsColumns.tableActionColumn(ModelType.Budget);
+        String tableID = dailyBudgetTable.getModel().getValueAt(dailyBudgetTable.getSelectedRow(), 0).toString();
+
+        if (dailyBudgetTable.getSelectedColumn() == columns[0]) {
+            int table_id = Integer.parseInt(tableID);
+            BudgetForm budgetForm = new BudgetForm(new Dashboard(), true);
+            budgetForm.viewDetails(table_id, dailyBudgetTable.getSelectedRow());
+            budgetForm.setVisible(true);
+        } else if (dailyBudgetTable.getSelectedColumn() == columns[1]) {
+            int ask = JOptionPane.showConfirmDialog(null, "Are you sure you want to remove this record?", "DELETE RECORDS", JOptionPane.YES_NO_OPTION);
+            if (ask == 0) {
+                budgetController.deleteItem(dailyBudgetTable, tableID, dailyBudgetTable.getSelectedRow());
+            }
+        }
+
+        this.countRow();
     }
 
     private void refresh() {
-        this.populateData();
+        this.populateData(helper.returnCurrentYear());
     }
 
     private void countRow() {
-//        userRowCount.setText(String.valueOf(usersTable.getRowCount()));
+        dudgetRowCount.setText(String.valueOf(dailyBudgetTable.getRowCount()));
     }
 
     /**
@@ -81,11 +107,12 @@ public class DailyBudgetScreen extends javax.swing.JPanel {
         txtSearch = new javax.swing.JTextField();
         lbl_SearchIcon1 = new javax.swing.JLabel();
         btnRefresh1 = new javax.swing.JButton();
+        cmbYears = new javax.swing.JComboBox<>();
         jScrollPane7 = new javax.swing.JScrollPane();
         dailyBudgetTable = new javax.swing.JTable();
         jPanel52 = new javax.swing.JPanel();
         jLabel32 = new javax.swing.JLabel();
-        userRowCount = new javax.swing.JLabel();
+        dudgetRowCount = new javax.swing.JLabel();
 
         setToolTipText("");
 
@@ -142,6 +169,13 @@ public class DailyBudgetScreen extends javax.swing.JPanel {
             }
         });
 
+        cmbYears.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        cmbYears.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbYearsActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel37Layout = new javax.swing.GroupLayout(jPanel37);
         jPanel37.setLayout(jPanel37Layout);
         jPanel37Layout.setHorizontalGroup(
@@ -153,7 +187,9 @@ public class DailyBudgetScreen extends javax.swing.JPanel {
                 .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnRefresh1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(cmbYears, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanel37Layout.setVerticalGroup(
             jPanel37Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -161,26 +197,27 @@ public class DailyBudgetScreen extends javax.swing.JPanel {
                 .addGroup(jPanel37Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(lbl_SearchIcon1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(txtSearch, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnRefresh1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnRefresh1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cmbYears))
                 .addGap(0, 3, Short.MAX_VALUE))
         );
 
         dailyBudgetTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Id", "Fullname", "Phone Number", "Username", "Created Date", "", ""
+                "Id", "Name", "Start Date", "End Date", "Total Amount", "Amount Used", "Amount Left", "Status", "Created By", "Time", "Date", "", ""
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -198,12 +235,26 @@ public class DailyBudgetScreen extends javax.swing.JPanel {
             }
         });
         jScrollPane7.setViewportView(dailyBudgetTable);
+        if (dailyBudgetTable.getColumnModel().getColumnCount() > 0) {
+            dailyBudgetTable.getColumnModel().getColumn(0).setMinWidth(0);
+            dailyBudgetTable.getColumnModel().getColumn(0).setMaxWidth(0);
+            dailyBudgetTable.getColumnModel().getColumn(7).setMinWidth(70);
+            dailyBudgetTable.getColumnModel().getColumn(7).setMaxWidth(70);
+            dailyBudgetTable.getColumnModel().getColumn(9).setMinWidth(100);
+            dailyBudgetTable.getColumnModel().getColumn(9).setMaxWidth(100);
+            dailyBudgetTable.getColumnModel().getColumn(10).setMinWidth(100);
+            dailyBudgetTable.getColumnModel().getColumn(10).setMaxWidth(100);
+            dailyBudgetTable.getColumnModel().getColumn(11).setMinWidth(70);
+            dailyBudgetTable.getColumnModel().getColumn(11).setMaxWidth(70);
+            dailyBudgetTable.getColumnModel().getColumn(12).setMinWidth(70);
+            dailyBudgetTable.getColumnModel().getColumn(12).setMaxWidth(70);
+        }
 
         jLabel32.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel32.setText("Row Count :");
 
-        userRowCount.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        userRowCount.setText("1000");
+        dudgetRowCount.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        dudgetRowCount.setText("1000");
 
         javax.swing.GroupLayout jPanel52Layout = new javax.swing.GroupLayout(jPanel52);
         jPanel52.setLayout(jPanel52Layout);
@@ -213,13 +264,13 @@ public class DailyBudgetScreen extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel32)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(userRowCount)
+                .addComponent(dudgetRowCount)
                 .addContainerGap())
         );
         jPanel52Layout.setVerticalGroup(
             jPanel52Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jLabel32, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
-            .addComponent(userRowCount, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(dudgetRowCount, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -261,11 +312,21 @@ public class DailyBudgetScreen extends javax.swing.JPanel {
         this.onTableClicked();
     }//GEN-LAST:event_dailyBudgetTableMouseClicked
 
+    private void cmbYearsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbYearsActionPerformed
+        if (cmbYears.getSelectedIndex() <= 0) {
+            return;
+        }
+
+        this.populateData(cmbYears.getSelectedItem().toString());
+    }//GEN-LAST:event_cmbYearsActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnRefresh1;
     private javax.swing.JButton btn_addUser;
+    private javax.swing.JComboBox<String> cmbYears;
     public static javax.swing.JTable dailyBudgetTable;
+    public static javax.swing.JLabel dudgetRowCount;
     private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel30;
@@ -274,6 +335,5 @@ public class DailyBudgetScreen extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JLabel lbl_SearchIcon1;
     private javax.swing.JTextField txtSearch;
-    public static javax.swing.JLabel userRowCount;
     // End of variables declaration//GEN-END:variables
 }

@@ -1,8 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
- */
 package Dialogs;
+
+import Controllers.BudgetController;
+import Helpers.HelperFunctions;
+import Screen.DailyBudgetScreen;
+import java.awt.event.KeyEvent;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -10,12 +12,95 @@ package Dialogs;
  */
 public class BudgetForm extends javax.swing.JDialog {
 
+    BudgetController budgetController = new BudgetController();
+    HelperFunctions helper = new HelperFunctions();
+    private int selectedRow;
+
     /**
      * Creates new form BudgetForm
+     *
+     * @param parent
+     * @param modal
      */
     public BudgetForm(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+
+        setIconImage(helper.setIcon("/Images/doubleUU.png"));
+        lblBudgetID.setVisible(false);
+    }
+
+    private void saveData() {
+        if (!this.checkFields()) {
+            return;
+        }
+
+        budgetController.saveUpdate(
+                lblBudgetID,
+                txtBudgetName,
+                txtStartDate,
+                txtEndDate,
+                txtTotalAmount,
+                txtAmountUsed,
+                txtAmountLeft,
+                DailyBudgetScreen.dailyBudgetTable,
+                this.selectedRow,
+                this
+        );
+
+        this.clearFields();
+    }
+
+    private boolean checkFields() {
+        String message = "";
+
+        if (txtBudgetName.getText().isEmpty()) {
+            message = message + "Budget name is required \n";
+        }
+
+        if (txtStartDate.getCalendar().toString().isEmpty()) {
+            message = message + "Start date is required \n";
+        }
+
+        if (txtEndDate.getCalendar().toString().isEmpty()) {
+            message = message + "End date is required \n";
+        }
+
+        if (txtTotalAmount.getText().isEmpty()) {
+            message = message + "Total amount is required \n";
+        }
+
+        if (message.length() > 0) {
+            JOptionPane.showMessageDialog(this, message, "Form Validation", 0);
+        }
+
+        return message.length() <= 0;
+    }
+
+    public void viewDetails(int budgetID, int selectedRow) {
+        this.selectedRow = selectedRow;
+
+        budgetController.onTableClick(
+                budgetID,
+                lblBudgetID,
+                txtBudgetName,
+                txtStartDate,
+                txtEndDate,
+                txtTotalAmount,
+                txtAmountUsed,
+                txtAmountLeft
+        );
+
+    }
+
+    private void clearFields() {
+        lblBudgetID.setText("");
+        txtBudgetName.setText("");
+        txtTotalAmount.setText("");
+        txtAmountUsed.setText("0");
+        txtAmountLeft.setText("0");
+        txtStartDate.setCalendar(null);
+        txtEndDate.setCalendar(null);
     }
 
     /**
@@ -40,6 +125,7 @@ public class BudgetForm extends javax.swing.JDialog {
         jLabel6 = new javax.swing.JLabel();
         txtAmountLeft = new javax.swing.JTextField();
         btnSave = new javax.swing.JButton();
+        lblBudgetID = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("BUDGET FORM");
@@ -65,22 +151,34 @@ public class BudgetForm extends javax.swing.JDialog {
         jLabel4.setText("Total Amount");
 
         txtTotalAmount.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        txtTotalAmount.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtTotalAmountKeyTyped(evt);
+            }
+        });
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel5.setText("Amount Used");
 
         txtAmountUsed.setEditable(false);
         txtAmountUsed.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        txtAmountUsed.setText("0");
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel6.setText("Amount Left");
 
         txtAmountLeft.setEditable(false);
         txtAmountLeft.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        txtAmountLeft.setText("0");
 
         btnSave.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/save.png"))); // NOI18N
         btnSave.setText("Save");
+        btnSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -101,7 +199,8 @@ public class BudgetForm extends javax.swing.JDialog {
                     .addComponent(txtAmountUsed)
                     .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(txtAmountLeft)
-                    .addComponent(btnSave, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnSave, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblBudgetID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -131,7 +230,9 @@ public class BudgetForm extends javax.swing.JDialog {
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(txtAmountLeft, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+                .addComponent(lblBudgetID, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -139,6 +240,18 @@ public class BudgetForm extends javax.swing.JDialog {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void txtTotalAmountKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTotalAmountKeyTyped
+        char c = evt.getKeyChar();
+        if (!(Character.isDigit(c) || (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE) || (c == KeyEvent.VK_PERIOD) || (c == KeyEvent.VK_ENTER))) {
+            getToolkit().beep();
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtTotalAmountKeyTyped
+
+    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
+        this.saveData();
+    }//GEN-LAST:event_btnSaveActionPerformed
 
     /**
      * @param args the command line arguments
@@ -168,17 +281,15 @@ public class BudgetForm extends javax.swing.JDialog {
         //</editor-fold>
 
         /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                BudgetForm dialog = new BudgetForm(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            BudgetForm dialog = new BudgetForm(new javax.swing.JFrame(), true);
+            dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                @Override
+                public void windowClosing(java.awt.event.WindowEvent e) {
+                    System.exit(0);
+                }
+            });
+            dialog.setVisible(true);
         });
     }
 
@@ -190,6 +301,7 @@ public class BudgetForm extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel lblBudgetID;
     private javax.swing.JTextField txtAmountLeft;
     private javax.swing.JTextField txtAmountUsed;
     private javax.swing.JTextField txtBudgetName;

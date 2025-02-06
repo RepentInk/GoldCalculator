@@ -31,7 +31,7 @@ public class PaymentsRepository implements AnonymousInterface<Payments> {
     }
 
     @Override
-    public List<Payments> list(int year) {
+    public List<Payments> list(String year) {
         List<Payments> paymentsList = new ArrayList<>();
         try {
             String query = "SELECT *,user.fullname AS user,buy_gold.code AS buy_gold,customer.fullname AS customer,budget.name AS budget FROM " + PaymentDTO.getPAYMENT_DB() + " payment "

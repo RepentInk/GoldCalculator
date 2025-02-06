@@ -63,7 +63,7 @@ public class CustomerRepository implements AnonymousInterface<Customer> {
     }
 
     @Override
-    public List<Customer> list(int year) {
+    public List<Customer> list(String year) {
         List<Customer> customerList = new ArrayList<>();
         try {
             String query = "SELECT * FROM " + CustomerDTO.getCUSTOMER_DB() + " cus WHERE strftime('%Y',cus.created_at) = '" + year + "' ORDER BY cus.id DESC";

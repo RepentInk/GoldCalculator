@@ -132,20 +132,20 @@ public class UserScreen extends javax.swing.JPanel {
 
         usersTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Id", "Fullname", "Phone Number", "Username", "Created Date", "", ""
+                "Id", "Fullname", "Phone Number", "Username", "User Type", "Created Date", "", ""
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -166,10 +166,10 @@ public class UserScreen extends javax.swing.JPanel {
         if (usersTable.getColumnModel().getColumnCount() > 0) {
             usersTable.getColumnModel().getColumn(0).setMinWidth(0);
             usersTable.getColumnModel().getColumn(0).setMaxWidth(0);
-            usersTable.getColumnModel().getColumn(5).setMinWidth(60);
-            usersTable.getColumnModel().getColumn(5).setMaxWidth(60);
             usersTable.getColumnModel().getColumn(6).setMinWidth(60);
             usersTable.getColumnModel().getColumn(6).setMaxWidth(60);
+            usersTable.getColumnModel().getColumn(7).setMinWidth(60);
+            usersTable.getColumnModel().getColumn(7).setMaxWidth(60);
         }
 
         jLabel32.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N

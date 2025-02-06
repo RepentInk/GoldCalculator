@@ -30,7 +30,7 @@ public class UserRepository implements AnonymousInterface<User> {
     public List<User> list() {
         List<User> usersList = new ArrayList<>();
         try {
-            String query = "SELECT * FROM " + UserDTO.getUSERS_DB() + " WHERE user_type= '" + "user" + "' ORDER BY id DESC";
+            String query = "SELECT * FROM " + UserDTO.getUSERS_DB() + " ORDER BY id DESC";
             pst = conn.prepareStatement(query);
             rs = pst.executeQuery();
 
@@ -44,6 +44,7 @@ public class UserRepository implements AnonymousInterface<User> {
                 user.setPassword(rs.getString(UserDTO.getPASSWORD()));
                 user.setCreated_at(rs.getString(UserDTO.getCREATED_AT()));
                 user.setUpdated_at(rs.getString(UserDTO.getUPDATED_AT()));
+                user.setUser_type(rs.getString(UserDTO.getUSER_TYPE()));
 
                 usersList.add(user);
             }
@@ -63,7 +64,7 @@ public class UserRepository implements AnonymousInterface<User> {
     }
 
     @Override
-    public List<User> list(int year) {
+    public List<User> list(String year) {
         List<User> usersList = new ArrayList<>();
         try {
             String query = "SELECT * FROM " + UserDTO.getUSERS_DB() + " user WHERE strftime('%Y',cus.created_at) = '" + year + "' ORDER BY user.id DESC";
@@ -80,6 +81,7 @@ public class UserRepository implements AnonymousInterface<User> {
                 user.setPassword(rs.getString(UserDTO.getPASSWORD()));
                 user.setCreated_at(rs.getString(UserDTO.getCREATED_AT()));
                 user.setUpdated_at(rs.getString(UserDTO.getUPDATED_AT()));
+                user.setUser_type(rs.getString(UserDTO.getUSER_TYPE()));
 
                 usersList.add(user);
             }
@@ -114,6 +116,7 @@ public class UserRepository implements AnonymousInterface<User> {
                 user.setPassword(rs.getString(UserDTO.getPASSWORD()));
                 user.setCreated_at(rs.getString(UserDTO.getCREATED_AT()));
                 user.setUpdated_at(rs.getString(UserDTO.getUPDATED_AT()));
+                user.setUser_type(rs.getString(UserDTO.getUSER_TYPE()));
             }
 
         } catch (SQLException e) {
@@ -141,16 +144,18 @@ public class UserRepository implements AnonymousInterface<User> {
                     + UserDTO.getPHONE_NUMBER() + ","
                     + UserDTO.getUSERNAME() + ","
                     + UserDTO.getPASSWORD() + ","
+                    + UserDTO.getUSER_TYPE() + ","
                     + UserDTO.getCREATED_AT() + ","
-                    + UserDTO.getUPDATED_AT() + " ) VALUES (?,?,?,?,?,?)";
+                    + UserDTO.getUPDATED_AT() + " ) VALUES (?,?,?,?,?,?,?)";
             pst = conn.prepareStatement(query);
 
             pst.setString(1, user.getFullname());
             pst.setString(2, user.getPhone_number());
             pst.setString(3, user.getUsername());
             pst.setString(4, user.getPassword());
-            pst.setString(5, user.getCreated_at());
-            pst.setString(6, user.getUpdated_at());
+            pst.setString(5, user.getUser_type());
+            pst.setString(6, user.getCreated_at());
+            pst.setString(7, user.getUpdated_at());
 
             pst.executeUpdate();
 
@@ -181,6 +186,7 @@ public class UserRepository implements AnonymousInterface<User> {
                     + UserDTO.getPHONE_NUMBER() + "='" + user.getPhone_number() + "',"
                     + UserDTO.getUSERNAME() + "='" + user.getUsername() + "',"
                     + UserDTO.getPASSWORD() + "='" + user.getPassword() + "',"
+                    + UserDTO.getUSER_TYPE() + "='" + user.getUser_type() + "',"
                     + UserDTO.getCREATED_AT() + "='" + user.getCreated_at() + "',"
                     + UserDTO.getUPDATED_AT() + "='" + user.getUpdated_at() + "' WHERE " + UserDTO.getID() + "='" + id + "'";
 
@@ -275,6 +281,7 @@ public class UserRepository implements AnonymousInterface<User> {
                 authUser.setFullname(rs.getString(UserDTO.getFULL_NAME()));
                 authUser.setUsername(rs.getString(UserDTO.getUSERNAME()));
                 authUser.setPhone_number(rs.getString(UserDTO.getPHONE_NUMBER()));
+                authUser.setUser_type(rs.getString(UserDTO.getUSER_TYPE()));
             }
 
         } catch (SQLException e) {

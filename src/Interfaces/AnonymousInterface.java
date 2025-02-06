@@ -9,7 +9,7 @@ import java.util.List;
  */
 public interface AnonymousInterface<T> {
 
-    public List<T> list(int year);
+    public List<T> list(String year);
     
     public List<T> list();
 

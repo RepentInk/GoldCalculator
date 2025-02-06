@@ -2,12 +2,14 @@ package Controllers;
 
 import Helpers.HelperFunctions;
 import Helpers.TableActions;
+import Helpers.UserType;
 import Models.User;
 import Repository.UserRepository;
 import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
+import javax.swing.JRadioButton;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
@@ -34,6 +36,7 @@ public class UserController {
                 user.getFullname(),
                 user.getPhone_number(),
                 user.getUsername(),
+                user.getUser_type(),
                 user.getCreated_at(),
                 TableActions.View.toString(),
                 TableActions.Delete.toString()
@@ -53,6 +56,7 @@ public class UserController {
             JTextField userName,
             JPasswordField password,
             JPasswordField confirmPassword,
+            String userType,
             JTable table,
             int selectedRow,
             javax.swing.JDialog dialog
@@ -86,6 +90,7 @@ public class UserController {
                     phone_number,
                     username,
                     rawPass,
+                    userType,
                     created_date,
                     created_date
             );
@@ -103,6 +108,7 @@ public class UserController {
                     phone_number,
                     username,
                     user_password,
+                    userType,
                     created_date,
                     created_date
             );
@@ -128,6 +134,7 @@ public class UserController {
             user.getFullname(),
             user.getPhone_number(),
             user.getUsername(),
+            user.getUser_type(),
             user.getCreated_at(),
             TableActions.View.toString(),
             TableActions.Delete.toString()
@@ -145,7 +152,8 @@ public class UserController {
         table.setValueAt(user.getFullname(), selectedRow, 1);
         table.setValueAt(user.getPhone_number(), selectedRow, 2);
         table.setValueAt(user.getUsername(), selectedRow, 3);
-        table.setValueAt(user.getCreated_at(), selectedRow, 4);
+        table.setValueAt(user.getUser_type(), selectedRow, 4);
+        table.setValueAt(user.getCreated_at(), selectedRow, 5);
     }
 
     // Deleting item from itemsTable
@@ -164,7 +172,9 @@ public class UserController {
             JTextField phoneNumber,
             JTextField userName,
             JPasswordField password,
-            JPasswordField confirmPassword
+            JPasswordField confirmPassword,
+            JRadioButton adminUserType,
+            JRadioButton userUserType
     ) {
         User user = userRepository.find(user_id);
 
@@ -174,6 +184,12 @@ public class UserController {
         userName.setText(user.getUsername());
         password.setText(user.getPassword());
         confirmPassword.setText(user.getPassword());
+
+        if (user.getUser_type().equals(UserType.ADMIN.toString())) {
+            adminUserType.setSelected(true);
+        } else {
+            userUserType.setSelected(true);
+        }
     }
 
 }

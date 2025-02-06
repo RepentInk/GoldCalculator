@@ -27,7 +27,7 @@ public class ShopRepository implements AnonymousInterface<Shop> {
     }
 
     @Override
-    public List<Shop> list(int year) {
+    public List<Shop> list(String year) {
         List<Shop> shopsList = new ArrayList<>();
         try {
             String query = "SELECT * FROM " + ShopDTO.getSHOP_DB() + " ORDER BY " + ShopDTO.getID() + " DESC";
@@ -44,6 +44,7 @@ public class ShopRepository implements AnonymousInterface<Shop> {
                 shop.setEmail_address(rs.getString(ShopDTO.getEMAIL_ADDRESS()));
                 shop.setDigital_address(rs.getString(ShopDTO.getDIGITAL_ADDRESS()));
                 shop.setMotto(rs.getString(ShopDTO.getMOTTO()));
+                shop.setSkin_type(rs.getInt(ShopDTO.getSKIN_TYPE()));
 
                 shopsList.add(shop);
             }
@@ -80,6 +81,7 @@ public class ShopRepository implements AnonymousInterface<Shop> {
                 shop.setEmail_address(rs.getString(ShopDTO.getEMAIL_ADDRESS()));
                 shop.setDigital_address(rs.getString(ShopDTO.getDIGITAL_ADDRESS()));
                 shop.setMotto(rs.getString(ShopDTO.getMOTTO()));
+                shop.setSkin_type(rs.getInt(ShopDTO.getSKIN_TYPE()));
 
                 shopsList.add(shop);
             }
@@ -115,6 +117,7 @@ public class ShopRepository implements AnonymousInterface<Shop> {
                 shop.setEmail_address(rs.getString(ShopDTO.getEMAIL_ADDRESS()));
                 shop.setDigital_address(rs.getString(ShopDTO.getDIGITAL_ADDRESS()));
                 shop.setMotto(rs.getString(ShopDTO.getMOTTO()));
+                shop.setSkin_type(rs.getInt(ShopDTO.getSKIN_TYPE()));
             }
 
         } catch (SQLException e) {
@@ -142,7 +145,8 @@ public class ShopRepository implements AnonymousInterface<Shop> {
                     + ShopDTO.getCONTACTS() + ","
                     + ShopDTO.getEMAIL_ADDRESS() + ","
                     + ShopDTO.getDIGITAL_ADDRESS() + ","
-                    + ShopDTO.getMOTTO() + " ) VALUES (?,?,?,?,?,?)";
+                    + ShopDTO.getMOTTO() + ","
+                    + ShopDTO.getSKIN_TYPE() + " ) VALUES (?,?,?,?,?,?,?)";
 
             pst = conn.prepareStatement(query);
 
@@ -152,6 +156,7 @@ public class ShopRepository implements AnonymousInterface<Shop> {
             pst.setString(4, shop.getEmail_address());
             pst.setString(5, shop.getDigital_address());
             pst.setString(6, shop.getMotto());
+            pst.setInt(7, shop.getSkin_type());
 
             pst.executeUpdate();
 
@@ -183,7 +188,8 @@ public class ShopRepository implements AnonymousInterface<Shop> {
                     + ShopDTO.getCONTACTS() + "='" + shop.getContacts() + "',"
                     + ShopDTO.getEMAIL_ADDRESS() + "='" + shop.getEmail_address() + "',"
                     + ShopDTO.getDIGITAL_ADDRESS() + "='" + shop.getDigital_address() + "',"
-                    + ShopDTO.getMOTTO() + "='" + shop.getMotto() + "' WHERE " + ShopDTO.getID() + "='" + id + "'";
+                    + ShopDTO.getMOTTO() + "='" + shop.getMotto() + "',"
+                    + ShopDTO.getSKIN_TYPE() + "='" + shop.getSkin_type() + "' WHERE " + ShopDTO.getID() + "='" + id + "'";
 
             pst = conn.prepareStatement(query);
             pst.executeUpdate();

@@ -13,6 +13,7 @@ public class ShopDTO {
     private static final String EMAIL_ADDRESS = "email_address";
     private static final String DIGITAL_ADDRESS = "digital_address";
     private static final String MOTTO = "motto";
+    private static final String SKIN_TYPE = "skin_type";
 
     private static final String SHOP_DB = "shops";
 
@@ -46,6 +47,10 @@ public class ShopDTO {
 
     public static String getSHOP_DB() {
         return SHOP_DB;
+    }
+
+    public static String getSKIN_TYPE() {
+        return SKIN_TYPE;
     }
 
 }

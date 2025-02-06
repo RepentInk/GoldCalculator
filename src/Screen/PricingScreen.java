@@ -1,6 +1,9 @@
 package Screen;
 
-import java.util.Vector;
+import Controllers.PricingController;
+import Controllers.SetStaticDataController;
+import java.awt.event.KeyEvent;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -8,59 +11,82 @@ import java.util.Vector;
  */
 public class PricingScreen extends javax.swing.JPanel {
 
-    Vector searchTableVector;
+    PricingController pricingController = new PricingController();
+    SetStaticDataController setStaticDataController = new SetStaticDataController();
 
     /**
      * Creates new form DailyBudgetScreen
      */
     public PricingScreen() {
         initComponents();
-    }
 
-    private void addUser() {
-//        UserForm userForm = new UserForm(new Dashboard(), true);
-//        userForm.setVisible(true);
-    }
-
-    private void populateData() {
-//        userController.populateTable(usersTable);
-//        helper.TableColor(usersTable);
-//
-//        new AddButton().addBtnItemsTable(usersTable, ActionsColumns.tableActionColumn(ModelType.Users));
-//        searchTableVector = (Vector) ((DefaultTableModel) usersTable.getModel()).getDataVector().clone();
-//        this.countRow();
-    }
-
-    private void searchTable(String searchItem) {
-//        helper.searchItem(usersTable, searchItem, searchTableVector);
-//        this.countRow();
-    }
-
-    public void onTableClicked() {
-//        int[] columns = ActionsColumns.tableActionColumn(ModelType.Users);
-//        String tableID = usersTable.getModel().getValueAt(usersTable.getSelectedRow(), 0).toString();
-//
-//        if (usersTable.getSelectedColumn() == columns[0]) {
-//            int table_id = Integer.parseInt(tableID);
-//            UserForm userForm = new UserForm(new Dashboard(), true);
-//            userForm.viewDetails(table_id, usersTable.getSelectedRow());
-//            userForm.setVisible(true);
-//        } else if (usersTable.getSelectedColumn() == columns[1]) {
-//            int ask = JOptionPane.showConfirmDialog(null, "Are you sure you want to remove this record?", "DELETE RECORDS", JOptionPane.YES_NO_OPTION);
-//            if (ask == 0) {
-//                userController.deleteItem(usersTable, tableID, usersTable.getSelectedRow());
-//            }
-//        }
-//
-//        this.countRow();
-    }
-
-    private void refresh() {
+        lblPricingID.setVisible(false);
         this.populateData();
     }
 
-    private void countRow() {
-//        userRowCount.setText(String.valueOf(usersTable.getRowCount()));
+    private void populateData() {
+        pricingController.populateData(
+                lblPricingID,
+                txtCurrentPrice,
+                txtOldPrice,
+                txtTopDivideValue,
+                txtDensityMinusValue,
+                txtDensityMultiplyValue,
+                txtKaratDivideValue
+        );
+    }
+
+    private void saveData() {
+        if (!this.checkFields()) {
+            return;
+        }
+
+        pricingController.saveUpdate(
+                lblPricingID,
+                txtCurrentPrice,
+                txtOldPrice,
+                txtTopDivideValue,
+                txtDensityMinusValue,
+                txtDensityMultiplyValue,
+                txtKaratDivideValue
+        );
+
+        this.populateData();
+        setStaticDataController.setPricing();
+    }
+
+    private boolean checkFields() {
+        String message = "";
+
+        if (txtCurrentPrice.getText().isEmpty()) {
+            message = message + "Current price is required \n";
+        }
+
+        if (txtOldPrice.getText().isEmpty()) {
+            message = message + "Old price is required \n";
+        }
+
+        if (txtTopDivideValue.getText().isEmpty()) {
+            message = message + "Top divide value is required \n";
+        }
+
+        if (txtDensityMinusValue.getText().isEmpty()) {
+            message = message + "Density minus value is required \n";
+        }
+
+        if (txtDensityMultiplyValue.getText().isEmpty()) {
+            message = message + "Density multiply value is required \n";
+        }
+
+        if (txtKaratDivideValue.getText().isEmpty()) {
+            message = message + "Karat divide value is required \n";
+        }
+
+        if (message.length() > 0) {
+            JOptionPane.showMessageDialog(this, message, "Form Validation", 0);
+        }
+
+        return message.length() <= 0;
     }
 
     /**
@@ -87,7 +113,8 @@ public class PricingScreen extends javax.swing.JPanel {
         txtDensityMultiplyValue = new javax.swing.JTextField();
         txtDensityMinusValue = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        btnSave = new javax.swing.JButton();
+        lblPricingID = new javax.swing.JLabel();
 
         setToolTipText("");
 
@@ -103,7 +130,7 @@ public class PricingScreen extends javax.swing.JPanel {
             jPanel30Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel30Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 885, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel30Layout.setVerticalGroup(
@@ -113,16 +140,31 @@ public class PricingScreen extends javax.swing.JPanel {
                 .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE))
         );
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "GOLD WEIGHT CALCULATION VALUES", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 18))); // NOI18N
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "GOLD WEIGHT CALCULATION CONSTANTS", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 18))); // NOI18N
 
         txtCurrentPrice.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        txtCurrentPrice.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtCurrentPriceKeyTyped(evt);
+            }
+        });
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel6.setText("Density Multiply Value");
 
         txtOldPrice.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        txtOldPrice.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtOldPriceKeyTyped(evt);
+            }
+        });
 
         txtTopDivideValue.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        txtTopDivideValue.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtTopDivideValueKeyTyped(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel2.setText("Old Price");
@@ -134,20 +176,40 @@ public class PricingScreen extends javax.swing.JPanel {
         jLabel7.setText("Karat Divide Value");
 
         txtKaratDivideValue.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        txtKaratDivideValue.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtKaratDivideValueKeyTyped(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel3.setText("Top Divide Value");
 
         txtDensityMultiplyValue.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        txtDensityMultiplyValue.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtDensityMultiplyValueKeyTyped(evt);
+            }
+        });
 
         txtDensityMinusValue.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        txtDensityMinusValue.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtDensityMinusValueKeyTyped(evt);
+            }
+        });
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel4.setText("Density Minus Value");
 
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/save.png"))); // NOI18N
-        jButton1.setText("Save");
+        btnSave.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/save.png"))); // NOI18N
+        btnSave.setText("Save");
+        btnSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -164,11 +226,12 @@ public class PricingScreen extends javax.swing.JPanel {
                     .addComponent(txtTopDivideValue)
                     .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(txtDensityMinusValue)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, 343, Short.MAX_VALUE)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, 465, Short.MAX_VALUE)
                     .addComponent(txtDensityMultiplyValue)
                     .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(txtKaratDivideValue)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnSave, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblPricingID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -198,8 +261,10 @@ public class PricingScreen extends javax.swing.JPanel {
                 .addComponent(jLabel7)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtKaratDivideValue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                .addComponent(lblPricingID, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -208,10 +273,10 @@ public class PricingScreen extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel30, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap(246, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(290, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -224,9 +289,61 @@ public class PricingScreen extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
+        this.saveData();
+    }//GEN-LAST:event_btnSaveActionPerformed
+
+    private void txtCurrentPriceKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCurrentPriceKeyTyped
+        char c = evt.getKeyChar();
+        if (!(Character.isDigit(c) || (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE) || (c == KeyEvent.VK_PERIOD) || (c == KeyEvent.VK_ENTER))) {
+            getToolkit().beep();
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtCurrentPriceKeyTyped
+
+    private void txtOldPriceKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtOldPriceKeyTyped
+        char c = evt.getKeyChar();
+        if (!(Character.isDigit(c) || (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE) || (c == KeyEvent.VK_PERIOD) || (c == KeyEvent.VK_ENTER))) {
+            getToolkit().beep();
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtOldPriceKeyTyped
+
+    private void txtTopDivideValueKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTopDivideValueKeyTyped
+        char c = evt.getKeyChar();
+        if (!(Character.isDigit(c) || (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE) || (c == KeyEvent.VK_PERIOD) || (c == KeyEvent.VK_ENTER))) {
+            getToolkit().beep();
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtTopDivideValueKeyTyped
+
+    private void txtDensityMinusValueKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDensityMinusValueKeyTyped
+        char c = evt.getKeyChar();
+        if (!(Character.isDigit(c) || (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE) || (c == KeyEvent.VK_PERIOD) || (c == KeyEvent.VK_ENTER))) {
+            getToolkit().beep();
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtDensityMinusValueKeyTyped
+
+    private void txtDensityMultiplyValueKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDensityMultiplyValueKeyTyped
+        char c = evt.getKeyChar();
+        if (!(Character.isDigit(c) || (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE) || (c == KeyEvent.VK_PERIOD) || (c == KeyEvent.VK_ENTER))) {
+            getToolkit().beep();
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtDensityMultiplyValueKeyTyped
+
+    private void txtKaratDivideValueKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtKaratDivideValueKeyTyped
+        char c = evt.getKeyChar();
+        if (!(Character.isDigit(c) || (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE) || (c == KeyEvent.VK_PERIOD) || (c == KeyEvent.VK_ENTER))) {
+            getToolkit().beep();
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtKaratDivideValueKeyTyped
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnSave;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -236,6 +353,7 @@ public class PricingScreen extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel30;
+    private javax.swing.JLabel lblPricingID;
     private javax.swing.JTextField txtCurrentPrice;
     private javax.swing.JTextField txtDensityMinusValue;
     private javax.swing.JTextField txtDensityMultiplyValue;

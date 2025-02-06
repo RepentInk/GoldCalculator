@@ -27,7 +27,7 @@ public class PricingRepository implements AnonymousInterface<Pricing> {
     }
 
     @Override
-    public List<Pricing> list(int year) {
+    public List<Pricing> list(String year) {
         List<Pricing> pricingsList = new ArrayList<>();
         try {
             String query = "SELECT * FROM " + PricingDTO.getPRICING_DB() + " price WHERE strftime('%Y', price.created_date) = '" + year + "' ORDER BY " + PricingDTO.getID() + " DESC";
@@ -185,7 +185,7 @@ public class PricingRepository implements AnonymousInterface<Pricing> {
                     + PricingDTO.getCURRENT_PRICE() + "='" + pricing.getCurrent_price() + "',"
                     + PricingDTO.getOLD_PRICE() + "='" + pricing.getOld_price() + "',"
                     + PricingDTO.getTOP_DIVIDE_VALUE() + "='" + pricing.getTop_divide_value() + "',"
-                    + PricingDTO.getDENSITY_MINUS_VALUE() + "='" + pricing.getDensity_multiply_value() + "',"
+                    + PricingDTO.getDENSITY_MINUS_VALUE() + "='" + pricing.getDensity_minus_value()+ "',"
                     + PricingDTO.getDENSITY_MULTIPLY_VALUE() + "='" + pricing.getDensity_multiply_value() + "',"
                     + PricingDTO.getKARAT_DIVIDE_VALUE() + "='" + pricing.getKarat_divide_value() + "',"
                     + PricingDTO.getCREATED_DATE() + "='" + pricing.getCreated_date() + "' WHERE " + PricingDTO.getID() + "='" + id + "'";

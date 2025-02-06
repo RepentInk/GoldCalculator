@@ -13,11 +13,12 @@ public class User {
     private String password;
     private String created_at;
     private String updated_at;
+    private String user_type;
 
     public User() {
     }
 
-    public User(int id, String fullname, String phone_number, String username, String password, String created_at, String updated_at) {
+    public User(int id, String fullname, String phone_number, String username, String password, String user_type, String created_at, String updated_at) {
         this.id = id;
         this.fullname = fullname;
         this.phone_number = phone_number;
@@ -25,15 +26,17 @@ public class User {
         this.password = password;
         this.created_at = created_at;
         this.updated_at = updated_at;
+        this.user_type = user_type;
     }
 
-    public User(String fullname, String phone_number, String username, String password, String created_at, String updated_at) {
+    public User(String fullname, String phone_number, String username, String password, String user_type, String created_at, String updated_at) {
         this.fullname = fullname;
         this.phone_number = phone_number;
         this.username = username;
         this.password = password;
         this.created_at = created_at;
         this.updated_at = updated_at;
+        this.user_type = user_type;
     }
 
     public User(String username, String password) {
@@ -95,6 +98,14 @@ public class User {
 
     public void setUpdated_at(String updated_at) {
         this.updated_at = updated_at;
+    }
+
+    public String getUser_type() {
+        return user_type;
+    }
+
+    public void setUser_type(String user_type) {
+        this.user_type = user_type;
     }
 
 }

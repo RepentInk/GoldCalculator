@@ -5,13 +5,11 @@ package Helpers;
  * @author nyark
  */
 public enum ModelType {
-    MachineTypes,
-    Machines,
+    Budget,
+    BuyGold,
     Customers,
-    Operators,
-    Renting,
     Payments,
-    Users, 
-    OperatorRenting,
-    NonWorkHours
+    Pricing,
+    Shop,
+    Users
 }

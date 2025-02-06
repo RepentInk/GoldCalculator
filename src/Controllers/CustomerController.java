@@ -45,7 +45,6 @@ public class CustomerController {
         defaultTableModel.fireTableDataChanged();
     }
 
-    // Saving or Updating accounts 
     public void saveUpdate(
             JLabel customerID,
             JTextField fullname,
@@ -106,7 +105,6 @@ public class CustomerController {
 
     }
 
-    // populate data in table after creation
     private void populateAfterSaving(JTable table, int customer_id) {
         DefaultTableModel tmodel = (DefaultTableModel) table.getModel();
         Object[] object;
@@ -127,7 +125,6 @@ public class CustomerController {
         tmodel.insertRow(0, object);
     }
 
-    // Populate data after updating
     private void populateAfterUpdating(JTable table, int selectedRow, int customer_id) {
 
         Customer customer = customerRepository.find(customer_id);
@@ -140,7 +137,6 @@ public class CustomerController {
         table.setValueAt(customer.getCreated_at(), selectedRow, 5);
     }
 
-    // Deleting item from itemsTable
     public void deleteItem(JTable table, String customerID, int selectedRow) {
         DefaultTableModel tmodel = (DefaultTableModel) table.getModel();
         int id = Integer.parseInt(customerID);
@@ -148,7 +144,6 @@ public class CustomerController {
         tmodel.removeRow(selectedRow);
     }
 
-    // populate data in fields when a row in table is click
     public void userTableClick(
             int customer_id,
             JLabel customerID,
@@ -172,7 +167,7 @@ public class CustomerController {
         comboBox.setSelectedIndex(0);
 
         for (Customer customer : customers) {
-            comboBox.addItem(customer.getFullname() + " | " + customer.getPhone_number() + " | " + customer.getPlace_of_work());
+            comboBox.addItem(customer.getFullname() + " | " + customer.getPhone_number());
         }
     }
 

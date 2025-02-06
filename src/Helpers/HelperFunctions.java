@@ -136,6 +136,13 @@ public class HelperFunctions {
         return date;
     }
 
+    // return current year
+    public String returnCurrentYearTwoDigit() {
+        SimpleDateFormat sdf2 = new SimpleDateFormat("yy");
+        String date = sdf2.format(new java.util.Date()).trim();
+        return date;
+    }
+
     // return current date
     public String returnCurrentMonth() {
         SimpleDateFormat sdf2 = new SimpleDateFormat("MM");

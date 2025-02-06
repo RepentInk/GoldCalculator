@@ -1,6 +1,8 @@
 package Screen;
 
-import java.util.Vector;
+import Controllers.SetStaticDataController;
+import Controllers.ShopController;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -8,59 +10,83 @@ import java.util.Vector;
  */
 public class ShopDetailScreen extends javax.swing.JPanel {
 
-    Vector searchTableVector;
+    ShopController shopController = new ShopController();
+    SetStaticDataController setStaticDataController = new SetStaticDataController();
+    private int skinType = 0;
 
     /**
      * Creates new form DailyBudgetScreen
      */
     public ShopDetailScreen() {
         initComponents();
-    }
 
-    private void addUser() {
-//        UserForm userForm = new UserForm(new Dashboard(), true);
-//        userForm.setVisible(true);
-    }
-
-    private void populateData() {
-//        userController.populateTable(usersTable);
-//        helper.TableColor(usersTable);
-//
-//        new AddButton().addBtnItemsTable(usersTable, ActionsColumns.tableActionColumn(ModelType.Users));
-//        searchTableVector = (Vector) ((DefaultTableModel) usersTable.getModel()).getDataVector().clone();
-//        this.countRow();
-    }
-
-    private void searchTable(String searchItem) {
-//        helper.searchItem(usersTable, searchItem, searchTableVector);
-//        this.countRow();
-    }
-
-    public void onTableClicked() {
-//        int[] columns = ActionsColumns.tableActionColumn(ModelType.Users);
-//        String tableID = usersTable.getModel().getValueAt(usersTable.getSelectedRow(), 0).toString();
-//
-//        if (usersTable.getSelectedColumn() == columns[0]) {
-//            int table_id = Integer.parseInt(tableID);
-//            UserForm userForm = new UserForm(new Dashboard(), true);
-//            userForm.viewDetails(table_id, usersTable.getSelectedRow());
-//            userForm.setVisible(true);
-//        } else if (usersTable.getSelectedColumn() == columns[1]) {
-//            int ask = JOptionPane.showConfirmDialog(null, "Are you sure you want to remove this record?", "DELETE RECORDS", JOptionPane.YES_NO_OPTION);
-//            if (ask == 0) {
-//                userController.deleteItem(usersTable, tableID, usersTable.getSelectedRow());
-//            }
-//        }
-//
-//        this.countRow();
-    }
-
-    private void refresh() {
+        lblShopID.setVisible(false);
         this.populateData();
     }
 
-    private void countRow() {
-//        userRowCount.setText(String.valueOf(usersTable.getRowCount()));
+    private void populateData() {
+        shopController.populateData(
+                lblShopID,
+                txtName,
+                txtLocation,
+                txtContacts,
+                txtEmailAddress,
+                txtDigitalAddress,
+                txtMotto,
+                radioMcWin,
+                radioAluminium,
+                radioTexture
+        );
+    }
+
+    private void saveData() {
+        if (!this.checkFields()) {
+            return;
+        }
+
+        shopController.saveUpdate(
+                lblShopID,
+                txtName,
+                txtLocation,
+                txtContacts,
+                txtEmailAddress,
+                txtDigitalAddress,
+                txtMotto,
+                this.skinType
+        );
+
+        this.populateData();
+        setStaticDataController.setShopDetail();
+    }
+
+    private boolean checkFields() {
+        String message = "";
+
+        if (txtName.getText().isEmpty()) {
+            message = message + "Shop name is required \n";
+        }
+
+        if (txtLocation.getText().isEmpty()) {
+            message = message + "Location is required \n";
+        }
+
+        if (txtContacts.getText().isEmpty()) {
+            message = message + "Contacts is required \n";
+        }
+
+        if (txtEmailAddress.getText().isEmpty()) {
+            message = message + "Email address is required \n";
+        }
+
+        if (txtDigitalAddress.getText().isEmpty()) {
+            message = message + "Digital Address is required \n";
+        }
+
+        if (message.length() > 0) {
+            JOptionPane.showMessageDialog(this, message, "Form Validation", 0);
+        }
+
+        return message.length() <= 0;
     }
 
     /**
@@ -72,6 +98,7 @@ public class ShopDetailScreen extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         jPanel30 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
@@ -89,6 +116,10 @@ public class ShopDetailScreen extends javax.swing.JPanel {
         txtMotto = new javax.swing.JTextField();
         btnSave = new javax.swing.JButton();
         lblShopID = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        radioMcWin = new javax.swing.JRadioButton();
+        radioAluminium = new javax.swing.JRadioButton();
+        radioTexture = new javax.swing.JRadioButton();
 
         setToolTipText("");
 
@@ -104,7 +135,7 @@ public class ShopDetailScreen extends javax.swing.JPanel {
             jPanel30Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel30Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 885, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel30Layout.setVerticalGroup(
@@ -143,17 +174,47 @@ public class ShopDetailScreen extends javax.swing.JPanel {
         jLabel3.setText("Contacts");
 
         txtContacts.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        txtContacts.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtContactsActionPerformed(evt);
-            }
-        });
 
         txtMotto.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
 
         btnSave.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/save.png"))); // NOI18N
         btnSave.setText("Save");
+        btnSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveActionPerformed(evt);
+            }
+        });
+
+        jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel8.setText("Skin Type");
+
+        buttonGroup1.add(radioMcWin);
+        radioMcWin.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        radioMcWin.setText("McWinLookAndFeel");
+        radioMcWin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radioMcWinActionPerformed(evt);
+            }
+        });
+
+        buttonGroup1.add(radioAluminium);
+        radioAluminium.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        radioAluminium.setText("AluminiumLookAndFeel");
+        radioAluminium.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radioAluminiumActionPerformed(evt);
+            }
+        });
+
+        buttonGroup1.add(radioTexture);
+        radioTexture.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        radioTexture.setText("TextureLookAndFeel");
+        radioTexture.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radioTextureActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -161,21 +222,28 @@ public class ShopDetailScreen extends javax.swing.JPanel {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtMotto, javax.swing.GroupLayout.DEFAULT_SIZE, 301, Short.MAX_VALUE)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtDigitalAddress, javax.swing.GroupLayout.DEFAULT_SIZE, 301, Short.MAX_VALUE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtEmailAddress, javax.swing.GroupLayout.DEFAULT_SIZE, 301, Short.MAX_VALUE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtContacts, javax.swing.GroupLayout.DEFAULT_SIZE, 301, Short.MAX_VALUE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtLocation, javax.swing.GroupLayout.DEFAULT_SIZE, 301, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(txtName)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtLocation)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtContacts)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtEmailAddress)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtDigitalAddress)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtMotto)
+                    .addComponent(lblShopID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnSave, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblShopID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(radioMcWin)
+                        .addGap(62, 62, 62)
+                        .addComponent(radioAluminium)
+                        .addGap(45, 45, 45)
+                        .addComponent(radioTexture, javax.swing.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -197,15 +265,22 @@ public class ShopDetailScreen extends javax.swing.JPanel {
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtEmailAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtDigitalAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel7)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtMotto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 77, Short.MAX_VALUE)
+                .addGap(12, 12, 12)
+                .addComponent(jLabel8)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(radioMcWin)
+                    .addComponent(radioAluminium)
+                    .addComponent(radioTexture))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
                 .addComponent(lblShopID, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -217,10 +292,10 @@ public class ShopDetailScreen extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel30, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap(289, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(289, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -233,13 +308,26 @@ public class ShopDetailScreen extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtContactsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtContactsActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtContactsActionPerformed
+    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
+        this.saveData();
+    }//GEN-LAST:event_btnSaveActionPerformed
+
+    private void radioMcWinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioMcWinActionPerformed
+       this.skinType = 2;
+    }//GEN-LAST:event_radioMcWinActionPerformed
+
+    private void radioAluminiumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioAluminiumActionPerformed
+        this.skinType = 1;
+    }//GEN-LAST:event_radioAluminiumActionPerformed
+
+    private void radioTextureActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioTextureActionPerformed
+        this.skinType = 0;
+    }//GEN-LAST:event_radioTextureActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSave;
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -247,9 +335,13 @@ public class ShopDetailScreen extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel30;
     private javax.swing.JLabel lblShopID;
+    private javax.swing.JRadioButton radioAluminium;
+    private javax.swing.JRadioButton radioMcWin;
+    private javax.swing.JRadioButton radioTexture;
     private javax.swing.JTextField txtContacts;
     private javax.swing.JTextField txtDigitalAddress;
     private javax.swing.JTextField txtEmailAddress;

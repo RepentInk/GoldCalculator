@@ -1,6 +1,7 @@
 package Main;
 
 import Helpers.HelperFunctions;
+import Helpers.LookAndFeel;
 import Screen.BuyGoldScreen;
 import Screen.CustomerScreen;
 import Screen.DailyBudgetScreen;
@@ -609,7 +610,7 @@ public class Dashboard extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        UIManager.setLookAndFeel("com.jtattoo.plaf.texture.TextureLookAndFeel");
+        UIManager.setLookAndFeel(LookAndFeel.frameSkins());
         java.awt.EventQueue.invokeLater(() -> {
             new Dashboard().setVisible(true);
         });

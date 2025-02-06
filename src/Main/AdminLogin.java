@@ -1,7 +1,9 @@
 package Main;
 
 import Controllers.LoginController;
+import Controllers.SetStaticDataController;
 import Helpers.HelperFunctions;
+import Helpers.LookAndFeel;
 import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
@@ -160,7 +162,7 @@ public class AdminLogin extends javax.swing.JFrame {
         lbl_LoginTitle.setFont(new java.awt.Font("Tahoma", 1, 20)); // NOI18N
         lbl_LoginTitle.setForeground(new java.awt.Color(51, 0, 0));
         lbl_LoginTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lbl_LoginTitle.setText("HEAVEN HOPE GOLD");
+        lbl_LoginTitle.setText("GOLDINK");
         lbl_LoginTitle.setToolTipText("");
         lbl_LoginTitle.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
@@ -173,9 +175,9 @@ public class AdminLogin extends javax.swing.JFrame {
             .addComponent(lbl_LoginTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jSeparator1)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(10, 10, 10)
+                .addGap(0, 0, 0)
                 .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGap(0, 0, 0))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -186,7 +188,7 @@ public class AdminLogin extends javax.swing.JFrame {
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 4, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGap(0, 0, 0))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -241,7 +243,8 @@ public class AdminLogin extends javax.swing.JFrame {
      * @throws javax.swing.UnsupportedLookAndFeelException
      */
     public static void main(String args[]) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
-
+        SetStaticDataController setStaticDataController = new SetStaticDataController();
+        setStaticDataController.setShopDetail();
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -254,10 +257,11 @@ public class AdminLogin extends javax.swing.JFrame {
         }
 
         /* Create and display the form */
-        UIManager.setLookAndFeel("com.jtattoo.plaf.texture.TextureLookAndFeel");
+        UIManager.setLookAndFeel(LookAndFeel.frameSkins());
         java.awt.EventQueue.invokeLater(() -> {
             new AdminLogin().setVisible(true);
         });
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

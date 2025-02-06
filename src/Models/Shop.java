@@ -13,20 +13,22 @@ public class Shop {
     private String email_address;
     private String digital_address;
     private String motto;
+    private int skin_type;
 
     public Shop() {
     }
 
-    public Shop(String name, String location, String contacts, String email_address, String digital_address, String motto) {
+    public Shop(String name, String location, String contacts, String email_address, String digital_address, String motto, int skin_type) {
         this.name = name;
         this.location = location;
         this.contacts = contacts;
         this.email_address = email_address;
         this.digital_address = digital_address;
         this.motto = motto;
+        this.skin_type = skin_type;
     }
 
-    public Shop(int id, String name, String location, String contacts, String email_address, String digital_address, String motto) {
+    public Shop(int id, String name, String location, String contacts, String email_address, String digital_address, String motto, int skin_type) {
         this.id = id;
         this.name = name;
         this.location = location;
@@ -34,6 +36,7 @@ public class Shop {
         this.email_address = email_address;
         this.digital_address = digital_address;
         this.motto = motto;
+        this.skin_type = skin_type;
     }
 
     public int getId() {
@@ -90,6 +93,14 @@ public class Shop {
 
     public void setMotto(String motto) {
         this.motto = motto;
+    }
+
+    public int getSkin_type() {
+        return skin_type;
+    }
+
+    public void setSkin_type(int skin_type) {
+        this.skin_type = skin_type;
     }
 
 }

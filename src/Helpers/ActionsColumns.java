@@ -1,7 +1,5 @@
 package Helpers;
 
-import static Helpers.ModelType.Renting;
-
 /**
  *
  * @author nyark
@@ -13,31 +11,19 @@ public class ActionsColumns {
 
         switch (modelType) {
             case Users:
-                column = new int[]{5, 6};
+                column = new int[]{6, 7};
                 break;
-            case MachineTypes:
-                column = new int[]{4, 5};
+            case Budget:
+                column = new int[]{11, 12};
                 break;
-            case Machines:
-                column = new int[]{9, 10};
+            case BuyGold:
+                column = new int[]{13, 14};
                 break;
             case Customers:
                 column = new int[]{6, 7};
                 break;
-            case Operators:
-                column = new int[]{5, 6};
-                break;
-            case Renting:
-                column = new int[]{12, 13, 14, 15, 16};
-                break;
             case Payments:
                 column = new int[]{9, 10};
-                break;
-            case OperatorRenting:
-                column = new int[]{4, 5};
-                break;
-            case NonWorkHours:
-                column = new int[]{5, 6};
                 break;
             default:
                 throw new AssertionError();
@@ -50,9 +36,6 @@ public class ActionsColumns {
         int[] column = {};
 
         switch (modelType) {
-            case Renting:
-                column = new int[]{4, 5, 6};
-                break;
             case Payments:
                 column = new int[]{4, 5, 6};
                 break;

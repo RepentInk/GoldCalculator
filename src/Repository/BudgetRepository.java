@@ -28,11 +28,11 @@ public class BudgetRepository implements AnonymousInterface<Budget> {
     }
 
     @Override
-    public List<Budget> list(int year) {
+    public List<Budget> list(String year) {
         List<Budget> budgetsList = new ArrayList<>();
         try {
             String query = "SELECT *,user.fullname AS user FROM " + BudgetDTO.getBUDGET_DB() + " bud LEFT JOIN " + UserDTO.getUSERS_DB() + " user "
-                    + "ON bud.user_id=user.id WHERE strftime('%Y',bud.raw_date) = '" + year + "' ORDER BY " + BudgetDTO.getID() + " DESC";
+                    + "ON bud.user_id=user.id WHERE strftime('%Y', bud.raw_date) = '" + year + "' ORDER BY " + BudgetDTO.getID() + " DESC";
             pst = conn.prepareStatement(query);
             rs = pst.executeQuery();
 
@@ -47,8 +47,8 @@ public class BudgetRepository implements AnonymousInterface<Budget> {
                 budget.setStatus(rs.getBoolean(BudgetDTO.getSTATUS()));
                 budget.setStart_date(rs.getString(BudgetDTO.getSTART_DATE()));
                 budget.setEnd_date(rs.getString(BudgetDTO.getEND_DATE()));
-                budget.setCreated_date(rs.getString(BudgetDTO.getCREATED_DATE()));
                 budget.setCreated_time(rs.getString(BudgetDTO.getCREATED_TIME()));
+                budget.setCreated_date(rs.getString(BudgetDTO.getCREATED_DATE()));
                 budget.setRaw_date(rs.getString(BudgetDTO.getRAW_DATE()));
                 budget.setUser_id(rs.getInt(BudgetDTO.getUSER_ID()));
 
@@ -91,8 +91,8 @@ public class BudgetRepository implements AnonymousInterface<Budget> {
                 budget.setStatus(rs.getBoolean(BudgetDTO.getSTATUS()));
                 budget.setStart_date(rs.getString(BudgetDTO.getSTART_DATE()));
                 budget.setEnd_date(rs.getString(BudgetDTO.getEND_DATE()));
-                budget.setCreated_date(rs.getString(BudgetDTO.getCREATED_DATE()));
                 budget.setCreated_time(rs.getString(BudgetDTO.getCREATED_TIME()));
+                budget.setCreated_date(rs.getString(BudgetDTO.getCREATED_DATE()));
                 budget.setRaw_date(rs.getString(BudgetDTO.getRAW_DATE()));
                 budget.setUser_id(rs.getInt(BudgetDTO.getUSER_ID()));
 
@@ -120,8 +120,8 @@ public class BudgetRepository implements AnonymousInterface<Budget> {
         Budget budget = new Budget();
 
         try {
-            String query = "SELECT *,user.fullname FROM " + BudgetDTO.getBUDGET_DB() + " bud LEFT JOIN " + UserDTO.getUSERS_DB() + " user "
-                    + "ON bud.user_id=user.id WHERE id = " + id + "";
+            String query = "SELECT bud.*,user.fullname AS user FROM " + BudgetDTO.getBUDGET_DB() + " bud LEFT JOIN " + UserDTO.getUSERS_DB() + " user "
+                    + "ON bud.user_id=user.id WHERE bud.id = " + id + "";
             pst = conn.prepareStatement(query);
             rs = pst.executeQuery();
 
@@ -134,8 +134,8 @@ public class BudgetRepository implements AnonymousInterface<Budget> {
                 budget.setStatus(rs.getBoolean(BudgetDTO.getSTATUS()));
                 budget.setStart_date(rs.getString(BudgetDTO.getSTART_DATE()));
                 budget.setEnd_date(rs.getString(BudgetDTO.getEND_DATE()));
-                budget.setCreated_date(rs.getString(BudgetDTO.getCREATED_DATE()));
                 budget.setCreated_time(rs.getString(BudgetDTO.getCREATED_TIME()));
+                budget.setCreated_date(rs.getString(BudgetDTO.getCREATED_DATE()));
                 budget.setRaw_date(rs.getString(BudgetDTO.getRAW_DATE()));
                 budget.setUser_id(rs.getInt(BudgetDTO.getUSER_ID()));
 
@@ -170,8 +170,9 @@ public class BudgetRepository implements AnonymousInterface<Budget> {
                     + BudgetDTO.getSTART_DATE() + ","
                     + BudgetDTO.getEND_DATE() + ","
                     + BudgetDTO.getUSER_ID() + ","
+                    + BudgetDTO.getRAW_DATE() + ","
                     + BudgetDTO.getCREATED_DATE() + ","
-                    + BudgetDTO.getCREATED_TIME() + " ) VALUES (?,?,?,?,?,?,?,?,?,?)";
+                    + BudgetDTO.getCREATED_TIME() + " ) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
 
             pst = conn.prepareStatement(query);
 
@@ -183,8 +184,9 @@ public class BudgetRepository implements AnonymousInterface<Budget> {
             pst.setString(6, budget.getStart_date());
             pst.setString(7, budget.getEnd_date());
             pst.setInt(8, budget.getUser_id());
-            pst.setString(9, budget.getCreated_date());
-            pst.setString(10, budget.getCreated_time());
+            pst.setString(9, budget.getRaw_date());
+            pst.setString(10, budget.getCreated_date());
+            pst.setString(11, budget.getCreated_time());
 
             pst.executeUpdate();
 
@@ -219,6 +221,7 @@ public class BudgetRepository implements AnonymousInterface<Budget> {
                     + BudgetDTO.getSTART_DATE() + "='" + budget.getStart_date() + "',"
                     + BudgetDTO.getEND_DATE() + "='" + budget.getEnd_date() + "',"
                     + BudgetDTO.getUSER_ID() + "='" + budget.getUser_id() + "',"
+                    + BudgetDTO.getRAW_DATE() + "='" + budget.getRaw_date() + "',"
                     + BudgetDTO.getCREATED_DATE() + "='" + budget.getCreated_date() + "',"
                     + BudgetDTO.getCREATED_TIME() + "='" + budget.getCreated_time() + "' WHERE " + BudgetDTO.getID() + "='" + id + "'";
 
