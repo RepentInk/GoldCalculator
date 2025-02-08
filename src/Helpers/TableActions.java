@@ -13,5 +13,8 @@ public enum TableActions {
     Operator,
     Change,
     Hours,
-    Print
+    Print,
+    Daily,
+    Monthly,
+    Weekly
 }

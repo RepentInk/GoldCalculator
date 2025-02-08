@@ -184,7 +184,7 @@ public class PaymentController {
             payment.getCreated_time(),
             payment.getCreated_date(),
             TableActions.View.toString(),
-            TableActions.Delete.toString()
+            TableActions.Print.toString()
         };
 
         tmodel.insertRow(0, object);

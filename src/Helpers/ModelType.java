@@ -11,5 +11,7 @@ public enum ModelType {
     Payments,
     Pricing,
     Shop,
-    Users
+    Users,
+    Monthly,
+    Yearly
 }

@@ -79,11 +79,11 @@
 	<summary>
 		<band height="188" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="0" width="54" height="15" uuid="e49ba773-0ebd-49d7-983c-73df65fdb232"/>
+				<reportElement x="0" y="0" width="50" height="15" uuid="e49ba773-0ebd-49d7-983c-73df65fdb232"/>
 				<textElement textAlignment="Center">
 					<font size="9" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Customer:]]></text>
+				<text><![CDATA[Customer :]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="54" y="0" width="153" height="15" uuid="b8b76778-2f71-4f53-a908-ddf3f09acc35"/>
@@ -243,7 +243,7 @@
 				<textElement textAlignment="Right">
 					<font size="9"/>
 				</textElement>
-				<text><![CDATA[Base Price GHc:]]></text>
+				<text><![CDATA[Base Price GH₵:]]></text>
 			</staticText>
 			<line>
 				<reportElement x="0" y="126" width="207" height="1" uuid="74553e46-eb31-407d-a4fc-353610cb99ed"/>
@@ -256,21 +256,21 @@
 				<textElement>
 					<font size="9" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Total Amount GHc:]]></text>
+				<text><![CDATA[Total Amount GH₵:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="142" width="108" height="15" uuid="8cd87702-d020-4484-a559-6f4d3627c39e"/>
 				<textElement>
-					<font isBold="true"/>
+					<font size="9" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Amount Paid GHc:]]></text>
+				<text><![CDATA[Amount Paid GH₵:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="157" width="108" height="15" uuid="50f1ed51-f80a-4d15-910c-669c477ab0f4"/>
 				<textElement>
-					<font isBold="true"/>
+					<font size="9" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Balance GHc:]]></text>
+				<text><![CDATA[Balance GH₵:]]></text>
 			</staticText>
 			<line>
 				<reportElement x="0" y="109" width="207" height="1" uuid="9b8f6c5e-d9f4-46a7-8283-c550a8afa4cd"/>

@@ -97,13 +97,13 @@ public class CustomerForm extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
         txt_fullname = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        txt_phonenumber = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         txt_workplace = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        txt_emergencyContact = new javax.swing.JTextField();
         btnSave = new javax.swing.JButton();
         customerID = new javax.swing.JLabel();
+        txt_phonenumber = new javax.swing.JFormattedTextField();
+        txt_emergencyContact = new javax.swing.JFormattedTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("CUSTOMER FORM");
@@ -117,9 +117,6 @@ public class CustomerForm extends javax.swing.JDialog {
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel2.setText("Phone Number");
 
-        txt_phonenumber.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        txt_phonenumber.setToolTipText("");
-
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel3.setText("Place of work");
 
@@ -128,9 +125,6 @@ public class CustomerForm extends javax.swing.JDialog {
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel4.setText("Emergency Contact");
-
-        txt_emergencyContact.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        txt_emergencyContact.setToolTipText("");
 
         btnSave.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         btnSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/save.png"))); // NOI18N
@@ -141,6 +135,20 @@ public class CustomerForm extends javax.swing.JDialog {
             }
         });
 
+        try {
+            txt_phonenumber.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("###-####-###")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+        txt_phonenumber.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+
+        try {
+            txt_emergencyContact.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("###-####-###")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+        txt_emergencyContact.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -148,16 +156,16 @@ public class CustomerForm extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txt_phonenumber)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(txt_fullname)
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txt_phonenumber)
                     .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(txt_workplace)
                     .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 364, Short.MAX_VALUE)
-                    .addComponent(txt_emergencyContact)
                     .addComponent(btnSave, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(customerID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(customerID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txt_emergencyContact, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -178,7 +186,7 @@ public class CustomerForm extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txt_emergencyContact, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txt_emergencyContact, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(customerID, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
@@ -241,9 +249,9 @@ public class CustomerForm extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JTextField txt_emergencyContact;
+    private javax.swing.JFormattedTextField txt_emergencyContact;
     private javax.swing.JTextField txt_fullname;
-    private javax.swing.JTextField txt_phonenumber;
+    private javax.swing.JFormattedTextField txt_phonenumber;
     private javax.swing.JTextField txt_workplace;
     // End of variables declaration//GEN-END:variables
 }

@@ -25,6 +25,12 @@ public class ActionsColumns {
             case Payments:
                 column = new int[]{11, 12};
                 break;
+            case Monthly:
+                column = new int[]{5};
+                break;
+            case Yearly:
+                column = new int[]{4};
+                break;
             default:
                 throw new AssertionError();
         }
