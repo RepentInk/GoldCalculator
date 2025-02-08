@@ -1,68 +1,96 @@
 package Screen;
 
+import Components.AddButton;
+import Controllers.PaymentController;
 import Dialogs.PaymentsForm;
+import Helpers.ActionsColumns;
+import Helpers.HelperFunctions;
+import Helpers.ModelType;
+import Helpers.Report;
+import Helpers.ShopData;
 import Main.Dashboard;
+import Models.Payments;
+import Models.Receipt;
+import java.util.ArrayList;
 import java.util.Vector;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author nyark
  */
 public class PaymentsScreen extends javax.swing.JPanel {
-
+    
     Vector searchTableVector;
+    HelperFunctions helper = new HelperFunctions();
+    PaymentController paymentController = new PaymentController();
+    Report report = new Report();
 
     /**
      * Creates new form DailyBudgetScreen
      */
     public PaymentsScreen() {
         initComponents();
+        
+        this.populateYears();
+        cmbYears.setSelectedItem(helper.returnCurrentYear());
+        this.populateData(helper.returnCurrentYear());
     }
-
+    
+    private void populateYears() {
+        ArrayList<String> years = helper.getYearList(ShopData.getYearLimit());
+        
+        cmbYears.addItem("Years");
+        
+        for (int year = 0; year < years.size(); year++) {
+            cmbYears.addItem(years.get(year));
+        }
+    }
+    
     private void addForm() {
         PaymentsForm paymentsForm = new PaymentsForm(new Dashboard(), true);
+        paymentsForm.populateData(cmbYears.getSelectedItem().toString());
         paymentsForm.setVisible(true);
     }
-
-    private void populateData() {
-//        userController.populateTable(usersTable);
-//        helper.TableColor(usersTable);
-//
-//        new AddButton().addBtnItemsTable(usersTable, ActionsColumns.tableActionColumn(ModelType.Users));
-//        searchTableVector = (Vector) ((DefaultTableModel) usersTable.getModel()).getDataVector().clone();
-//        this.countRow();
+    
+    private void populateData(String year) {
+        paymentController.populateTable(paymentsTable, year);
+        helper.TableColor(paymentsTable);
+        
+        new AddButton().addBtnItemsTable(paymentsTable, ActionsColumns.tableActionColumn(ModelType.Payments));
+        searchTableVector = (Vector) ((DefaultTableModel) paymentsTable.getModel()).getDataVector().clone();
+        this.countRow();
     }
-
+    
     private void searchTable(String searchItem) {
-//        helper.searchItem(usersTable, searchItem, searchTableVector);
-//        this.countRow();
+        helper.searchItem(paymentsTable, searchItem, searchTableVector);
+        this.countRow();
     }
-
+    
     public void onTableClicked() {
-//        int[] columns = ActionsColumns.tableActionColumn(ModelType.Users);
-//        String tableID = usersTable.getModel().getValueAt(usersTable.getSelectedRow(), 0).toString();
-//
-//        if (usersTable.getSelectedColumn() == columns[0]) {
-//            int table_id = Integer.parseInt(tableID);
-//            UserForm userForm = new UserForm(new Dashboard(), true);
-//            userForm.viewDetails(table_id, usersTable.getSelectedRow());
-//            userForm.setVisible(true);
-//        } else if (usersTable.getSelectedColumn() == columns[1]) {
-//            int ask = JOptionPane.showConfirmDialog(null, "Are you sure you want to remove this record?", "DELETE RECORDS", JOptionPane.YES_NO_OPTION);
-//            if (ask == 0) {
-//                userController.deleteItem(usersTable, tableID, usersTable.getSelectedRow());
-//            }
-//        }
-//
-//        this.countRow();
+        int[] columns = ActionsColumns.tableActionColumn(ModelType.Payments);
+        String tableID = paymentsTable.getModel().getValueAt(paymentsTable.getSelectedRow(), 0).toString();
+        int table_id = Integer.parseInt(tableID);
+        
+        if (paymentsTable.getSelectedColumn() == columns[0]) {
+            PaymentsForm paymentsForm = new PaymentsForm(new Dashboard(), true);
+            paymentsForm.viewDetails(table_id, paymentsTable.getSelectedRow(), cmbYears.getSelectedItem().toString());
+            paymentsForm.setVisible(true);
+        } else if (paymentsTable.getSelectedColumn() == columns[1]) {
+            String sql = report.receiptData(table_id);
+            Receipt receipt = paymentController.getSinglePayment(table_id);
+            report.paymentReceiptPrint(sql, receipt);
+        }
+        
+        this.countRow();
     }
-
+    
     private void refresh() {
-        this.populateData();
+        this.populateData(helper.returnCurrentYear());
     }
-
+    
     private void countRow() {
-//        userRowCount.setText(String.valueOf(usersTable.getRowCount()));
+        buyGoldRowCount.setText(String.valueOf(paymentsTable.getRowCount()));
     }
 
     /**
@@ -81,11 +109,12 @@ public class PaymentsScreen extends javax.swing.JPanel {
         txtSearch = new javax.swing.JTextField();
         lbl_SearchIcon1 = new javax.swing.JLabel();
         btnRefresh1 = new javax.swing.JButton();
+        cmbYears = new javax.swing.JComboBox<>();
         jScrollPane7 = new javax.swing.JScrollPane();
         paymentsTable = new javax.swing.JTable();
         jPanel52 = new javax.swing.JPanel();
         jLabel32 = new javax.swing.JLabel();
-        userRowCount = new javax.swing.JLabel();
+        buyGoldRowCount = new javax.swing.JLabel();
 
         setToolTipText("");
 
@@ -142,6 +171,13 @@ public class PaymentsScreen extends javax.swing.JPanel {
             }
         });
 
+        cmbYears.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        cmbYears.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbYearsActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel37Layout = new javax.swing.GroupLayout(jPanel37);
         jPanel37.setLayout(jPanel37Layout);
         jPanel37Layout.setHorizontalGroup(
@@ -153,7 +189,9 @@ public class PaymentsScreen extends javax.swing.JPanel {
                 .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnRefresh1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(cmbYears, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanel37Layout.setVerticalGroup(
             jPanel37Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -161,26 +199,27 @@ public class PaymentsScreen extends javax.swing.JPanel {
                 .addGroup(jPanel37Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(lbl_SearchIcon1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(txtSearch, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnRefresh1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnRefresh1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cmbYears, javax.swing.GroupLayout.Alignment.LEADING))
                 .addGap(0, 3, Short.MAX_VALUE))
         );
 
         paymentsTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Id", "Fullname", "Phone Number", "Username", "Created Date", "", ""
+                "Id", "Code", "Customer", "Budget", "Amount Paid", "Balance", "Budget BP", "Budget AP", "Created By", "Time", "Date", "", ""
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -198,12 +237,26 @@ public class PaymentsScreen extends javax.swing.JPanel {
             }
         });
         jScrollPane7.setViewportView(paymentsTable);
+        if (paymentsTable.getColumnModel().getColumnCount() > 0) {
+            paymentsTable.getColumnModel().getColumn(0).setMinWidth(0);
+            paymentsTable.getColumnModel().getColumn(0).setMaxWidth(0);
+            paymentsTable.getColumnModel().getColumn(1).setMinWidth(70);
+            paymentsTable.getColumnModel().getColumn(1).setMaxWidth(70);
+            paymentsTable.getColumnModel().getColumn(9).setMinWidth(90);
+            paymentsTable.getColumnModel().getColumn(9).setMaxWidth(90);
+            paymentsTable.getColumnModel().getColumn(10).setMinWidth(90);
+            paymentsTable.getColumnModel().getColumn(10).setMaxWidth(90);
+            paymentsTable.getColumnModel().getColumn(11).setMinWidth(60);
+            paymentsTable.getColumnModel().getColumn(11).setMaxWidth(60);
+            paymentsTable.getColumnModel().getColumn(12).setMinWidth(60);
+            paymentsTable.getColumnModel().getColumn(12).setMaxWidth(60);
+        }
 
         jLabel32.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel32.setText("Row Count :");
 
-        userRowCount.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        userRowCount.setText("1000");
+        buyGoldRowCount.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        buyGoldRowCount.setText("1000");
 
         javax.swing.GroupLayout jPanel52Layout = new javax.swing.GroupLayout(jPanel52);
         jPanel52.setLayout(jPanel52Layout);
@@ -213,13 +266,13 @@ public class PaymentsScreen extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel32)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(userRowCount)
+                .addComponent(buyGoldRowCount)
                 .addContainerGap())
         );
         jPanel52Layout.setVerticalGroup(
             jPanel52Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jLabel32, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
-            .addComponent(userRowCount, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(buyGoldRowCount, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -261,10 +314,20 @@ public class PaymentsScreen extends javax.swing.JPanel {
         this.onTableClicked();
     }//GEN-LAST:event_paymentsTableMouseClicked
 
+    private void cmbYearsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbYearsActionPerformed
+        if (cmbYears.getSelectedIndex() <= 0) {
+            return;
+        }
+        
+        this.populateData(cmbYears.getSelectedItem().toString());
+    }//GEN-LAST:event_cmbYearsActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnRefresh1;
     private javax.swing.JButton btn_addUser;
+    public static javax.swing.JLabel buyGoldRowCount;
+    private javax.swing.JComboBox<String> cmbYears;
     private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel30;
@@ -274,6 +337,5 @@ public class PaymentsScreen extends javax.swing.JPanel {
     private javax.swing.JLabel lbl_SearchIcon1;
     public static javax.swing.JTable paymentsTable;
     private javax.swing.JTextField txtSearch;
-    public static javax.swing.JLabel userRowCount;
     // End of variables declaration//GEN-END:variables
 }

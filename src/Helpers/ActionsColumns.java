@@ -23,7 +23,7 @@ public class ActionsColumns {
                 column = new int[]{6, 7};
                 break;
             case Payments:
-                column = new int[]{9, 10};
+                column = new int[]{11, 12};
                 break;
             default:
                 throw new AssertionError();

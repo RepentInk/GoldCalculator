@@ -31,6 +31,7 @@ public class BuyGoldScreen extends javax.swing.JPanel {
         
         this.populateYears();
         this.populateData(helper.returnCurrentYear());
+        cmbYears.setSelectedItem(helper.returnCurrentYear());
     }
     
     private void addForm() {

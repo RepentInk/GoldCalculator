@@ -3,15 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/nyark/Documents/NetBeansProjects/GoldCalculator/src/Models/Customer.java</file>
-            <file>file:/C:/Users/nyark/Documents/NetBeansProjects/GoldCalculator/src/Helpers/HelperFunctions.java</file>
-            <file>file:/C:/Users/nyark/Documents/NetBeansProjects/GoldCalculator/src/Main/Dashboard.java</file>
-            <file>file:/C:/Users/nyark/Documents/NetBeansProjects/GoldCalculator/src/Controllers/LoginController.java</file>
-            <file>file:/C:/Users/nyark/Documents/NetBeansProjects/GoldCalculator/src/Models/User.java</file>
-            <file>file:/C:/Users/nyark/Documents/NetBeansProjects/GoldCalculator/src/Controllers/DashboardController.java</file>
-            <file>file:/C:/Users/nyark/Documents/NetBeansProjects/GoldCalculator/src/Forms/HomeForm.java</file>
-            <file>file:/C:/Users/nyark/Documents/NetBeansProjects/GoldCalculator/src/Main/AdminLogin.java</file>
-            <file>file:/C:/Users/nyark/Documents/NetBeansProjects/GoldCalculator/src/Helpers/connectDB.java</file>
+            <file>file:/C:/Users/nyark/Documents/NetBeansProjects/GoldCalculator/src/Controllers/PaymentController.java</file>
+            <file>file:/C:/Users/nyark/Documents/NetBeansProjects/GoldCalculator/src/Screen/PaymentsScreen.java</file>
+            <file>file:/C:/Users/nyark/Documents/NetBeansProjects/GoldCalculator/src/Repository/PaymentsRepository.java</file>
+            <file>file:/C:/Users/nyark/Documents/NetBeansProjects/GoldCalculator/src/Helpers/Report.java</file>
+            <file>file:/C:/Users/nyark/Documents/NetBeansProjects/GoldCalculator/src/Report_80/PaymentReceipt.jrxml</file>
         </group>
     </open-files>
 </project-private>

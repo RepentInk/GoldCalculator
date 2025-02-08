@@ -247,4 +247,25 @@ public class BuyGoldController {
         totalAmount.setText(helper.priceToString(buyGold.getTotal_amount()));
     }
 
+    public void populateDropdownData(JComboBox comboBox, String title, String year) {
+        List<BuyGold> listBuyGolds = buyGoldRepository.list(year);
+        comboBox.addItem(title);
+        comboBox.setSelectedIndex(0);
+
+        for (BuyGold buyGold : listBuyGolds) {
+            comboBox.addItem(buyGold.getCode() + " | " + buyGold.getCustomer());
+        }
+    }
+
+    public BuyGold getSingleData(String selected_row) {
+        String batch_code = helper.splitWord(selected_row, 0, "|");
+        BuyGold buyGold = buyGoldRepository.findByCode(batch_code.trim());
+        return buyGold;
+    }
+
+    public BuyGold getSingleDataWithID(int buy_gold_id) {
+        BuyGold buyGold = buyGoldRepository.find(buy_gold_id);
+        return buyGold;
+    }
+
 }

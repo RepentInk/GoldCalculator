@@ -12,5 +12,6 @@ public enum TableActions {
     History,
     Operator,
     Change,
-    Hours
+    Hours,
+    Print
 }

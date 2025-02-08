@@ -5,8 +5,10 @@ import Helpers.HelperFunctions;
 import Helpers.TableActions;
 import Models.Budget;
 import Repository.BudgetRepository;
+import Repository.PaymentsRepository;
 import com.toedter.calendar.JDateChooser;
 import java.util.List;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -20,6 +22,7 @@ public class BudgetController {
 
     BudgetRepository budgetRepository = new BudgetRepository();
     HelperFunctions helper = new HelperFunctions();
+    PaymentsRepository paymentsRepository = new PaymentsRepository();
 
     public void populateTable(JTable table, String year) {
         if (year.equals("")) {
@@ -32,14 +35,16 @@ public class BudgetController {
         Object[] object;
 
         for (Budget budget : budgets) {
+            double total_budget_used = this.budgetUsed(budget.getId());
+
             object = new Object[]{
                 budget.getId(),
                 budget.getName(),
                 budget.getStart_date(),
                 budget.getEnd_date(),
                 helper.priceToString(budget.getTotal_amount()),
-                helper.priceToString(0),
-                helper.priceToString(0),
+                helper.priceToString(total_budget_used),
+                helper.priceToString(budget.getTotal_amount() - total_budget_used),
                 this.budgetStatus(budget.isStatus()),
                 budget.getUser(),
                 budget.getCreated_date(),
@@ -135,6 +140,7 @@ public class BudgetController {
         Object[] object;
 
         Budget budget = budgetRepository.find(budget_id);
+        double total_budget_used = this.budgetUsed(budget.getId());
 
         object = new Object[]{
             budget.getId(),
@@ -142,8 +148,8 @@ public class BudgetController {
             budget.getStart_date(),
             budget.getEnd_date(),
             helper.priceToString(budget.getTotal_amount()),
-            helper.priceToString(0),
-            helper.priceToString(0),
+            helper.priceToString(total_budget_used),
+            helper.priceToString(budget.getTotal_amount() - total_budget_used),
             this.budgetStatus(budget.isStatus()),
             budget.getUser(),
             budget.getCreated_date(),
@@ -158,19 +164,24 @@ public class BudgetController {
     private void populateAfterUpdating(JTable table, int selectedRow, int budget_id) {
 
         Budget budget = budgetRepository.find(budget_id);
+        double total_budget_used = this.budgetUsed(budget.getId());
 
         table.setValueAt(budget.getId(), selectedRow, 0);
         table.setValueAt(budget.getName(), selectedRow, 1);
         table.setValueAt(budget.getStart_date(), selectedRow, 2);
         table.setValueAt(budget.getEnd_date(), selectedRow, 3);
         table.setValueAt(helper.priceToString(budget.getTotal_amount()), selectedRow, 4);
-        table.setValueAt(helper.priceToString(0), selectedRow, 5);
-        table.setValueAt(helper.priceToString(0), selectedRow, 6);
+        table.setValueAt(helper.priceToString(total_budget_used), selectedRow, 5);
+        table.setValueAt(helper.priceToString(budget.getTotal_amount() - total_budget_used), selectedRow, 6);
         table.setValueAt(this.budgetStatus(budget.isStatus()), selectedRow, 7);
     }
 
     private String budgetStatus(boolean status) {
         return status ? "Closed" : "Open";
+    }
+
+    private double budgetUsed(int id) {
+        return paymentsRepository.summationOfBudget(id);
     }
 
     public void deleteItem(JTable table, String budgetID, int selectedRow) {
@@ -202,9 +213,32 @@ public class BudgetController {
             endDate.setDate(helper.convertChooserDate(budget.getEnd_date()));
         }
 
+        double total_budget_used = this.budgetUsed(budget.getId());
+
         totalAmount.setText(helper.priceToString(budget.getTotal_amount()));
-        amountUsed.setText(helper.priceToString(0));
-        amountLeft.setText(helper.priceToString(0));
+        amountUsed.setText(helper.priceToString(total_budget_used));
+        amountLeft.setText(helper.priceToString(budget.getTotal_amount() - total_budget_used));
+    }
+
+    public void populateDropdownData(JComboBox comboBox, String title, String year) {
+        List<Budget> listBudgets = budgetRepository.list(year);
+        comboBox.addItem(title);
+        comboBox.setSelectedIndex(0);
+
+        for (Budget budget : listBudgets) {
+            comboBox.addItem(budget.getId() + " | " + budget.getName());
+        }
+    }
+
+    public Budget getSingleBudget(String selected_budget) {
+        String budgetID = helper.splitWord(selected_budget, 0, "|");
+        Budget budget = budgetRepository.find(Integer.parseInt(budgetID.trim()));
+        return budget;
+    }
+
+    public Budget getSingleBudgetWithID(int budget_id) {
+        Budget budget = budgetRepository.find(budget_id);
+        return budget;
     }
 
 }

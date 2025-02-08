@@ -23,6 +23,9 @@ public class PaymentDTO {
     private static final String BUDGET = "budget";
     private static final String CUSTOMER = "customer";
 
+    private static final String TOTAL_BUDGET = "total_budget";
+    private static final String TOTAL_GOLD_PAYMENT = "total_payment";
+
     private static final String PAYMENT_DB = "payments";
 
     public static String getID() {
@@ -87,6 +90,14 @@ public class PaymentDTO {
 
     public static String getCUSTOMER() {
         return CUSTOMER;
+    }
+
+    public static String getTOTAL_BUDGET() {
+        return TOTAL_BUDGET;
+    }
+
+    public static String getTOTAL_GOLD_PAYMENT() {
+        return TOTAL_GOLD_PAYMENT;
     }
 
 }
