@@ -30,7 +30,7 @@ public class BuyGoldForm extends javax.swing.JDialog {
     public BuyGoldForm(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-
+        setIconImage(helper.setIcon(helper.iconImagePath()));
         this.populateCustomers();
         lblBuyGoldID.setVisible(false);
 

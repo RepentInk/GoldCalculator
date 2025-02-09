@@ -24,8 +24,7 @@ public class CustomerForm extends javax.swing.JDialog {
     public CustomerForm(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-
-        setIconImage(helper.setIcon("/Images/doubleUU.png"));
+        setIconImage(helper.setIcon(helper.iconImagePath()));
         customerID.setVisible(false);
     }
 

@@ -397,4 +397,53 @@ public class PaymentsRepository implements AnonymousInterface<Payments> {
         return receipt;
     }
 
+    public List<Payments> paymentHistory(int buy_gold_id) {
+        List<Payments> paymentsList = new ArrayList<>();
+        try {
+            String query = "SELECT payment.*,user.fullname AS user,gold.code AS buy_gold,customer.fullname AS customer,budget.name AS budget FROM " + PaymentDTO.getPAYMENT_DB() + " payment "
+                    + "LEFT JOIN " + UserDTO.getUSERS_DB() + " user ON payment.user_id=user.id "
+                    + "LEFT JOIN " + BuyGoldDTO.getBUY_GOLD_DB() + " gold ON payment.buy_gold_id=gold.id "
+                    + "LEFT JOIN " + CustomerDTO.getCUSTOMER_DB() + " customer ON gold.customer_id=customer.id "
+                    + "LEFT JOIN " + BudgetDTO.getBUDGET_DB() + " budget ON payment.budget_id=budget.id "
+                    + "WHERE " + PaymentDTO.getBUY_GOLD_ID() + " = '" + buy_gold_id + "' ORDER BY payment.id DESC";
+            pst = conn.prepareStatement(query);
+            rs = pst.executeQuery();
+
+            while (rs.next()) {
+                Payments payment = new Payments();
+
+                payment.setId(rs.getInt(PaymentDTO.getID()));
+                payment.setAmount_paid(rs.getDouble(PaymentDTO.getAMOUNT_PAID()));
+                payment.setBalance(rs.getDouble(PaymentDTO.getBALANCE()));
+                payment.setBudget_after_payment(rs.getDouble(PaymentDTO.getBUDGET_AFTER_PAYMENT()));
+                payment.setBudget_before_payment(rs.getDouble(PaymentDTO.getBUDGET_BEFORE_PAYMENT()));
+                payment.setBudget_id(rs.getInt(PaymentDTO.getBUDGET_ID()));
+                payment.setBuy_gold_id(rs.getInt(PaymentDTO.getBUY_GOLD_ID()));
+                payment.setUser_id(rs.getInt(PaymentDTO.getUSER_ID()));
+                payment.setCreated_date(rs.getString(PaymentDTO.getCREATED_DATE()));
+                payment.setCreated_time(rs.getString(PaymentDTO.getCREATED_TIME()));
+                payment.setRaw_date(rs.getString(PaymentDTO.getRAW_DATE()));
+
+                payment.setUser(rs.getString(PaymentDTO.getUSER()));
+                payment.setCustomer(rs.getString(PaymentDTO.getCUSTOMER()));
+                payment.setBudget(rs.getString(PaymentDTO.getBUDGET()));
+                payment.setBuy_gold(rs.getString(PaymentDTO.getBUY_GOLD()));
+
+                paymentsList.add(payment);
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
+            return null;
+        } finally {
+            try {
+                rs.close();
+                pst.close();
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, e);
+            }
+        }
+        return paymentsList;
+    }
+
 }

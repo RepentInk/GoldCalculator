@@ -1,8 +1,10 @@
 package Controllers;
 
+import Helpers.HelperFunctions;
 import Models.Shop;
 import Repository.ShopRepository;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
@@ -13,6 +15,9 @@ import javax.swing.JTextField;
 public class ShopController {
 
     ShopRepository shopRepository = new ShopRepository();
+    HelperFunctions helper = new HelperFunctions();
+    RegistrationController registrationController = new RegistrationController();
+    SetStaticDataController setStaticDataController = new SetStaticDataController();
 
     public void populateData(
             JLabel shopID,
@@ -101,5 +106,48 @@ public class ShopController {
 
             shopRepository.save(shop);
         }
+        
+        JOptionPane.showMessageDialog(null, "Business Information updated successful");
+    }
+
+    public void createAccount(
+            JTextField name,
+            JTextField location,
+            JTextField contacts,
+            JTextField emailAddress,
+            JTextField digitalAddress,
+            JTextField motto,
+            int skinType
+    ) {
+
+        String shop_name = name.getText().trim();
+        String shop_location = location.getText().trim();
+        String shop_contacts = contacts.getText().trim();
+        String email_address = emailAddress.getText().trim();
+        String digital_address = digitalAddress.getText().trim();
+        String shop_motto = motto.getText().trim();
+
+        String code = helper.generateActivationCode(shop_name);
+        String startDate = helper.localDateFormat();
+        String expireDate = helper.addMonth(1);
+
+        Shop shop = new Shop(
+                shop_name,
+                shop_location,
+                shop_contacts,
+                email_address,
+                digital_address,
+                shop_motto,
+                skinType
+        );
+
+        shopRepository.save(shop);
+        registrationController.saveUpdate(0, code, startDate, expireDate, false);
+        setStaticDataController.setShopDetail();
+    }
+
+    public Shop shopExist() {
+        Shop shop = shopRepository.find(0);
+        return shop;
     }
 }

@@ -24,7 +24,7 @@ public class PaymentsForm extends javax.swing.JDialog {
     public PaymentsForm(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-
+        setIconImage(helper.setIcon(helper.iconImagePath()));
         lblPaymentID.setVisible(false);
     }
 

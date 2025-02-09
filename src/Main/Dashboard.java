@@ -36,7 +36,7 @@ public class Dashboard extends javax.swing.JFrame {
 
     public Dashboard() {
         initComponents();
-        setIconImage(helper.setIcon("/Images/doubleUU.png"));
+        setIconImage(helper.setIcon(helper.iconImagePath()));
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setLabelArray();
         this.addActionMenuItems();
@@ -245,13 +245,9 @@ public class Dashboard extends javax.swing.JFrame {
         mainContainerPanel = new javax.swing.JScrollPane();
         childrenContainerPanel = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
-        mnFile = new javax.swing.JMenu();
-        jSeparator35 = new javax.swing.JPopupMenu.Separator();
-        jSeparator2 = new javax.swing.JPopupMenu.Separator();
-        jSeparator36 = new javax.swing.JPopupMenu.Separator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("MAIN DASHBORD");
+        setTitle("GOLDINK");
 
         sidebarMainPanel.setBackground(new java.awt.Color(153, 153, 153));
 
@@ -296,7 +292,7 @@ public class Dashboard extends javax.swing.JFrame {
         lbl_DailyBudget.setBackground(new java.awt.Color(153, 153, 153));
         lbl_DailyBudget.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
         lbl_DailyBudget.setForeground(new java.awt.Color(255, 255, 255));
-        lbl_DailyBudget.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/machine_type.png"))); // NOI18N
+        lbl_DailyBudget.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/budget.png"))); // NOI18N
         lbl_DailyBudget.setText("Daily Budget");
         lbl_DailyBudget.setToolTipText("Click to view Categories");
 
@@ -304,7 +300,7 @@ public class Dashboard extends javax.swing.JFrame {
         DailyBudget.setLayout(DailyBudgetLayout);
         DailyBudgetLayout.setHorizontalGroup(
             DailyBudgetLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lbl_DailyBudget, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(lbl_DailyBudget, javax.swing.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE)
         );
         DailyBudgetLayout.setVerticalGroup(
             DailyBudgetLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -320,7 +316,7 @@ public class Dashboard extends javax.swing.JFrame {
         lbl_BuyGold.setBackground(new java.awt.Color(153, 153, 153));
         lbl_BuyGold.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
         lbl_BuyGold.setForeground(new java.awt.Color(255, 255, 255));
-        lbl_BuyGold.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/machine.png"))); // NOI18N
+        lbl_BuyGold.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/goldbars.png"))); // NOI18N
         lbl_BuyGold.setText("Buy Gold");
         lbl_BuyGold.setToolTipText("Click to view Items");
 
@@ -344,7 +340,7 @@ public class Dashboard extends javax.swing.JFrame {
         lbl_Pricing.setBackground(new java.awt.Color(153, 153, 153));
         lbl_Pricing.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
         lbl_Pricing.setForeground(new java.awt.Color(255, 255, 255));
-        lbl_Pricing.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/renting.png"))); // NOI18N
+        lbl_Pricing.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/pricing.png"))); // NOI18N
         lbl_Pricing.setText("Pricing");
         lbl_Pricing.setToolTipText("Click to view Sales");
 
@@ -352,9 +348,7 @@ public class Dashboard extends javax.swing.JFrame {
         Pricing.setLayout(PricingLayout);
         PricingLayout.setHorizontalGroup(
             PricingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(PricingLayout.createSequentialGroup()
-                .addComponent(lbl_Pricing, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(lbl_Pricing, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         PricingLayout.setVerticalGroup(
             PricingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -378,9 +372,7 @@ public class Dashboard extends javax.swing.JFrame {
         Payments.setLayout(PaymentsLayout);
         PaymentsLayout.setHorizontalGroup(
             PaymentsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(PaymentsLayout.createSequentialGroup()
-                .addComponent(lbl_Payments, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(lbl_Payments, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         PaymentsLayout.setVerticalGroup(
             PaymentsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -401,9 +393,7 @@ public class Dashboard extends javax.swing.JFrame {
         Users.setLayout(UsersLayout);
         UsersLayout.setHorizontalGroup(
             UsersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(UsersLayout.createSequentialGroup()
-                .addComponent(lbl_Users, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 31, Short.MAX_VALUE))
+            .addComponent(lbl_Users, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         UsersLayout.setVerticalGroup(
             UsersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -462,7 +452,7 @@ public class Dashboard extends javax.swing.JFrame {
         lbl_ShopDetails.setBackground(new java.awt.Color(153, 153, 153));
         lbl_ShopDetails.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
         lbl_ShopDetails.setForeground(new java.awt.Color(255, 255, 255));
-        lbl_ShopDetails.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/operator.png"))); // NOI18N
+        lbl_ShopDetails.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/shop.png"))); // NOI18N
         lbl_ShopDetails.setText("Shop Details");
         lbl_ShopDetails.setToolTipText("Click to view Sales");
 
@@ -470,9 +460,7 @@ public class Dashboard extends javax.swing.JFrame {
         ShopDetails.setLayout(ShopDetailsLayout);
         ShopDetailsLayout.setHorizontalGroup(
             ShopDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(ShopDetailsLayout.createSequentialGroup()
-                .addComponent(lbl_ShopDetails, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(lbl_ShopDetails, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         ShopDetailsLayout.setVerticalGroup(
             ShopDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -547,14 +535,6 @@ public class Dashboard extends javax.swing.JFrame {
         mainContainerPanel.setViewportView(childrenContainerPanel);
 
         jMenuBar1.setBackground(new java.awt.Color(153, 153, 153));
-
-        mnFile.setText("File");
-        mnFile.add(jSeparator35);
-        mnFile.add(jSeparator2);
-        mnFile.add(jSeparator36);
-
-        jMenuBar1.add(mnFile);
-
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -568,7 +548,7 @@ public class Dashboard extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(mainContainerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 720, Short.MAX_VALUE)
+            .addComponent(mainContainerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 742, Short.MAX_VALUE)
             .addComponent(sidebarMainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
@@ -628,9 +608,6 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JPanel childrenContainerPanel;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPopupMenu.Separator jSeparator2;
-    private javax.swing.JPopupMenu.Separator jSeparator35;
-    private javax.swing.JPopupMenu.Separator jSeparator36;
     private javax.swing.JLabel lbl_BuyGold;
     private javax.swing.JLabel lbl_Customers;
     private javax.swing.JLabel lbl_DailyBudget;
@@ -641,7 +618,6 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JLabel lbl_Users;
     private javax.swing.JLabel lbl_dashboard;
     private javax.swing.JScrollPane mainContainerPanel;
-    private javax.swing.JMenu mnFile;
     private javax.swing.JPanel scrollPanel;
     private javax.swing.JPanel sidebarMainPanel;
     private javax.swing.JScrollPane sidebarScroll;

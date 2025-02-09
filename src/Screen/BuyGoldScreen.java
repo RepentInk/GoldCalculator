@@ -3,6 +3,7 @@ package Screen;
 import Components.AddButton;
 import Controllers.BuyGoldController;
 import Dialogs.BuyGoldForm;
+import Dialogs.PaymentHistoryForm;
 import Helpers.ActionsColumns;
 import Helpers.HelperFunctions;
 import Helpers.ModelType;
@@ -18,7 +19,7 @@ import javax.swing.table.DefaultTableModel;
  * @author nyark
  */
 public class BuyGoldScreen extends javax.swing.JPanel {
-    
+
     Vector searchTableVector;
     HelperFunctions helper = new HelperFunctions();
     BuyGoldController buyGoldController = new BuyGoldController();
@@ -28,48 +29,48 @@ public class BuyGoldScreen extends javax.swing.JPanel {
      */
     public BuyGoldScreen() {
         initComponents();
-        
+
         this.populateYears();
         this.populateData(helper.returnCurrentYear());
         cmbYears.setSelectedItem(helper.returnCurrentYear());
     }
-    
+
     private void addForm() {
         BuyGoldForm buyGoldForm = new BuyGoldForm(new Dashboard(), true);
         buyGoldForm.setVisible(true);
     }
-    
+
     private void populateYears() {
         ArrayList<String> years = helper.getYearList(ShopData.getYearLimit());
-        
+
         cmbYears.addItem("Years");
-        
+
         for (int year = 0; year < years.size(); year++) {
             cmbYears.addItem(years.get(year));
         }
     }
-    
+
     private void populateData(String year) {
         buyGoldController.populateData(buyGoldTable, year);
         helper.TableColor(buyGoldTable);
-        
+
         new AddButton().addBtnItemsTable(buyGoldTable, ActionsColumns.tableActionColumn(ModelType.BuyGold));
         searchTableVector = (Vector) ((DefaultTableModel) buyGoldTable.getModel()).getDataVector().clone();
-        
+
         this.countRow();
     }
-    
+
     private void searchTable(String searchItem) {
         helper.searchItem(buyGoldTable, searchItem, searchTableVector);
         this.countRow();
     }
-    
+
     public void onTableClicked() {
         int[] columns = ActionsColumns.tableActionColumn(ModelType.BuyGold);
         String tableID = buyGoldTable.getModel().getValueAt(buyGoldTable.getSelectedRow(), 0).toString();
-        
+        int table_id = Integer.parseInt(tableID);
+
         if (buyGoldTable.getSelectedColumn() == columns[0]) {
-            int table_id = Integer.parseInt(tableID);
             BuyGoldForm buyGoldForm = new BuyGoldForm(new Dashboard(), true);
             buyGoldForm.viewDetails(table_id, buyGoldTable.getSelectedRow());
             buyGoldForm.setVisible(true);
@@ -78,15 +79,19 @@ public class BuyGoldScreen extends javax.swing.JPanel {
             if (ask == 0) {
                 buyGoldController.deleteItem(buyGoldTable, tableID, buyGoldTable.getSelectedRow());
             }
+        } else if (buyGoldTable.getSelectedColumn() == columns[2]) {
+            PaymentHistoryForm paymentHistoryForm = new PaymentHistoryForm(new Dashboard(), true);
+            paymentHistoryForm.populateData(table_id);
+            paymentHistoryForm.setVisible(true);
         }
-        
+
         this.countRow();
     }
-    
+
     private void refresh() {
         this.populateData(helper.returnCurrentYear());
     }
-    
+
     private void countRow() {
         buyGoldRowCount.setText(String.valueOf(buyGoldTable.getRowCount()));
     }
@@ -119,7 +124,7 @@ public class BuyGoldScreen extends javax.swing.JPanel {
         jPanel30.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/users.png"))); // NOI18N
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/goldbars.png"))); // NOI18N
         jLabel5.setText("Buy Gold");
 
         btn_addUser.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
@@ -204,20 +209,20 @@ public class BuyGoldScreen extends javax.swing.JPanel {
 
         buyGoldTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Id", "Code", "Customer", "Top", "Down", "Pounds", "Density", "Karat", "Value", "Base Price", "Total Amount", "Created By", "Date", "", ""
+                "id", "Code", "Customer", "Top", "Down", "Pounds", "Density", "Karat", "Value", "Base Price", "Total Amount", "Amount Paid", "Balance", "Created By", "Date", "", "", ""
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -238,18 +243,28 @@ public class BuyGoldScreen extends javax.swing.JPanel {
         if (buyGoldTable.getColumnModel().getColumnCount() > 0) {
             buyGoldTable.getColumnModel().getColumn(0).setMinWidth(0);
             buyGoldTable.getColumnModel().getColumn(0).setMaxWidth(0);
-            buyGoldTable.getColumnModel().getColumn(1).setMinWidth(60);
-            buyGoldTable.getColumnModel().getColumn(1).setMaxWidth(60);
+            buyGoldTable.getColumnModel().getColumn(1).setMinWidth(65);
+            buyGoldTable.getColumnModel().getColumn(1).setMaxWidth(65);
             buyGoldTable.getColumnModel().getColumn(3).setMinWidth(60);
             buyGoldTable.getColumnModel().getColumn(3).setMaxWidth(60);
             buyGoldTable.getColumnModel().getColumn(4).setMinWidth(60);
             buyGoldTable.getColumnModel().getColumn(4).setMaxWidth(60);
-            buyGoldTable.getColumnModel().getColumn(12).setMinWidth(90);
-            buyGoldTable.getColumnModel().getColumn(12).setMaxWidth(90);
-            buyGoldTable.getColumnModel().getColumn(13).setMinWidth(60);
-            buyGoldTable.getColumnModel().getColumn(13).setMaxWidth(60);
-            buyGoldTable.getColumnModel().getColumn(14).setMinWidth(60);
-            buyGoldTable.getColumnModel().getColumn(14).setMaxWidth(60);
+            buyGoldTable.getColumnModel().getColumn(5).setMinWidth(70);
+            buyGoldTable.getColumnModel().getColumn(5).setMaxWidth(70);
+            buyGoldTable.getColumnModel().getColumn(6).setMinWidth(70);
+            buyGoldTable.getColumnModel().getColumn(6).setMaxWidth(70);
+            buyGoldTable.getColumnModel().getColumn(7).setMinWidth(70);
+            buyGoldTable.getColumnModel().getColumn(7).setMaxWidth(70);
+            buyGoldTable.getColumnModel().getColumn(8).setMinWidth(70);
+            buyGoldTable.getColumnModel().getColumn(8).setMaxWidth(70);
+            buyGoldTable.getColumnModel().getColumn(14).setMinWidth(90);
+            buyGoldTable.getColumnModel().getColumn(14).setMaxWidth(90);
+            buyGoldTable.getColumnModel().getColumn(15).setMinWidth(60);
+            buyGoldTable.getColumnModel().getColumn(15).setMaxWidth(60);
+            buyGoldTable.getColumnModel().getColumn(16).setMinWidth(60);
+            buyGoldTable.getColumnModel().getColumn(16).setMaxWidth(60);
+            buyGoldTable.getColumnModel().getColumn(17).setMinWidth(70);
+            buyGoldTable.getColumnModel().getColumn(17).setMaxWidth(70);
         }
 
         jLabel32.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -318,7 +333,7 @@ public class BuyGoldScreen extends javax.swing.JPanel {
         if (cmbYears.getSelectedIndex() <= 0) {
             return;
         }
-        
+
         this.populateData(cmbYears.getSelectedItem().toString());
     }//GEN-LAST:event_cmbYearsActionPerformed
 

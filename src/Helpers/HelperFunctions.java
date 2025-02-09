@@ -42,6 +42,10 @@ public class HelperFunctions {
     public HelperFunctions() {
     }
 
+    public String iconImagePath() {
+        return "/Images/goldink.png";
+    }
+
     // Method that set the icon
     public Image setIcon(String img) {
         Image i = null;
@@ -259,6 +263,8 @@ public class HelperFunctions {
         Color[] colorFithteen = {Color.BLACK, Color.BLACK, Color.BLACK, Color.RED, Color.BLUE, Color.BLUE, Color.BLUE, Color.GRAY, Color.RED, Color.BLUE, Color.BLUE, Color.RED, Color.RED, Color.DARK_GRAY, Color.RED};
         Color[] colorSixteen = {Color.BLACK, Color.BLACK, Color.BLACK, Color.RED, Color.BLUE, Color.BLUE, Color.BLUE, Color.GRAY, Color.RED, Color.BLUE, Color.BLUE, Color.RED, Color.RED, Color.DARK_GRAY, Color.RED, Color.darkGray};
         Color[] colorSeventeen = {Color.BLACK, Color.BLACK, Color.BLACK, Color.RED, Color.BLUE, Color.BLUE, Color.BLUE, Color.GRAY, Color.RED, Color.BLUE, Color.BLUE, Color.RED, Color.RED, Color.DARK_GRAY, Color.RED, Color.darkGray, Color.RED};
+        Color[] colorEighteen = {Color.BLACK, Color.BLACK, Color.BLACK, Color.RED, Color.BLUE, Color.BLUE, Color.BLUE, Color.GRAY, Color.RED, Color.BLUE, Color.BLUE, Color.RED, Color.RED, Color.DARK_GRAY, Color.RED, Color.darkGray, Color.RED, Color.RED};
+
 
         for (int i = 0; i < table.getColumnCount(); i++) {
 
@@ -307,8 +313,11 @@ public class HelperFunctions {
                 case 16:
                     col = colorSixteen[i];
                     break;
-                default:
+                 case 17:
                     col = colorSeventeen[i];
+                    break;
+                default:
+                    col = colorEighteen[i];
                     break;
             }
 

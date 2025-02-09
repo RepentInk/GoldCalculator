@@ -9,9 +9,11 @@ import Models.Customer;
 import Repository.AnonymousRepository;
 import Repository.BuyGoldRepository;
 import Repository.CustomerRepository;
+import Repository.PaymentsRepository;
 import java.util.List;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
@@ -25,6 +27,7 @@ public class BuyGoldController {
     BuyGoldRepository buyGoldRepository = new BuyGoldRepository();
     CustomerRepository customerRepository = new CustomerRepository();
     AnonymousRepository anonymousRepository = new AnonymousRepository();
+    PaymentsRepository paymentsRepository = new PaymentsRepository();
     HelperFunctions helper = new HelperFunctions();
 
     public void populateData(JTable table, String year) {
@@ -35,6 +38,8 @@ public class BuyGoldController {
         Object[] object;
 
         for (BuyGold buyGold : buyGolds) {
+            double amount_paid = this.amountPaid(buyGold.getId());
+
             object = new Object[]{
                 buyGold.getId(),
                 buyGold.getCode(),
@@ -47,10 +52,13 @@ public class BuyGoldController {
                 helper.priceToString(buyGold.getTotal_weight()),
                 helper.priceToString(buyGold.getBase_price()),
                 helper.priceToString(buyGold.getTotal_amount()),
+                helper.priceToString(amount_paid),
+                helper.priceToString(buyGold.getTotal_amount() - amount_paid),
                 buyGold.getUser(),
                 buyGold.getCreated_date(),
                 TableActions.View.toString(),
-                TableActions.Delete.toString()
+                TableActions.Delete.toString(),
+                TableActions.History.toString()
             };
 
             defaultTableModel.addRow(object);
@@ -160,6 +168,7 @@ public class BuyGoldController {
         Object[] object;
 
         BuyGold buyGold = buyGoldRepository.find(buy_gold_id);
+        double amount_paid = this.amountPaid(buyGold.getId());
 
         object = new Object[]{
             buyGold.getId(),
@@ -173,10 +182,13 @@ public class BuyGoldController {
             helper.priceToString(buyGold.getTotal_weight()),
             helper.priceToString(buyGold.getBase_price()),
             helper.priceToString(buyGold.getTotal_amount()),
+            helper.priceToString(amount_paid),
+            helper.priceToString(buyGold.getTotal_amount() - amount_paid),
             buyGold.getUser(),
             buyGold.getCreated_date(),
             TableActions.View.toString(),
-            TableActions.Delete.toString()
+            TableActions.Delete.toString(),
+            TableActions.History.toString()
         };
         tmodel.insertRow(0, object);
     }
@@ -184,6 +196,7 @@ public class BuyGoldController {
     private void populateAfterUpdating(JTable table, int selectedRow, int buy_gold_id) {
 
         BuyGold buyGold = buyGoldRepository.find(buy_gold_id);
+        double amount_paid = this.amountPaid(buyGold.getId());
 
         table.setValueAt(buyGold.getId(), selectedRow, 0);
         table.setValueAt(buyGold.getCode(), selectedRow, 1);
@@ -196,8 +209,10 @@ public class BuyGoldController {
         table.setValueAt(helper.priceToString(buyGold.getTotal_weight()), selectedRow, 8);
         table.setValueAt(helper.priceToString(buyGold.getBase_price()), selectedRow, 9);
         table.setValueAt(helper.priceToString(buyGold.getTotal_amount()), selectedRow, 10);
-        table.setValueAt(buyGold.getUser(), selectedRow, 11);
-        table.setValueAt(buyGold.getCreated_date(), selectedRow, 12);
+        table.setValueAt(helper.priceToString(amount_paid), selectedRow, 11);
+        table.setValueAt(helper.priceToString(buyGold.getTotal_amount() - amount_paid), selectedRow, 12);
+        table.setValueAt(buyGold.getUser(), selectedRow, 13);
+        table.setValueAt(buyGold.getCreated_date(), selectedRow, 14);
 
     }
 
@@ -213,6 +228,13 @@ public class BuyGoldController {
     public void deleteItem(JTable table, String buyGoldID, int selectedRow) {
         DefaultTableModel tmodel = (DefaultTableModel) table.getModel();
         int id = Integer.parseInt(buyGoldID);
+
+        double total = paymentsRepository.summationOfPurchasePayment(id);
+        if (total > 0) {
+            JOptionPane.showMessageDialog(null, "Sorry! This record cannot be deleted because history of payments exist");
+            return;
+        }
+
         buyGoldRepository.delete(id);
         tmodel.removeRow(selectedRow);
     }
@@ -268,4 +290,8 @@ public class BuyGoldController {
         return buyGold;
     }
 
+    private double amountPaid(int id) {
+        double total = paymentsRepository.summationOfPurchasePayment(id);
+        return total;
+    }
 }

@@ -14,10 +14,10 @@ public class ActionsColumns {
                 column = new int[]{6, 7};
                 break;
             case Budget:
-                column = new int[]{11, 12};
+                column = new int[]{10, 11};
                 break;
             case BuyGold:
-                column = new int[]{13, 14};
+                column = new int[]{15, 16, 17};
                 break;
             case Customers:
                 column = new int[]{6, 7};

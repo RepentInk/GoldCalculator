@@ -48,7 +48,6 @@ public class UserController {
         defaultTableModel.fireTableDataChanged();
     }
 
-    // Saving or Updating accounts 
     public void saveUpdate(
             JLabel userID,
             JTextField fullname,
@@ -122,7 +121,6 @@ public class UserController {
 
     }
 
-    // populate data in table after creation
     private void populateAfterSaving(JTable table, int user_id) {
         DefaultTableModel tmodel = (DefaultTableModel) table.getModel();
         Object[] object;
@@ -143,7 +141,6 @@ public class UserController {
         tmodel.insertRow(0, object);
     }
 
-    // Populate data after updating
     private void populateAfterUpdating(JTable table, int selectedRow, int user_id) {
 
         User user = userRepository.find(user_id);
@@ -156,7 +153,6 @@ public class UserController {
         table.setValueAt(user.getCreated_at(), selectedRow, 5);
     }
 
-    // Deleting item from itemsTable
     public void deleteItem(JTable table, String userID, int selectedRow) {
         DefaultTableModel tmodel = (DefaultTableModel) table.getModel();
         int id = Integer.parseInt(userID);
@@ -164,7 +160,6 @@ public class UserController {
         tmodel.removeRow(selectedRow);
     }
 
-    // populate data in fields when a row in table is click
     public void userTableClick(
             int user_id,
             JLabel userID,
@@ -190,6 +185,42 @@ public class UserController {
         } else {
             userUserType.setSelected(true);
         }
+    }
+
+    public void createAccount(
+            JTextField firstName,
+            JTextField lastName,
+            JTextField phoneNumber,
+            JTextField userName,
+            JPasswordField password,
+            JPasswordField confirmPassword
+    ) {
+
+        String user_password = password.getText().trim();
+        String confirm_password = confirmPassword.getText().trim();
+        String first_name = firstName.getText().trim();
+        String last_name = lastName.getText().trim();
+        String username = userName.getText().trim();
+        String phone_number = phoneNumber.getText().trim();
+        String created_date = helper.returnDate();
+
+        if (!user_password.equals(confirm_password)) {
+            JOptionPane.showMessageDialog(null, "Please password don't match. Recheck");
+            return;
+        }
+
+        User user = new User(
+                last_name + " " + first_name,
+                phone_number,
+                username,
+                user_password,
+                UserType.ADMIN.toString(),
+                created_date,
+                created_date
+        );
+
+        userRepository.save(user);
+
     }
 
 }

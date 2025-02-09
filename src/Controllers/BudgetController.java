@@ -10,6 +10,7 @@ import com.toedter.calendar.JDateChooser;
 import java.util.List;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
@@ -45,7 +46,6 @@ public class BudgetController {
                 helper.priceToString(budget.getTotal_amount()),
                 helper.priceToString(total_budget_used),
                 helper.priceToString(budget.getTotal_amount() - total_budget_used),
-                this.budgetStatus(budget.isStatus()),
                 budget.getUser(),
                 budget.getCreated_date(),
                 budget.getCreated_time(),
@@ -150,7 +150,6 @@ public class BudgetController {
             helper.priceToString(budget.getTotal_amount()),
             helper.priceToString(total_budget_used),
             helper.priceToString(budget.getTotal_amount() - total_budget_used),
-            this.budgetStatus(budget.isStatus()),
             budget.getUser(),
             budget.getCreated_date(),
             budget.getCreated_time(),
@@ -173,11 +172,6 @@ public class BudgetController {
         table.setValueAt(helper.priceToString(budget.getTotal_amount()), selectedRow, 4);
         table.setValueAt(helper.priceToString(total_budget_used), selectedRow, 5);
         table.setValueAt(helper.priceToString(budget.getTotal_amount() - total_budget_used), selectedRow, 6);
-        table.setValueAt(this.budgetStatus(budget.isStatus()), selectedRow, 7);
-    }
-
-    private String budgetStatus(boolean status) {
-        return status ? "Closed" : "Open";
     }
 
     private double budgetUsed(int id) {
@@ -187,6 +181,13 @@ public class BudgetController {
     public void deleteItem(JTable table, String budgetID, int selectedRow) {
         DefaultTableModel tmodel = (DefaultTableModel) table.getModel();
         int id = Integer.parseInt(budgetID);
+
+        double total = paymentsRepository.summationOfBudget(id);
+        if (total > 0) {
+            JOptionPane.showMessageDialog(null, "Sorry! This record cannot be deleted because history of payments exist");
+            return;
+        }
+
         budgetRepository.delete(id);
         tmodel.removeRow(selectedRow);
     }

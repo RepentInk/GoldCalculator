@@ -9,7 +9,6 @@ import Helpers.ModelType;
 import Helpers.Report;
 import Helpers.ShopData;
 import Main.Dashboard;
-import Models.Payments;
 import Models.Receipt;
 import java.util.ArrayList;
 import java.util.Vector;
@@ -121,7 +120,7 @@ public class PaymentsScreen extends javax.swing.JPanel {
         jPanel30.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/users.png"))); // NOI18N
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/payment.png"))); // NOI18N
         jLabel5.setText("Payments");
 
         btn_addUser.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N

@@ -26,8 +26,7 @@ public class UserForm extends javax.swing.JDialog {
     public UserForm(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-
-        setIconImage(helper.setIcon("/Images/doubleUU.png"));
+        setIconImage(helper.setIcon(helper.iconImagePath()));
         lbl_UserID.setVisible(false);
     }
 
@@ -251,11 +250,11 @@ public class UserForm extends javax.swing.JDialog {
                     .addComponent(chk_show_password, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lbl_UserID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(radioAdmin)
-                        .addComponent(radioUser)))
+                        .addComponent(radioUser))
+                    .addComponent(jLabel6))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnSaveData, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())

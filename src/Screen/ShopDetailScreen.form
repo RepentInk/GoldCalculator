@@ -79,7 +79,7 @@
               <Font name="Tahoma" size="18" style="1"/>
             </Property>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/Images/users.png"/>
+              <Image iconType="3" name="/Images/shop.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Shop Details"/>
           </Properties>

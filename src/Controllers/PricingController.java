@@ -4,6 +4,7 @@ import Helpers.HelperFunctions;
 import Models.Pricing;
 import Repository.PricingRepository;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 /**
@@ -89,6 +90,8 @@ public class PricingController {
             pricingRepository.save(pricing);
 
         }
+
+        JOptionPane.showMessageDialog(null, "Pricing information updated successfully");
 
     }
 

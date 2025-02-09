@@ -256,4 +256,27 @@ public class PaymentController {
         return receipt;
     }
 
+    public void populatePaymentHistoryTable(JTable table, int buyGoldId) {
+        List<Payments> payments = paymentsRepository.paymentHistory(buyGoldId);
+
+        DefaultTableModel defaultTableModel = (DefaultTableModel) table.getModel();
+        defaultTableModel.setRowCount(0);
+        Object[] object;
+
+        for (Payments payment : payments) {
+            object = new Object[]{
+                payment.getId(),
+                payment.getCreated_date(),
+                helper.priceToString(payment.getAmount_paid()),
+                helper.priceToString(payment.getBalance()),
+                payment.getUser(),
+                payment.getCreated_time()
+            };
+
+            defaultTableModel.addRow(object);
+        }
+
+        defaultTableModel.fireTableDataChanged();
+    }
+
 }
