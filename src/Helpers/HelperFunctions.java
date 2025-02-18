@@ -7,6 +7,7 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -265,7 +266,6 @@ public class HelperFunctions {
         Color[] colorSeventeen = {Color.BLACK, Color.BLACK, Color.BLACK, Color.RED, Color.BLUE, Color.BLUE, Color.BLUE, Color.GRAY, Color.RED, Color.BLUE, Color.BLUE, Color.RED, Color.RED, Color.DARK_GRAY, Color.RED, Color.darkGray, Color.RED};
         Color[] colorEighteen = {Color.BLACK, Color.BLACK, Color.BLACK, Color.RED, Color.BLUE, Color.BLUE, Color.BLUE, Color.GRAY, Color.RED, Color.BLUE, Color.BLUE, Color.RED, Color.RED, Color.DARK_GRAY, Color.RED, Color.darkGray, Color.RED, Color.RED};
 
-
         for (int i = 0; i < table.getColumnCount(); i++) {
 
             Color col = null;
@@ -313,7 +313,7 @@ public class HelperFunctions {
                 case 16:
                     col = colorSixteen[i];
                     break;
-                 case 17:
+                case 17:
                     col = colorSeventeen[i];
                     break;
                 default:
@@ -559,6 +559,13 @@ public class HelperFunctions {
         } else {
             return formatAmountWithoutDecimal(price);
         }
+    }
+
+    public String priceToStringWithoutRoundUp(double price) {
+        DecimalFormat df = new DecimalFormat("###,###,###,###,###.##");
+        df.setRoundingMode(RoundingMode.DOWN);
+        String result = df.format(price);
+        return result;
     }
 
     public BigDecimal parse(final String amount, final Locale locale) throws ParseException {

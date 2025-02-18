@@ -7,6 +7,7 @@ import Models.Budget;
 import Models.BuyGold;
 import Models.Payments;
 import Models.Receipt;
+import Repository.CreditRepository;
 import Repository.PaymentsRepository;
 import java.util.List;
 import javax.swing.JComboBox;
@@ -25,6 +26,7 @@ public class PaymentController {
     BudgetController budgetController = new BudgetController();
     HelperFunctions helper = new HelperFunctions();
     PaymentsRepository paymentsRepository = new PaymentsRepository();
+    CreditRepository creditRepository = new CreditRepository();
 
     public void populateTable(JTable table, String year) {
         if (year.equals("")) {
@@ -162,7 +164,8 @@ public class PaymentController {
     ) {
         Budget budget = budgetController.getSingleBudget(budget_selected);
         double total_budget_used = paymentsRepository.summationOfBudget(budget.getId());
-        amountBeforePayment.setText(helper.priceToString(budget.getTotal_amount() - total_budget_used));
+        double credit_budget_used = creditRepository.summationOfBudget(budget.getId());
+        amountBeforePayment.setText(helper.priceToString(budget.getTotal_amount() - (total_budget_used + credit_budget_used)));
     }
 
     private void populateAfterSaving(JTable table, int payment_id) {

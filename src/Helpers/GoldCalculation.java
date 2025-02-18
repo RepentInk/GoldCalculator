@@ -19,13 +19,12 @@ public class GoldCalculation {
         return result;
     }
 
-    public double valueCalculation(double karat, double top) {
-        double value = (karat / PricingData.getKarat_divide_value()) * top;
-        return value;
+    public double amountCalculation(double price, double pounds, double karat) {
+        return (price * pounds * karat) / PricingData.getKarat_divide_value();
     }
 
-    public double totalAmountCalculation(double value) {
-        return value * PricingData.getCurrent_price();
+    public double basePriceCalculation(double amount, double pounds) {
+        return amount / pounds;
     }
 
 }

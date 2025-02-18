@@ -169,14 +169,14 @@
 				<textFieldExpression><![CDATA[$F{Top}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="107" y="64" width="40" height="15" uuid="0c6bd6d9-b2da-470e-8257-8aafee35ccfc"/>
+				<reportElement x="107" y="64" width="51" height="15" uuid="0c6bd6d9-b2da-470e-8257-8aafee35ccfc"/>
 				<textElement>
 					<font size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Down:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="147" y="64" width="60" height="15" uuid="ef46803a-99e2-4305-a65a-b478ff77df75"/>
+				<reportElement x="158" y="64" width="49" height="15" uuid="ef46803a-99e2-4305-a65a-b478ff77df75"/>
 				<textElement>
 					<font size="9"/>
 				</textElement>
@@ -197,14 +197,14 @@
 				<textFieldExpression><![CDATA[$F{Pounds}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="108" y="79" width="39" height="15" uuid="8d3730a8-01a3-4244-978a-e116c3965994"/>
+				<reportElement x="107" y="79" width="51" height="15" uuid="8d3730a8-01a3-4244-978a-e116c3965994"/>
 				<textElement>
 					<font size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Density:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="147" y="79" width="60" height="15" uuid="89a42acc-3dc2-44ec-8a69-88b26eee5be6"/>
+				<reportElement x="158" y="79" width="49" height="15" uuid="89a42acc-3dc2-44ec-8a69-88b26eee5be6"/>
 				<textElement>
 					<font size="9"/>
 				</textElement>
@@ -225,14 +225,14 @@
 				<textFieldExpression><![CDATA[$F{Karat}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="108" y="94" width="39" height="15" uuid="f17f599a-f59b-4cb0-8704-d9efdb04685e"/>
+				<reportElement x="108" y="94" width="50" height="15" uuid="f17f599a-f59b-4cb0-8704-d9efdb04685e"/>
 				<textElement>
 					<font size="9" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Value:]]></text>
+				<text><![CDATA[Base Price:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="147" y="94" width="60" height="15" uuid="d66e69fe-c392-4af4-9ec5-bc9baed0df45"/>
+				<reportElement x="158" y="94" width="49" height="15" uuid="d66e69fe-c392-4af4-9ec5-bc9baed0df45"/>
 				<textElement>
 					<font size="9"/>
 				</textElement>
@@ -243,7 +243,7 @@
 				<textElement textAlignment="Right">
 					<font size="9"/>
 				</textElement>
-				<text><![CDATA[Base Price GH₵:]]></text>
+				<text><![CDATA[Price GH₵:]]></text>
 			</staticText>
 			<line>
 				<reportElement x="0" y="126" width="207" height="1" uuid="74553e46-eb31-407d-a4fc-353610cb99ed"/>

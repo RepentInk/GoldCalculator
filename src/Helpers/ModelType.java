@@ -13,5 +13,6 @@ public enum ModelType {
     Shop,
     Users,
     Monthly,
-    Yearly
+    Yearly,
+    Credit
 }

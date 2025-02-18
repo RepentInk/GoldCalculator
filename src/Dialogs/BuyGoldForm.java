@@ -4,7 +4,6 @@ import Controllers.BuyGoldController;
 import Controllers.CustomerController;
 import Helpers.GoldCalculation;
 import Helpers.HelperFunctions;
-import Helpers.PricingData;
 import Screen.BuyGoldScreen;
 import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
@@ -34,7 +33,6 @@ public class BuyGoldForm extends javax.swing.JDialog {
         this.populateCustomers();
         lblBuyGoldID.setVisible(false);
 
-        txtBasePrice.setText(helper.priceToString(PricingData.getCurrent_price()));
         lblBuyGoldCode.setText(buyGoldController.generateCode());
     }
 
@@ -55,7 +53,7 @@ public class BuyGoldForm extends javax.swing.JDialog {
             poundsValue = goldCalculation.poundsCalculation(top);
         }
 
-        txtPounds.setText(String.valueOf(helper.priceToString(poundsValue)));
+        txtPounds.setText(String.valueOf(helper.priceToStringWithoutRoundUp(poundsValue)));
     }
 
     private void calculateGoldWeight() {
@@ -67,18 +65,34 @@ public class BuyGoldForm extends javax.swing.JDialog {
         double top = txtTop.getText().isEmpty() ? 0 : Double.parseDouble(txtTop.getText());
         double down = txtDown.getText().isEmpty() ? 0 : Double.parseDouble(txtDown.getText());
 
-        double density = 0, karat = 0, value = 0, totalAmount = 0;
+        double density = 0, karat = 0;
         if (top > 0 && down > 0) {
             density = goldCalculation.densityCalculation(top, down);
             karat = goldCalculation.karatCalculation(density);
-            value = goldCalculation.valueCalculation(karat, top);
-            totalAmount = goldCalculation.totalAmountCalculation(value);
         }
 
-        txtDensity.setText(String.valueOf(helper.priceToString(density)));
-        txtKarat.setText(String.valueOf(helper.priceToString(karat)));
-        txtValue.setText(String.valueOf(helper.priceToString(value)));
-        txtTotalAmount.setText(String.valueOf(helper.priceToString(totalAmount)));
+        txtDensity.setText(String.valueOf(helper.priceToStringWithoutRoundUp(density)));
+        txtKarat.setText(String.valueOf(helper.priceToStringWithoutRoundUp(karat)));
+    }
+
+    private void calculateTotalAmount() {
+        if (txtPounds.getText().isEmpty() && txtKarat.getText().isEmpty() && txtBasePrice.getText().isEmpty()) {
+            getToolkit().beep();
+            return;
+        }
+
+        double pounds = txtPounds.getText().isEmpty() ? 0 : Double.parseDouble(txtPounds.getText());
+        double karat = txtKarat.getText().isEmpty() ? 0 : Double.parseDouble(txtKarat.getText());
+        double price = txtBasePrice.getText().isEmpty() ? 0 : Double.parseDouble(txtBasePrice.getText());
+
+        double amount = 0, basePrice = 0;
+        if (pounds > 0 && karat > 0) {
+            amount = goldCalculation.amountCalculation(price, pounds, karat);
+            basePrice = goldCalculation.basePriceCalculation(amount, pounds);
+        }
+
+        txtTotalAmount.setText(String.valueOf(helper.priceToStringWithoutRoundUp(amount)));
+        txtValue.setText(String.valueOf(helper.priceToStringWithoutRoundUp(basePrice)));
     }
 
     private void clearFields() {
@@ -115,6 +129,8 @@ public class BuyGoldForm extends javax.swing.JDialog {
     }
 
     public void viewDetails(int rowId, int selectedRow) {
+        btnSave.setEnabled(false);
+        
         buyGoldController.onTableClicked(
                 rowId,
                 lblBuyGoldID,
@@ -260,21 +276,24 @@ public class BuyGoldForm extends javax.swing.JDialog {
         txtKarat.setFocusable(false);
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel7.setText("Value:");
+        jLabel7.setText("Base Price:");
 
         txtValue.setEditable(false);
         txtValue.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         txtValue.setFocusable(false);
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel8.setText("Current Base Price");
+        jLabel8.setText("Price");
 
-        txtBasePrice.setEditable(false);
         txtBasePrice.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        txtBasePrice.setFocusable(false);
+        txtBasePrice.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtBasePriceKeyReleased(evt);
+            }
+        });
 
         jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel9.setText("Total Amount Payable");
+        jLabel9.setText("Amount");
 
         txtTotalAmount.setEditable(false);
         txtTotalAmount.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -414,6 +433,10 @@ public class BuyGoldForm extends javax.swing.JDialog {
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         this.saveData();
     }//GEN-LAST:event_btnSaveActionPerformed
+
+    private void txtBasePriceKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBasePriceKeyReleased
+        this.calculateTotalAmount();
+    }//GEN-LAST:event_txtBasePriceKeyReleased
 
     /**
      * @param args the command line arguments

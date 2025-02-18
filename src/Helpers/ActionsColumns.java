@@ -31,6 +31,9 @@ public class ActionsColumns {
             case Yearly:
                 column = new int[]{4};
                 break;
+            case Credit:
+                column = new int[]{10, 11};
+                break;
             default:
                 throw new AssertionError();
         }

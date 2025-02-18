@@ -215,7 +215,7 @@ public class BuyGoldScreen extends javax.swing.JPanel {
                 {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "id", "Code", "Customer", "Top", "Down", "Pounds", "Density", "Karat", "Value", "Base Price", "Total Amount", "Amount Paid", "Balance", "Created By", "Date", "", "", ""
+                "id", "Code", "Customer", "Top", "Down", "Pounds", "Density", "Karat", "Base Price", "Price", "Amount", "Amount Paid", "Balance", "Created By", "Date", "", "", ""
             }
         ) {
             Class[] types = new Class [] {
@@ -255,8 +255,6 @@ public class BuyGoldScreen extends javax.swing.JPanel {
             buyGoldTable.getColumnModel().getColumn(6).setMaxWidth(70);
             buyGoldTable.getColumnModel().getColumn(7).setMinWidth(70);
             buyGoldTable.getColumnModel().getColumn(7).setMaxWidth(70);
-            buyGoldTable.getColumnModel().getColumn(8).setMinWidth(70);
-            buyGoldTable.getColumnModel().getColumn(8).setMaxWidth(70);
             buyGoldTable.getColumnModel().getColumn(14).setMinWidth(90);
             buyGoldTable.getColumnModel().getColumn(14).setMaxWidth(90);
             buyGoldTable.getColumnModel().getColumn(15).setMinWidth(60);
