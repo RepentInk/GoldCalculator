@@ -7,7 +7,6 @@ import Models.Budget;
 import Models.BuyGold;
 import Models.Payments;
 import Models.Receipt;
-import Repository.CreditRepository;
 import Repository.PaymentsRepository;
 import java.util.List;
 import javax.swing.JComboBox;
@@ -26,13 +25,14 @@ public class PaymentController {
     BudgetController budgetController = new BudgetController();
     HelperFunctions helper = new HelperFunctions();
     PaymentsRepository paymentsRepository = new PaymentsRepository();
-    CreditRepository creditRepository = new CreditRepository();
 
-    public void populateTable(JTable table, String year) {
-        if (year.equals("")) {
-            year = helper.returnCurrentYear();
+    ReportController reportController = new ReportController();
+
+    public void populateTable(JTable table, String createdDate) {
+        if (createdDate.equals("")) {
+            createdDate = helper.returnDate();
         }
-        List<Payments> payments = paymentsRepository.list(year);
+        List<Payments> payments = paymentsRepository.list(createdDate);
 
         DefaultTableModel defaultTableModel = (DefaultTableModel) table.getModel();
         defaultTableModel.setRowCount(0);
@@ -136,13 +136,13 @@ public class PaymentController {
         }
     }
 
-    public void populateDropDownData(JComboBox cmdGoldPurchase, JComboBox cmbBudget, String year) {
-        if (year.equals("")) {
-            year = helper.returnCurrentYear();
+    public void populateDropDownData(JComboBox cmdGoldPurchase, JComboBox cmbBudget, String createdDate) {
+        if (createdDate.equals("")) {
+            createdDate = helper.returnDate();
         }
 
-        buyGoldController.populateDropdownData(cmdGoldPurchase, "Select Purchase", year);
-        budgetController.populateDropdownData(cmbBudget, "Select Budget", year);
+        buyGoldController.populateDropdownData(cmdGoldPurchase, "Select Purchase", createdDate);
+        budgetController.populateDropdownData(cmbBudget, "Select Budget", createdDate);
     }
 
     public void setPurchaseDetails(
@@ -153,9 +153,16 @@ public class PaymentController {
     ) {
         BuyGold buyGold = buyGoldController.getSingleData(purchase);
         double total_payment = paymentsRepository.summationOfPurchasePayment(buyGold.getId());
+        double total_amount_paid = total_payment + buyGold.getCredit_balance();
+        double amount_remains = (buyGold.getTotal_amount() - total_amount_paid);
+
+        if (amount_remains < 0) {
+            amount_remains = -(amount_remains);
+        }
+
         totalAmount.setText(helper.priceToString(buyGold.getTotal_amount()));
-        amountPaid.setText(helper.priceToString(total_payment));
-        amountRemains.setText(helper.priceToString(buyGold.getTotal_amount() - total_payment));
+        amountPaid.setText(helper.priceToString(total_amount_paid));
+        amountRemains.setText(helper.priceToString(amount_remains));
     }
 
     public void setBudgetDetails(
@@ -163,9 +170,8 @@ public class PaymentController {
             JTextField amountBeforePayment
     ) {
         Budget budget = budgetController.getSingleBudget(budget_selected);
-        double total_budget_used = paymentsRepository.summationOfBudget(budget.getId());
-        double credit_budget_used = creditRepository.summationOfBudget(budget.getId());
-        amountBeforePayment.setText(helper.priceToString(budget.getTotal_amount() - (total_budget_used + credit_budget_used)));
+        double budget_used = reportController.budgetUsedInAll(budget.getId());
+        amountBeforePayment.setText(helper.priceToString(budget.getTotal_amount() - budget_used));
     }
 
     private void populateAfterSaving(JTable table, int payment_id) {
@@ -234,7 +240,6 @@ public class PaymentController {
 
         Payments payment = paymentsRepository.find(payment_id);
         Budget budget = budgetController.getSingleBudgetWithID(payment.getBudget_id());
-        double total_budget_used = paymentsRepository.summationOfBudget(budget.getId());
 
         BuyGold buyGold = buyGoldController.getSingleDataWithID(payment.getBuy_gold_id());
         double total_payment = paymentsRepository.summationOfPurchasePayment(buyGold.getId());
@@ -244,8 +249,8 @@ public class PaymentController {
         budgetSelected.setSelectedItem(budget.getId() + " | " + budget.getName());
 
         totalAmount.setText(helper.priceToString(buyGold.getTotal_amount()));
-        amountPaid.setText(helper.priceToString(total_payment));
-        amountRemaining.setText(helper.priceToString(buyGold.getTotal_amount() - total_payment));
+        amountPaid.setText(helper.priceToString(total_payment + buyGold.getCredit_balance()));
+        amountRemaining.setText(helper.priceToString(buyGold.getTotal_amount() - (total_payment + buyGold.getCredit_balance())));
 
         budgetBeforePayment.setText(helper.priceToString(payment.getBudget_before_payment()));
         budgetAfterPayment.setText(helper.priceToString(payment.getBudget_after_payment()));

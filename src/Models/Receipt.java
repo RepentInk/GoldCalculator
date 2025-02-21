@@ -10,6 +10,7 @@ public class Receipt {
     private double basePrice;
     private double amountPaid;
     private double balance;
+    private double credit_balance;
 
     public Receipt() {
     }
@@ -44,6 +45,14 @@ public class Receipt {
 
     public void setBalance(double balance) {
         this.balance = balance;
+    }
+
+    public double getCredit_balance() {
+        return credit_balance;
+    }
+
+    public void setCredit_balance(double credit_balance) {
+        this.credit_balance = credit_balance;
     }
 
 }

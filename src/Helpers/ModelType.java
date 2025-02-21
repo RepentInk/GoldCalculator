@@ -14,5 +14,7 @@ public enum ModelType {
     Users,
     Monthly,
     Yearly,
-    Credit
+    Credit,
+    ExpensesType,
+    Expenses
 }

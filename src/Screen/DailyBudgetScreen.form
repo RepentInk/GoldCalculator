@@ -120,7 +120,7 @@
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="btnRefresh1" min="-2" pref="33" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
-                  <Component id="cmbYears" min="-2" pref="112" max="-2" attributes="0"/>
+                  <Component id="dateCurrentDate" min="-2" pref="145" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -132,7 +132,7 @@
                       <Component id="lbl_SearchIcon1" alignment="0" max="32767" attributes="0"/>
                       <Component id="txtSearch" alignment="0" max="32767" attributes="0"/>
                       <Component id="btnRefresh1" alignment="0" max="32767" attributes="0"/>
-                      <Component id="cmbYears" max="32767" attributes="0"/>
+                      <Component id="dateCurrentDate" alignment="0" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace min="0" pref="3" max="32767" attributes="0"/>
               </Group>
@@ -168,21 +168,13 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRefresh1ActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JComboBox" name="cmbYears">
+        <Component class="com.toedter.calendar.JDateChooser" name="dateCurrentDate">
           <Properties>
+            <Property name="dateFormatString" type="java.lang.String" value="yyyy-MM-dd"/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Segoe UI" size="18" style="1"/>
             </Property>
-            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="0"/>
-            </Property>
           </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmbYearsActionPerformed"/>
-          </Events>
-          <AuxValues>
-            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-          </AuxValues>
         </Component>
       </SubComponents>
     </Container>
@@ -196,12 +188,11 @@
         <Component class="javax.swing.JTable" name="dailyBudgetTable">
           <Properties>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-              <Table columnCount="12" rowCount="4">
+              <Table columnCount="11" rowCount="4">
                 <Column editable="false" title="Id" type="java.lang.Integer"/>
                 <Column editable="false" title="Name" type="java.lang.String"/>
-                <Column editable="false" title="Start Date" type="java.lang.String"/>
-                <Column editable="false" title="End Date" type="java.lang.String"/>
                 <Column editable="false" title="Total Amount" type="java.lang.Double"/>
+                <Column editable="false" title=" Balance CF" type="java.lang.Double"/>
                 <Column editable="false" title="Amount Used" type="java.lang.Double"/>
                 <Column editable="false" title="Amount Left" type="java.lang.Double"/>
                 <Column editable="false" title="Created By" type="java.lang.String"/>
@@ -218,12 +209,7 @@
                   <Editor/>
                   <Renderer/>
                 </Column>
-                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                  <Title/>
-                  <Editor/>
-                  <Renderer/>
-                </Column>
-                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                <Column maxWidth="100" minWidth="100" prefWidth="-1" resizable="true">
                   <Title/>
                   <Editor/>
                   <Renderer/>
@@ -268,7 +254,7 @@
                   <Editor/>
                   <Renderer/>
                 </Column>
-                <Column maxWidth="70" minWidth="70" prefWidth="-1" resizable="true">
+                <Column maxWidth="80" minWidth="80" prefWidth="-1" resizable="true">
                   <Title/>
                   <Editor/>
                   <Renderer/>

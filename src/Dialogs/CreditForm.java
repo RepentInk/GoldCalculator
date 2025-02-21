@@ -39,7 +39,7 @@ public class CreditForm extends javax.swing.JDialog {
 
     private void populateData() {
         customerController.populateDropdownData(cmbCustomer, "Select customer");
-        budgetController.populateDropdownData(cmdBudget, "Select Budget", helper.returnCurrentYear());
+        budgetController.populateDropdownData(cmdBudget, "Select Budget", helper.returnDate());
     }
 
     private void budgetData() {
@@ -58,7 +58,8 @@ public class CreditForm extends javax.swing.JDialog {
             return;
         }
 
-        creditController.getCustomerPreviousBalance(cmbCustomer,
+        creditController.getCustomerPreviousBalance(
+                cmbCustomer,
                 txtPreviousAmount
         );
     }

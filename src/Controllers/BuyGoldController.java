@@ -28,10 +28,11 @@ public class BuyGoldController {
     CustomerRepository customerRepository = new CustomerRepository();
     AnonymousRepository anonymousRepository = new AnonymousRepository();
     PaymentsRepository paymentsRepository = new PaymentsRepository();
+    CreditPaymentController creditPaymentController = new CreditPaymentController();
     HelperFunctions helper = new HelperFunctions();
 
-    public void populateData(JTable table, String year) {
-        List<BuyGold> buyGolds = buyGoldRepository.list(year);
+    public void populateData(JTable table, String createdDate) {
+        List<BuyGold> buyGolds = buyGoldRepository.list(createdDate);
 
         DefaultTableModel defaultTableModel = (DefaultTableModel) table.getModel();
         defaultTableModel.setRowCount(0);
@@ -52,12 +53,11 @@ public class BuyGoldController {
                 helper.priceToString(buyGold.getTotal_weight()),
                 helper.priceToString(buyGold.getBase_price()),
                 helper.priceToString(buyGold.getTotal_amount()),
-                helper.priceToString(amount_paid),
-                helper.priceToString(buyGold.getTotal_amount() - amount_paid),
+                helper.priceToString(amount_paid + buyGold.getCredit_balance()),
+                helper.priceToString(buyGold.getTotal_amount() - (amount_paid + buyGold.getCredit_balance())),
                 buyGold.getUser(),
                 buyGold.getCreated_date(),
                 TableActions.View.toString(),
-                TableActions.Delete.toString(),
                 TableActions.History.toString()
             };
 
@@ -79,6 +79,7 @@ public class BuyGoldController {
             JTextField value,
             JTextField basePrice,
             JTextField totalAmount,
+            JTextField creditAmount,
             JTable table,
             int selectedRow,
             javax.swing.JDialog dialog
@@ -96,6 +97,7 @@ public class BuyGoldController {
         double value_value = value.getText().isEmpty() ? 0 : helper.parseAmountWithComma(value.getText());
         double base_price = basePrice.getText().isEmpty() ? 0 : helper.parseAmountWithComma(basePrice.getText());
         double total_amount = totalAmount.getText().isEmpty() ? 0 : helper.parseAmountWithComma(totalAmount.getText());
+        double credit_amount = creditAmount.getText().isEmpty() ? 0 : helper.parseAmountWithComma(creditAmount.getText());
         String created_date = helper.returnDate();
         String raw_date = helper.returnDate();
         String created_time = helper.returnTime();
@@ -123,6 +125,7 @@ public class BuyGoldController {
                     base_price,
                     value_value,
                     total_amount,
+                    credit_amount,
                     created_date,
                     created_time,
                     raw_date,
@@ -148,6 +151,7 @@ public class BuyGoldController {
                     base_price,
                     value_value,
                     total_amount,
+                    credit_amount,
                     created_date,
                     created_time,
                     raw_date,
@@ -160,6 +164,14 @@ public class BuyGoldController {
             this.populateAfterSaving(table, last_insert_id);
 
             dialog.setVisible(false);
+        }
+
+        if (credit_amount > 0) {
+            creditPaymentController.saveCreditPayment(
+                    customer_id,
+                    total_amount,
+                    credit_amount
+            );
         }
     }
 
@@ -187,7 +199,6 @@ public class BuyGoldController {
             buyGold.getUser(),
             buyGold.getCreated_date(),
             TableActions.View.toString(),
-            TableActions.Delete.toString(),
             TableActions.History.toString()
         };
         tmodel.insertRow(0, object);
@@ -209,8 +220,8 @@ public class BuyGoldController {
         table.setValueAt(helper.priceToString(buyGold.getTotal_weight()), selectedRow, 8);
         table.setValueAt(helper.priceToString(buyGold.getBase_price()), selectedRow, 9);
         table.setValueAt(helper.priceToString(buyGold.getTotal_amount()), selectedRow, 10);
-        table.setValueAt(helper.priceToString(amount_paid), selectedRow, 11);
-        table.setValueAt(helper.priceToString(buyGold.getTotal_amount() - amount_paid), selectedRow, 12);
+        table.setValueAt(helper.priceToString(amount_paid + buyGold.getCredit_balance()), selectedRow, 11);
+        table.setValueAt(helper.priceToString(buyGold.getTotal_amount() - (amount_paid + buyGold.getCredit_balance())), selectedRow, 12);
         table.setValueAt(buyGold.getUser(), selectedRow, 13);
         table.setValueAt(buyGold.getCreated_date(), selectedRow, 14);
 
@@ -251,7 +262,9 @@ public class BuyGoldController {
             JTextField karat,
             JTextField value,
             JTextField basePrice,
-            JTextField totalAmount
+            JTextField totalAmount,
+            JTextField creditAmount,
+            JTextField balancePayable
     ) {
         BuyGold buyGold = buyGoldRepository.find(buy_gold_id);
         Customer customerInfo = customerRepository.find(buyGold.getCustomer_id());
@@ -267,10 +280,12 @@ public class BuyGoldController {
         value.setText(helper.priceToString(buyGold.getTotal_weight()));
         basePrice.setText(helper.priceToString(buyGold.getBase_price()));
         totalAmount.setText(helper.priceToString(buyGold.getTotal_amount()));
+        creditAmount.setText(helper.priceToString(buyGold.getCredit_balance()));
+        balancePayable.setText(helper.priceToString(buyGold.getTotal_amount() - buyGold.getCredit_balance()));
     }
 
-    public void populateDropdownData(JComboBox comboBox, String title, String year) {
-        List<BuyGold> listBuyGolds = buyGoldRepository.list(year);
+    public void populateDropdownData(JComboBox comboBox, String title, String createdDate) {
+        List<BuyGold> listBuyGolds = buyGoldRepository.list(createdDate);
         comboBox.addItem(title);
         comboBox.setSelectedIndex(0);
 

@@ -2,11 +2,14 @@ package Main;
 
 import Helpers.HelperFunctions;
 import Helpers.LookAndFeel;
+import Models.Expenses;
 import Screen.BuyGoldScreen;
 import Screen.CreditScreen;
 import Screen.CustomerScreen;
 import Screen.DailyBudgetScreen;
 import Screen.DashboardScreen;
+import Screen.ExpensesScreen;
+import Screen.ExpensesTypeScreen;
 import Screen.PaymentsScreen;
 import Screen.PricingScreen;
 import Screen.ShopDetailScreen;
@@ -48,27 +51,31 @@ public class Dashboard extends javax.swing.JFrame {
 
     private void setLabelArray() {
         this.menuItems = new JLabel[]{
-            lbl_DailyBudget,
             lbl_BuyGold,
-            lbl_Customers,
-            lbl_Credit,
             lbl_Payments,
+            lbl_Credit,
+            lbl_Expenses,
+            lbl_DailyBudget,
+            lbl_Customers,
+            lbl_ExpensesType,
+            lbl_Users,
             lbl_Pricing,
-            lbl_ShopDetails,
-            lbl_Users
+            lbl_ShopDetails
         };
     }
 
     private void setSidebarPanel() {
         this.sidebarPanel = new JPanel[]{
-            DailyBudget,
             BuyGold,
-            Customers,
-            Credit,
             Payments,
+            Credit,
+            Expenses,
+            DailyBudget,
+            Customers,
+            ExpensesType,
+            Users,
             Pricing,
-            ShopDetails,
-            Users
+            ShopDetails
         };
     }
 
@@ -143,20 +150,29 @@ public class Dashboard extends javax.swing.JFrame {
 
     private void resetPanelLabelColors(JLabel label) {
         switch (label.getText().trim()) {
-            case "Daily Budget":
-                this.setPanelLabelColors(lbl_DailyBudget, DailyBudget);
-                break;
             case "Buy Gold":
                 this.setPanelLabelColors(lbl_BuyGold, BuyGold);
                 break;
-            case "Customers":
-                this.setPanelLabelColors(lbl_Customers, Customers);
+            case "Payments":
+                this.setPanelLabelColors(lbl_Payments, Payments);
                 break;
             case "Credit":
                 this.setPanelLabelColors(lbl_Credit, Credit);
                 break;
-            case "Payments":
-                this.setPanelLabelColors(lbl_Payments, Payments);
+            case "Expenses":
+                this.setPanelLabelColors(lbl_Expenses, Expenses);
+                break;
+            case "Daily Budget":
+                this.setPanelLabelColors(lbl_DailyBudget, DailyBudget);
+                break;
+            case "Customers":
+                this.setPanelLabelColors(lbl_Customers, Customers);
+                break;
+            case "Expenses Type":
+                this.setPanelLabelColors(lbl_ExpensesType, ExpensesType);
+                break;
+            case "Users":
+                this.setPanelLabelColors(lbl_Users, Users);
                 break;
             case "Pricing":
                 this.setPanelLabelColors(lbl_Pricing, Pricing);
@@ -164,34 +180,43 @@ public class Dashboard extends javax.swing.JFrame {
             case "Shop Details":
                 this.setPanelLabelColors(lbl_ShopDetails, ShopDetails);
                 break;
-            case "Users":
-                this.setPanelLabelColors(lbl_Users, Users);
-                break;
             default:
         }
     }
 
     private void switchPanel(JLabel label) {
         switch (label.getText().trim()) {
-            case "Daily Budget":
-                this.setSelection(lbl_DailyBudget, DailyBudget);
-                this.showPanel(new DailyBudgetScreen());
-                break;
             case "Buy Gold":
                 this.setSelection(lbl_BuyGold, BuyGold);
                 this.showPanel(new BuyGoldScreen());
                 break;
-            case "Customers":
-                this.setSelection(lbl_Customers, Customers);
-                this.showPanel(new CustomerScreen());
+            case "Payments":
+                this.setSelection(lbl_Payments, Payments);
+                this.showPanel(new PaymentsScreen());
                 break;
             case "Credit":
                 this.setSelection(lbl_Credit, Credit);
                 this.showPanel(new CreditScreen());
                 break;
-            case "Payments":
-                this.setSelection(lbl_Payments, Payments);
-                this.showPanel(new PaymentsScreen());
+            case "Expenses":
+                this.setSelection(lbl_Expenses, Expenses);
+                this.showPanel(new ExpensesScreen());
+                break;
+            case "Daily Budget":
+                this.setSelection(lbl_DailyBudget, DailyBudget);
+                this.showPanel(new DailyBudgetScreen());
+                break;
+            case "Customers":
+                this.setSelection(lbl_Customers, Customers);
+                this.showPanel(new CustomerScreen());
+                break;
+            case "Expenses Type":
+                this.setSelection(lbl_ExpensesType, ExpensesType);
+                this.showPanel(new ExpensesTypeScreen());
+                break;
+            case "Users":
+                this.setSelection(lbl_Users, Users);
+                this.showPanel(new UserScreen());
                 break;
             case "Pricing":
                 this.setSelection(lbl_Pricing, Pricing);
@@ -201,10 +226,7 @@ public class Dashboard extends javax.swing.JFrame {
                 this.setSelection(lbl_ShopDetails, ShopDetails);
                 this.showPanel(new ShopDetailScreen());
                 break;
-            case "Users":
-                this.setSelection(lbl_Users, Users);
-                this.showPanel(new UserScreen());
-                break;
+
             case "Logout":
                 logout();
                 break;
@@ -254,6 +276,10 @@ public class Dashboard extends javax.swing.JFrame {
         lbl_ShopDetails = new javax.swing.JLabel();
         Payments = new javax.swing.JPanel();
         lbl_Payments = new javax.swing.JLabel();
+        Expenses = new javax.swing.JPanel();
+        lbl_Expenses = new javax.swing.JLabel();
+        ExpensesType = new javax.swing.JPanel();
+        lbl_ExpensesType = new javax.swing.JLabel();
         mainContainerPanel = new javax.swing.JScrollPane();
         childrenContainerPanel = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -312,7 +338,10 @@ public class Dashboard extends javax.swing.JFrame {
         DailyBudget.setLayout(DailyBudgetLayout);
         DailyBudgetLayout.setHorizontalGroup(
             DailyBudgetLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lbl_DailyBudget, javax.swing.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, DailyBudgetLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lbl_DailyBudget, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         DailyBudgetLayout.setVerticalGroup(
             DailyBudgetLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -336,14 +365,17 @@ public class Dashboard extends javax.swing.JFrame {
         BuyGold.setLayout(BuyGoldLayout);
         BuyGoldLayout.setHorizontalGroup(
             BuyGoldLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lbl_BuyGold, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, BuyGoldLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lbl_BuyGold, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         BuyGoldLayout.setVerticalGroup(
             BuyGoldLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(BuyGoldLayout.createSequentialGroup()
-                .addGap(2, 2, 2)
-                .addComponent(lbl_BuyGold, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, BuyGoldLayout.createSequentialGroup()
+                .addGap(1, 1, 1)
+                .addComponent(lbl_BuyGold, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
+                .addGap(1, 1, 1))
         );
 
         Pricing.setBackground(new java.awt.Color(153, 153, 153));
@@ -360,7 +392,10 @@ public class Dashboard extends javax.swing.JFrame {
         Pricing.setLayout(PricingLayout);
         PricingLayout.setHorizontalGroup(
             PricingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lbl_Pricing, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PricingLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lbl_Pricing, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         PricingLayout.setVerticalGroup(
             PricingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -384,11 +419,17 @@ public class Dashboard extends javax.swing.JFrame {
         Credit.setLayout(CreditLayout);
         CreditLayout.setHorizontalGroup(
             CreditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lbl_Credit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, CreditLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lbl_Credit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         CreditLayout.setVerticalGroup(
             CreditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lbl_Credit, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(CreditLayout.createSequentialGroup()
+                .addGap(1, 1, 1)
+                .addComponent(lbl_Credit, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(1, 1, 1))
         );
 
         Users.setBackground(new java.awt.Color(153, 153, 153));
@@ -405,7 +446,10 @@ public class Dashboard extends javax.swing.JFrame {
         Users.setLayout(UsersLayout);
         UsersLayout.setHorizontalGroup(
             UsersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lbl_Users, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, UsersLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lbl_Users, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         UsersLayout.setVerticalGroup(
             UsersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -427,7 +471,10 @@ public class Dashboard extends javax.swing.JFrame {
         Logout.setLayout(LogoutLayout);
         LogoutLayout.setHorizontalGroup(
             LogoutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lbl_Logout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, LogoutLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lbl_Logout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         LogoutLayout.setVerticalGroup(
             LogoutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -448,14 +495,14 @@ public class Dashboard extends javax.swing.JFrame {
         Customers.setLayout(CustomersLayout);
         CustomersLayout.setHorizontalGroup(
             CustomersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lbl_Customers, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, CustomersLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lbl_Customers, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         CustomersLayout.setVerticalGroup(
             CustomersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(CustomersLayout.createSequentialGroup()
-                .addGap(2, 2, 2)
-                .addComponent(lbl_Customers, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0))
+            .addComponent(lbl_Customers, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
         );
 
         ShopDetails.setBackground(new java.awt.Color(153, 153, 153));
@@ -472,7 +519,10 @@ public class Dashboard extends javax.swing.JFrame {
         ShopDetails.setLayout(ShopDetailsLayout);
         ShopDetailsLayout.setHorizontalGroup(
             ShopDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lbl_ShopDetails, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ShopDetailsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lbl_ShopDetails, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         ShopDetailsLayout.setVerticalGroup(
             ShopDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -496,48 +546,114 @@ public class Dashboard extends javax.swing.JFrame {
         Payments.setLayout(PaymentsLayout);
         PaymentsLayout.setHorizontalGroup(
             PaymentsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lbl_Payments, javax.swing.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE)
+            .addGroup(PaymentsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lbl_Payments, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         PaymentsLayout.setVerticalGroup(
             PaymentsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lbl_Payments, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PaymentsLayout.createSequentialGroup()
+                .addGap(1, 1, 1)
+                .addComponent(lbl_Payments, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
+                .addGap(1, 1, 1))
+        );
+
+        Expenses.setBackground(new java.awt.Color(153, 153, 153));
+        Expenses.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        lbl_Expenses.setBackground(new java.awt.Color(153, 153, 153));
+        lbl_Expenses.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        lbl_Expenses.setForeground(new java.awt.Color(255, 255, 255));
+        lbl_Expenses.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/expenses.png"))); // NOI18N
+        lbl_Expenses.setText("Expenses");
+        lbl_Expenses.setToolTipText("Click to view Sales");
+
+        javax.swing.GroupLayout ExpensesLayout = new javax.swing.GroupLayout(Expenses);
+        Expenses.setLayout(ExpensesLayout);
+        ExpensesLayout.setHorizontalGroup(
+            ExpensesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ExpensesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lbl_Expenses, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        ExpensesLayout.setVerticalGroup(
+            ExpensesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(lbl_Expenses, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
+        );
+
+        ExpensesType.setBackground(new java.awt.Color(153, 153, 153));
+        ExpensesType.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        lbl_ExpensesType.setBackground(new java.awt.Color(153, 153, 153));
+        lbl_ExpensesType.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        lbl_ExpensesType.setForeground(new java.awt.Color(255, 255, 255));
+        lbl_ExpensesType.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/expenses_type.png"))); // NOI18N
+        lbl_ExpensesType.setText("Expenses Type");
+        lbl_ExpensesType.setToolTipText("Click to view Sales");
+
+        javax.swing.GroupLayout ExpensesTypeLayout = new javax.swing.GroupLayout(ExpensesType);
+        ExpensesType.setLayout(ExpensesTypeLayout);
+        ExpensesTypeLayout.setHorizontalGroup(
+            ExpensesTypeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ExpensesTypeLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lbl_ExpensesType, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        ExpensesTypeLayout.setVerticalGroup(
+            ExpensesTypeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ExpensesTypeLayout.createSequentialGroup()
+                .addGap(2, 2, 2)
+                .addComponent(lbl_ExpensesType, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0))
         );
 
         javax.swing.GroupLayout scrollPanelLayout = new javax.swing.GroupLayout(scrollPanel);
         scrollPanel.setLayout(scrollPanelLayout);
         scrollPanelLayout.setHorizontalGroup(
             scrollPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(DailyBudget, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(BuyGold, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(Customers, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(Credit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(Payments, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(Pricing, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(ShopDetails, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(Users, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(Logout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(scrollPanelLayout.createSequentialGroup()
+                .addGroup(scrollPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(Logout, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(ShopDetails, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(Users, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(ExpensesType, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(Customers, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(DailyBudget, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(Expenses, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(Credit, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(Payments, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(BuyGold, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(Pricing, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         scrollPanelLayout.setVerticalGroup(
             scrollPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(scrollPanelLayout.createSequentialGroup()
-                .addComponent(DailyBudget, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
                 .addComponent(BuyGold, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(Customers, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(Payments, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(Credit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(Payments, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(Expenses, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(DailyBudget, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(Customers, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(ExpensesType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(Users, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(Pricing, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(ShopDetails, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(Users, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(Logout, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(405, Short.MAX_VALUE))
+                .addContainerGap(374, Short.MAX_VALUE))
         );
 
         sidebarScroll.setViewportView(scrollPanel);
@@ -637,6 +753,8 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JPanel Credit;
     private javax.swing.JPanel Customers;
     private javax.swing.JPanel DailyBudget;
+    private javax.swing.JPanel Expenses;
+    private javax.swing.JPanel ExpensesType;
     private javax.swing.JPanel Logout;
     private javax.swing.JPanel Payments;
     private javax.swing.JPanel Pricing;
@@ -649,6 +767,8 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JLabel lbl_Credit;
     private javax.swing.JLabel lbl_Customers;
     private javax.swing.JLabel lbl_DailyBudget;
+    private javax.swing.JLabel lbl_Expenses;
+    private javax.swing.JLabel lbl_ExpensesType;
     private javax.swing.JLabel lbl_Logout;
     private javax.swing.JLabel lbl_Payments;
     private javax.swing.JLabel lbl_Pricing;

@@ -6,7 +6,6 @@ import Helpers.TableActions;
 import Models.Budget;
 import Repository.BudgetRepository;
 import Repository.PaymentsRepository;
-import com.toedter.calendar.JDateChooser;
 import java.util.List;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -25,11 +24,13 @@ public class BudgetController {
     HelperFunctions helper = new HelperFunctions();
     PaymentsRepository paymentsRepository = new PaymentsRepository();
 
-    public void populateTable(JTable table, String year) {
-        if (year.equals("")) {
-            year = helper.returnCurrentYear();
+    ReportController reportController = new ReportController();
+
+    public void populateTable(JTable table, String createdDate) {
+        if (createdDate.equals("")) {
+            createdDate = helper.returnDate();
         }
-        List<Budget> budgets = budgetRepository.list(year);
+        List<Budget> budgets = budgetRepository.list(createdDate);
 
         DefaultTableModel defaultTableModel = (DefaultTableModel) table.getModel();
         defaultTableModel.setRowCount(0);
@@ -41,16 +42,15 @@ public class BudgetController {
             object = new Object[]{
                 budget.getId(),
                 budget.getName(),
-                budget.getStart_date(),
-                budget.getEnd_date(),
                 helper.priceToString(budget.getTotal_amount()),
+                helper.priceToString(budget.getAmount_forward()),
                 helper.priceToString(total_budget_used),
                 helper.priceToString(budget.getTotal_amount() - total_budget_used),
                 budget.getUser(),
-                budget.getCreated_date(),
                 budget.getCreated_time(),
+                budget.getCreated_date(),
                 TableActions.View.toString(),
-                TableActions.Delete.toString()
+                TableActions.Add.toString()
             };
 
             defaultTableModel.addRow(object);
@@ -62,11 +62,8 @@ public class BudgetController {
     public void saveUpdate(
             JLabel budgetID,
             JTextField name,
-            JDateChooser startDate,
-            JDateChooser endDate,
             JTextField totalAmount,
-            JTextField amountUsed,
-            JTextField amountLeft,
+            JTextField amountForward,
             JTable table,
             int selectedRow,
             javax.swing.JDialog dialog
@@ -74,11 +71,10 @@ public class BudgetController {
 
         int budget_id = 0;
         String budget_name = name.getText().trim();
-        String start_date = ((JTextField) startDate.getDateEditor().getUiComponent()).getText().toLowerCase();
-        String end_date = ((JTextField) endDate.getDateEditor().getUiComponent()).getText().toLowerCase();
+        String start_date = helper.returnDate();
+        String end_date = helper.returnDate();
         double total_amount = totalAmount.getText().isEmpty() ? 0 : helper.parseAmountWithComma(totalAmount.getText());
-        double amount_used = totalAmount.getText().isEmpty() ? 0 : helper.parseAmountWithComma(amountUsed.getText());
-        double amount_left = totalAmount.getText().isEmpty() ? 0 : helper.parseAmountWithComma(amountLeft.getText());
+        double amount_forward = totalAmount.getText().isEmpty() ? 0 : helper.parseAmountWithComma(amountForward.getText());
         String created_date = helper.returnDate();
         String created_time = helper.returnTime();
         String raw_date = helper.returnDate();
@@ -93,8 +89,7 @@ public class BudgetController {
                     budget_id,
                     budget_name,
                     total_amount,
-                    amount_used,
-                    amount_left,
+                    amount_forward,
                     false,
                     start_date,
                     end_date,
@@ -115,8 +110,7 @@ public class BudgetController {
             Budget budget = new Budget(
                     budget_name,
                     total_amount,
-                    amount_used,
-                    amount_left,
+                    amount_forward,
                     false,
                     start_date,
                     end_date,
@@ -145,16 +139,15 @@ public class BudgetController {
         object = new Object[]{
             budget.getId(),
             budget.getName(),
-            budget.getStart_date(),
-            budget.getEnd_date(),
             helper.priceToString(budget.getTotal_amount()),
+            helper.priceToString(budget.getAmount_forward()),
             helper.priceToString(total_budget_used),
             helper.priceToString(budget.getTotal_amount() - total_budget_used),
             budget.getUser(),
-            budget.getCreated_date(),
             budget.getCreated_time(),
+            budget.getCreated_date(),
             TableActions.View.toString(),
-            TableActions.Delete.toString()
+            TableActions.Add.toString()
         };
 
         tmodel.insertRow(0, object);
@@ -167,15 +160,14 @@ public class BudgetController {
 
         table.setValueAt(budget.getId(), selectedRow, 0);
         table.setValueAt(budget.getName(), selectedRow, 1);
-        table.setValueAt(budget.getStart_date(), selectedRow, 2);
-        table.setValueAt(budget.getEnd_date(), selectedRow, 3);
-        table.setValueAt(helper.priceToString(budget.getTotal_amount()), selectedRow, 4);
-        table.setValueAt(helper.priceToString(total_budget_used), selectedRow, 5);
-        table.setValueAt(helper.priceToString(budget.getTotal_amount() - total_budget_used), selectedRow, 6);
+        table.setValueAt(helper.priceToString(budget.getTotal_amount()), selectedRow, 2);
+        table.setValueAt(helper.priceToString(budget.getAmount_forward()), selectedRow, 3);
+        table.setValueAt(helper.priceToString(total_budget_used), selectedRow, 4);
+        table.setValueAt(helper.priceToString(budget.getTotal_amount() - total_budget_used), selectedRow, 5);
     }
 
     private double budgetUsed(int id) {
-        return paymentsRepository.summationOfBudget(id);
+        return reportController.budgetUsedInAll(id);
     }
 
     public void deleteItem(JTable table, String budgetID, int selectedRow) {
@@ -196,33 +188,27 @@ public class BudgetController {
             int budget_id,
             JLabel budgetID,
             JTextField name,
-            JDateChooser startDate,
-            JDateChooser endDate,
             JTextField totalAmount,
             JTextField amountUsed,
-            JTextField amountLeft
+            JTextField amountLeft,
+            JTextField amountForward,
+            JTextField txtTodayBudget
     ) {
         Budget budget = budgetRepository.find(budget_id);
 
         budgetID.setText(String.valueOf(budget.getId()));
         name.setText(budget.getName());
-        if (!budget.getStart_date().isEmpty()) {
-            startDate.setDate(helper.convertChooserDate(budget.getStart_date()));
-        }
-
-        if (!budget.getEnd_date().isEmpty()) {
-            endDate.setDate(helper.convertChooserDate(budget.getEnd_date()));
-        }
-
         double total_budget_used = this.budgetUsed(budget.getId());
 
         totalAmount.setText(helper.priceToString(budget.getTotal_amount()));
         amountUsed.setText(helper.priceToString(total_budget_used));
         amountLeft.setText(helper.priceToString(budget.getTotal_amount() - total_budget_used));
+        amountForward.setText(helper.priceToString(budget.getAmount_forward()));
+        txtTodayBudget.setText(helper.priceToString(budget.getTotal_amount() - budget.getAmount_forward()));
     }
 
-    public void populateDropdownData(JComboBox comboBox, String title, String year) {
-        List<Budget> listBudgets = budgetRepository.list(year);
+    public void populateDropdownData(JComboBox comboBox, String title, String createdDate) {
+        List<Budget> listBudgets = budgetRepository.list(createdDate);
         comboBox.addItem(title);
         comboBox.setSelectedIndex(0);
 
@@ -240,6 +226,14 @@ public class BudgetController {
     public Budget getSingleBudgetWithID(int budget_id) {
         Budget budget = budgetRepository.find(budget_id);
         return budget;
+    }
+
+    public void calculateAmountForward(JTextField amountForward) {
+        Budget budget = budgetRepository.lastBudget();
+        double budgetUsed = this.budgetUsed(budget.getId());
+        double balance = budget.getTotal_amount() - budgetUsed;
+
+        amountForward.setText(helper.priceToString(balance));
     }
 
 }

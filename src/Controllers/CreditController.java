@@ -30,6 +30,7 @@ public class CreditController {
     CreditPaymentRepository creditPaymentRepository = new CreditPaymentRepository();
     BudgetController budgetController = new BudgetController();
     AnonymousRepository anonymousRepository = new AnonymousRepository();
+    ReportController reportController = new ReportController();
 
     public void populateTable(JTable table, String createdDate) {
         if (createdDate.isEmpty()) {

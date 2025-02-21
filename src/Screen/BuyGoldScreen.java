@@ -7,11 +7,10 @@ import Dialogs.PaymentHistoryForm;
 import Helpers.ActionsColumns;
 import Helpers.HelperFunctions;
 import Helpers.ModelType;
-import Helpers.ShopData;
 import Main.Dashboard;
-import java.util.ArrayList;
+import java.beans.PropertyChangeEvent;
 import java.util.Vector;
-import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -30,9 +29,9 @@ public class BuyGoldScreen extends javax.swing.JPanel {
     public BuyGoldScreen() {
         initComponents();
 
-        this.populateYears();
-        this.populateData(helper.returnCurrentYear());
-        cmbYears.setSelectedItem(helper.returnCurrentYear());
+        this.populateData(helper.returnDate());
+        dateCurrentDate.setDate(helper.convertChooserDate(helper.returnDate()));
+        this.onDateChooserAction();
     }
 
     private void addForm() {
@@ -40,18 +39,8 @@ public class BuyGoldScreen extends javax.swing.JPanel {
         buyGoldForm.setVisible(true);
     }
 
-    private void populateYears() {
-        ArrayList<String> years = helper.getYearList(ShopData.getYearLimit());
-
-        cmbYears.addItem("Years");
-
-        for (int year = 0; year < years.size(); year++) {
-            cmbYears.addItem(years.get(year));
-        }
-    }
-
-    private void populateData(String year) {
-        buyGoldController.populateData(buyGoldTable, year);
+    private void populateData(String createdDate) {
+        buyGoldController.populateData(buyGoldTable, createdDate);
         helper.TableColor(buyGoldTable);
 
         new AddButton().addBtnItemsTable(buyGoldTable, ActionsColumns.tableActionColumn(ModelType.BuyGold));
@@ -75,11 +64,6 @@ public class BuyGoldScreen extends javax.swing.JPanel {
             buyGoldForm.viewDetails(table_id, buyGoldTable.getSelectedRow());
             buyGoldForm.setVisible(true);
         } else if (buyGoldTable.getSelectedColumn() == columns[1]) {
-            int ask = JOptionPane.showConfirmDialog(null, "Are you sure you want to remove this record?", "DELETE RECORDS", JOptionPane.YES_NO_OPTION);
-            if (ask == 0) {
-                buyGoldController.deleteItem(buyGoldTable, tableID, buyGoldTable.getSelectedRow());
-            }
-        } else if (buyGoldTable.getSelectedColumn() == columns[2]) {
             PaymentHistoryForm paymentHistoryForm = new PaymentHistoryForm(new Dashboard(), true);
             paymentHistoryForm.populateData(table_id);
             paymentHistoryForm.setVisible(true);
@@ -89,11 +73,21 @@ public class BuyGoldScreen extends javax.swing.JPanel {
     }
 
     private void refresh() {
-        this.populateData(helper.returnCurrentYear());
+        this.populateData(helper.returnDate());
     }
 
     private void countRow() {
         buyGoldRowCount.setText(String.valueOf(buyGoldTable.getRowCount()));
+    }
+
+    private void onDateChooserAction() {
+        dateCurrentDate.addPropertyChangeListener((PropertyChangeEvent evt) -> {
+            String currentDate = ((JTextField) dateCurrentDate.getDateEditor().getUiComponent()).getText().toLowerCase();
+            if (currentDate.equals("")) {
+                return;
+            }
+            this.populateData(currentDate);
+        });
     }
 
     /**
@@ -112,7 +106,7 @@ public class BuyGoldScreen extends javax.swing.JPanel {
         txtSearch = new javax.swing.JTextField();
         lbl_SearchIcon1 = new javax.swing.JLabel();
         btnRefresh1 = new javax.swing.JButton();
-        cmbYears = new javax.swing.JComboBox<>();
+        dateCurrentDate = new com.toedter.calendar.JDateChooser();
         jScrollPane7 = new javax.swing.JScrollPane();
         buyGoldTable = new javax.swing.JTable();
         jPanel52 = new javax.swing.JPanel();
@@ -174,12 +168,8 @@ public class BuyGoldScreen extends javax.swing.JPanel {
             }
         });
 
-        cmbYears.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        cmbYears.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmbYearsActionPerformed(evt);
-            }
-        });
+        dateCurrentDate.setDateFormatString("yyyy-MM-dd");
+        dateCurrentDate.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
 
         javax.swing.GroupLayout jPanel37Layout = new javax.swing.GroupLayout(jPanel37);
         jPanel37.setLayout(jPanel37Layout);
@@ -193,7 +183,7 @@ public class BuyGoldScreen extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnRefresh1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(cmbYears, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(dateCurrentDate, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel37Layout.setVerticalGroup(
@@ -203,26 +193,26 @@ public class BuyGoldScreen extends javax.swing.JPanel {
                     .addComponent(lbl_SearchIcon1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(txtSearch, javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnRefresh1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(cmbYears))
+                    .addComponent(dateCurrentDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(0, 3, Short.MAX_VALUE))
         );
 
         buyGoldTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "id", "Code", "Customer", "Top", "Down", "Pounds", "Density", "Karat", "Base Price", "Price", "Amount", "Amount Paid", "Balance", "Created By", "Date", "", "", ""
+                "id", "Code", "Customer", "Top", "Down", "Pounds", "Density", "Karat", "Base Price", "Price", "Amount", "Amount Paid", "Balance", "Created By", "Date", "", ""
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -259,10 +249,8 @@ public class BuyGoldScreen extends javax.swing.JPanel {
             buyGoldTable.getColumnModel().getColumn(14).setMaxWidth(90);
             buyGoldTable.getColumnModel().getColumn(15).setMinWidth(60);
             buyGoldTable.getColumnModel().getColumn(15).setMaxWidth(60);
-            buyGoldTable.getColumnModel().getColumn(16).setMinWidth(60);
-            buyGoldTable.getColumnModel().getColumn(16).setMaxWidth(60);
-            buyGoldTable.getColumnModel().getColumn(17).setMinWidth(70);
-            buyGoldTable.getColumnModel().getColumn(17).setMaxWidth(70);
+            buyGoldTable.getColumnModel().getColumn(16).setMinWidth(70);
+            buyGoldTable.getColumnModel().getColumn(16).setMaxWidth(70);
         }
 
         jLabel32.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -327,21 +315,13 @@ public class BuyGoldScreen extends javax.swing.JPanel {
         this.onTableClicked();
     }//GEN-LAST:event_buyGoldTableMouseClicked
 
-    private void cmbYearsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbYearsActionPerformed
-        if (cmbYears.getSelectedIndex() <= 0) {
-            return;
-        }
-
-        this.populateData(cmbYears.getSelectedItem().toString());
-    }//GEN-LAST:event_cmbYearsActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnRefresh1;
     private javax.swing.JButton btn_addUser;
     public static javax.swing.JLabel buyGoldRowCount;
     public static javax.swing.JTable buyGoldTable;
-    private javax.swing.JComboBox<String> cmbYears;
+    private com.toedter.calendar.JDateChooser dateCurrentDate;
     private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel30;

@@ -7,11 +7,11 @@ import Helpers.ActionsColumns;
 import Helpers.HelperFunctions;
 import Helpers.ModelType;
 import Helpers.Report;
-import Helpers.ShopData;
 import Main.Dashboard;
 import Models.Receipt;
-import java.util.ArrayList;
+import java.beans.PropertyChangeEvent;
 import java.util.Vector;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -19,7 +19,7 @@ import javax.swing.table.DefaultTableModel;
  * @author nyark
  */
 public class PaymentsScreen extends javax.swing.JPanel {
-    
+
     Vector searchTableVector;
     HelperFunctions helper = new HelperFunctions();
     PaymentController paymentController = new PaymentController();
@@ -30,66 +30,68 @@ public class PaymentsScreen extends javax.swing.JPanel {
      */
     public PaymentsScreen() {
         initComponents();
-        
-        this.populateYears();
-        cmbYears.setSelectedItem(helper.returnCurrentYear());
-        this.populateData(helper.returnCurrentYear());
+
+        this.populateData(helper.returnDate());
+        dateCurrentDate.setDate(helper.convertChooserDate(helper.returnDate()));
+        this.onDateChooserAction();
     }
-    
-    private void populateYears() {
-        ArrayList<String> years = helper.getYearList(ShopData.getYearLimit());
-        
-        cmbYears.addItem("Years");
-        
-        for (int year = 0; year < years.size(); year++) {
-            cmbYears.addItem(years.get(year));
-        }
-    }
-    
+
     private void addForm() {
+        String currentDate = ((JTextField) dateCurrentDate.getDateEditor().getUiComponent()).getText().toLowerCase();
         PaymentsForm paymentsForm = new PaymentsForm(new Dashboard(), true);
-        paymentsForm.populateData(cmbYears.getSelectedItem().toString());
+        paymentsForm.populateData(currentDate);
         paymentsForm.setVisible(true);
     }
-    
-    private void populateData(String year) {
-        paymentController.populateTable(paymentsTable, year);
+
+    private void populateData(String createdDate) {
+        paymentController.populateTable(paymentsTable, createdDate);
         helper.TableColor(paymentsTable);
-        
+
         new AddButton().addBtnItemsTable(paymentsTable, ActionsColumns.tableActionColumn(ModelType.Payments));
         searchTableVector = (Vector) ((DefaultTableModel) paymentsTable.getModel()).getDataVector().clone();
         this.countRow();
     }
-    
+
     private void searchTable(String searchItem) {
         helper.searchItem(paymentsTable, searchItem, searchTableVector);
         this.countRow();
     }
-    
+
     public void onTableClicked() {
         int[] columns = ActionsColumns.tableActionColumn(ModelType.Payments);
         String tableID = paymentsTable.getModel().getValueAt(paymentsTable.getSelectedRow(), 0).toString();
         int table_id = Integer.parseInt(tableID);
-        
+        String currentDate = ((JTextField) dateCurrentDate.getDateEditor().getUiComponent()).getText().toLowerCase();
+
         if (paymentsTable.getSelectedColumn() == columns[0]) {
             PaymentsForm paymentsForm = new PaymentsForm(new Dashboard(), true);
-            paymentsForm.viewDetails(table_id, paymentsTable.getSelectedRow(), cmbYears.getSelectedItem().toString());
+            paymentsForm.viewDetails(table_id, paymentsTable.getSelectedRow(), currentDate);
             paymentsForm.setVisible(true);
         } else if (paymentsTable.getSelectedColumn() == columns[1]) {
             String sql = report.receiptData(table_id);
             Receipt receipt = paymentController.getSinglePayment(table_id);
             report.paymentReceiptPrint(sql, receipt);
         }
-        
+
         this.countRow();
     }
-    
+
     private void refresh() {
-        this.populateData(helper.returnCurrentYear());
+        this.populateData(helper.returnDate());
     }
-    
+
     private void countRow() {
         buyGoldRowCount.setText(String.valueOf(paymentsTable.getRowCount()));
+    }
+
+    private void onDateChooserAction() {
+        dateCurrentDate.addPropertyChangeListener((PropertyChangeEvent evt) -> {
+            String currentDate = ((JTextField) dateCurrentDate.getDateEditor().getUiComponent()).getText().toLowerCase();
+            if (currentDate.equals("")) {
+                return;
+            }
+            this.populateData(currentDate);
+        });
     }
 
     /**
@@ -108,7 +110,7 @@ public class PaymentsScreen extends javax.swing.JPanel {
         txtSearch = new javax.swing.JTextField();
         lbl_SearchIcon1 = new javax.swing.JLabel();
         btnRefresh1 = new javax.swing.JButton();
-        cmbYears = new javax.swing.JComboBox<>();
+        dateCurrentDate = new com.toedter.calendar.JDateChooser();
         jScrollPane7 = new javax.swing.JScrollPane();
         paymentsTable = new javax.swing.JTable();
         jPanel52 = new javax.swing.JPanel();
@@ -170,12 +172,8 @@ public class PaymentsScreen extends javax.swing.JPanel {
             }
         });
 
-        cmbYears.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        cmbYears.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmbYearsActionPerformed(evt);
-            }
-        });
+        dateCurrentDate.setDateFormatString("yyyy-MM-dd");
+        dateCurrentDate.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
 
         javax.swing.GroupLayout jPanel37Layout = new javax.swing.GroupLayout(jPanel37);
         jPanel37.setLayout(jPanel37Layout);
@@ -189,7 +187,7 @@ public class PaymentsScreen extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnRefresh1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(cmbYears, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(dateCurrentDate, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel37Layout.setVerticalGroup(
@@ -199,7 +197,7 @@ public class PaymentsScreen extends javax.swing.JPanel {
                     .addComponent(lbl_SearchIcon1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(txtSearch, javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnRefresh1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(cmbYears, javax.swing.GroupLayout.Alignment.LEADING))
+                    .addComponent(dateCurrentDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(0, 3, Short.MAX_VALUE))
         );
 
@@ -313,20 +311,12 @@ public class PaymentsScreen extends javax.swing.JPanel {
         this.onTableClicked();
     }//GEN-LAST:event_paymentsTableMouseClicked
 
-    private void cmbYearsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbYearsActionPerformed
-        if (cmbYears.getSelectedIndex() <= 0) {
-            return;
-        }
-        
-        this.populateData(cmbYears.getSelectedItem().toString());
-    }//GEN-LAST:event_cmbYearsActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnRefresh1;
     private javax.swing.JButton btn_addUser;
     public static javax.swing.JLabel buyGoldRowCount;
-    private javax.swing.JComboBox<String> cmbYears;
+    private com.toedter.calendar.JDateChooser dateCurrentDate;
     private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel30;

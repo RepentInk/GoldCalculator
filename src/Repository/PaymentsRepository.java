@@ -32,7 +32,7 @@ public class PaymentsRepository implements AnonymousInterface<Payments> {
     }
 
     @Override
-    public List<Payments> list(String year) {
+    public List<Payments> list(String createdDate) {
         List<Payments> paymentsList = new ArrayList<>();
         try {
             String query = "SELECT payment.*,user.fullname AS user,gold.code AS buy_gold,customer.fullname AS customer,budget.name AS budget FROM " + PaymentDTO.getPAYMENT_DB() + " payment "
@@ -40,7 +40,7 @@ public class PaymentsRepository implements AnonymousInterface<Payments> {
                     + "LEFT JOIN " + BuyGoldDTO.getBUY_GOLD_DB() + " gold ON payment.buy_gold_id=gold.id "
                     + "LEFT JOIN " + CustomerDTO.getCUSTOMER_DB() + " customer ON gold.customer_id=customer.id "
                     + "LEFT JOIN " + BudgetDTO.getBUDGET_DB() + " budget ON payment.budget_id=budget.id "
-                    + "WHERE strftime('%Y', payment.raw_date) = '" + year + "' ORDER BY payment.id DESC";
+                    + "WHERE payment.created_date = '" + createdDate + "' ORDER BY payment.id DESC";
             pst = conn.prepareStatement(query);
             rs = pst.executeQuery();
 
@@ -370,7 +370,7 @@ public class PaymentsRepository implements AnonymousInterface<Payments> {
         Receipt receipt = new Receipt();
 
         try {
-            String query = "SELECT payment.amount_paid,payment.balance,gold.total_amount,gold.base_price FROM " + PaymentDTO.getPAYMENT_DB() + " payment "
+            String query = "SELECT payment.amount_paid,payment.balance,gold.total_amount,gold.base_price,gold.credit_balance FROM " + PaymentDTO.getPAYMENT_DB() + " payment "
                     + "LEFT JOIN " + BuyGoldDTO.getBUY_GOLD_DB() + " gold ON payment.buy_gold_id=gold.id "
                     + "WHERE payment.id = '" + id + "'";
             pst = conn.prepareStatement(query);
@@ -381,6 +381,7 @@ public class PaymentsRepository implements AnonymousInterface<Payments> {
                 receipt.setAmountPaid(rs.getDouble("amount_paid"));
                 receipt.setBasePrice(rs.getDouble("base_price"));
                 receipt.setBalance(rs.getDouble("balance"));
+                receipt.setCredit_balance(rs.getDouble("credit_balance"));
             }
 
         } catch (SQLException e) {

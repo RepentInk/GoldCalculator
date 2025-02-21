@@ -9,8 +9,7 @@ public class Budget {
     private int id;
     private String name;
     private double total_amount;
-    private double amount_used;
-    private double amount_left;
+    private double amount_forward;
     private boolean status;
     private String start_date;
     private String end_date;
@@ -27,8 +26,7 @@ public class Budget {
     public Budget(
             String name,
             double total_amount,
-            double amount_used,
-            double amount_left,
+            double amount_forward,
             boolean status,
             String start_date,
             String end_date,
@@ -39,8 +37,7 @@ public class Budget {
     ) {
         this.name = name;
         this.total_amount = total_amount;
-        this.amount_used = amount_used;
-        this.amount_left = amount_left;
+        this.amount_forward = amount_forward;
         this.status = status;
         this.start_date = start_date;
         this.end_date = end_date;
@@ -54,8 +51,7 @@ public class Budget {
             int id,
             String name,
             double total_amount,
-            double amount_used,
-            double amount_left,
+            double amount_forward,
             boolean status,
             String start_date,
             String end_date,
@@ -67,8 +63,7 @@ public class Budget {
         this.id = id;
         this.name = name;
         this.total_amount = total_amount;
-        this.amount_used = amount_used;
-        this.amount_left = amount_left;
+        this.amount_forward = amount_forward;
         this.status = status;
         this.start_date = start_date;
         this.end_date = end_date;
@@ -102,20 +97,12 @@ public class Budget {
         this.total_amount = total_amount;
     }
 
-    public double getAmount_used() {
-        return amount_used;
+    public double getAmount_forward() {
+        return amount_forward;
     }
 
-    public void setAmount_used(double amount_used) {
-        this.amount_used = amount_used;
-    }
-
-    public double getAmount_left() {
-        return amount_left;
-    }
-
-    public void setAmount_left(double amount_left) {
-        this.amount_left = amount_left;
+    public void setAmount_forward(double amount_forward) {
+        this.amount_forward = amount_forward;
     }
 
     public boolean isStatus() {

@@ -4,6 +4,7 @@ import Controllers.BudgetController;
 import Helpers.HelperFunctions;
 import Screen.DailyBudgetScreen;
 import java.awt.event.KeyEvent;
+import java.time.Month;
 import javax.swing.JOptionPane;
 
 /**
@@ -27,6 +28,13 @@ public class BudgetForm extends javax.swing.JDialog {
         initComponents();
         setIconImage(helper.setIcon(helper.iconImagePath()));
         lblBudgetID.setVisible(false);
+
+        txtBudgetName.setText(Month.of(Integer.parseInt(helper.returnCurrentMonth())) + " " + helper.returnCurrentDay());
+        this.setPreviousBalance();
+    }
+
+    private void setPreviousBalance() {
+        budgetController.calculateAmountForward(txtBalanceCarryForward);
     }
 
     private void saveData() {
@@ -37,11 +45,8 @@ public class BudgetForm extends javax.swing.JDialog {
         budgetController.saveUpdate(
                 lblBudgetID,
                 txtBudgetName,
-                txtStartDate,
-                txtEndDate,
                 txtTotalAmount,
-                txtAmountUsed,
-                txtAmountLeft,
+                txtBalanceCarryForward,
                 DailyBudgetScreen.dailyBudgetTable,
                 this.selectedRow,
                 this
@@ -57,14 +62,6 @@ public class BudgetForm extends javax.swing.JDialog {
             message = message + "Budget name is required \n";
         }
 
-        if (txtStartDate.getCalendar().toString().isEmpty()) {
-            message = message + "Start date is required \n";
-        }
-
-        if (txtEndDate.getCalendar().toString().isEmpty()) {
-            message = message + "End date is required \n";
-        }
-
         if (txtTotalAmount.getText().isEmpty()) {
             message = message + "Total amount is required \n";
         }
@@ -78,16 +75,17 @@ public class BudgetForm extends javax.swing.JDialog {
 
     public void viewDetails(int budgetID, int selectedRow) {
         this.selectedRow = selectedRow;
+        btnSave.setEnabled(false);
 
         budgetController.onTableClick(
                 budgetID,
                 lblBudgetID,
                 txtBudgetName,
-                txtStartDate,
-                txtEndDate,
                 txtTotalAmount,
                 txtAmountUsed,
-                txtAmountLeft
+                txtAmountLeft,
+                txtBalanceCarryForward,
+                txtTodayBudget
         );
 
     }
@@ -98,8 +96,24 @@ public class BudgetForm extends javax.swing.JDialog {
         txtTotalAmount.setText("");
         txtAmountUsed.setText("0");
         txtAmountLeft.setText("0");
-        txtStartDate.setCalendar(null);
-        txtEndDate.setCalendar(null);
+    }
+
+    private void calculateTotalBudgetToday() {
+        if (txtTodayBudget.getText().isEmpty()) {
+            getToolkit().beep();
+            return;
+        }
+
+        double today_budget = txtTodayBudget.getText().isEmpty() ? 0 : Double.parseDouble(txtTodayBudget.getText());
+        double budget_forward = txtBalanceCarryForward.getText().isEmpty() ? 0 : helper.parseAmountWithComma(txtBalanceCarryForward.getText());
+
+        double total_budget = 0;
+        if (today_budget <= 0) {
+            return;
+        }
+
+        total_budget = today_budget + budget_forward;
+        txtTotalAmount.setText(String.valueOf(helper.priceToString(total_budget)));
     }
 
     /**
@@ -114,9 +128,7 @@ public class BudgetForm extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
         txtBudgetName = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        txtStartDate = new com.toedter.calendar.JDateChooser();
         jLabel3 = new javax.swing.JLabel();
-        txtEndDate = new com.toedter.calendar.JDateChooser();
         jLabel4 = new javax.swing.JLabel();
         txtTotalAmount = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
@@ -125,6 +137,8 @@ public class BudgetForm extends javax.swing.JDialog {
         txtAmountLeft = new javax.swing.JTextField();
         btnSave = new javax.swing.JButton();
         lblBudgetID = new javax.swing.JLabel();
+        txtBalanceCarryForward = new javax.swing.JTextField();
+        txtTodayBudget = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("BUDGET FORM");
@@ -132,24 +146,22 @@ public class BudgetForm extends javax.swing.JDialog {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setText("Budget Name");
 
+        txtBudgetName.setEditable(false);
         txtBudgetName.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        txtBudgetName.setFocusable(false);
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel2.setText("Start Date");
-
-        txtStartDate.setDateFormatString("yyyy-MM-dd");
-        txtStartDate.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel2.setText("Balance Carry Forward");
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel3.setText("End Date");
-
-        txtEndDate.setDateFormatString("yyyy-MM-dd");
-        txtEndDate.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel3.setText("Today Budget");
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel4.setText("Total Amount");
 
+        txtTotalAmount.setEditable(false);
         txtTotalAmount.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        txtTotalAmount.setFocusable(false);
         txtTotalAmount.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtTotalAmountKeyTyped(evt);
@@ -179,6 +191,20 @@ public class BudgetForm extends javax.swing.JDialog {
             }
         });
 
+        txtBalanceCarryForward.setEditable(false);
+        txtBalanceCarryForward.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        txtBalanceCarryForward.setEnabled(false);
+
+        txtTodayBudget.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        txtTodayBudget.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtTodayBudgetKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtTodayBudgetKeyTyped(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -188,10 +214,8 @@ public class BudgetForm extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(txtBudgetName)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtStartDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 421, Short.MAX_VALUE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtEndDate, javax.swing.GroupLayout.DEFAULT_SIZE, 421, Short.MAX_VALUE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(txtTotalAmount)
                     .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -199,7 +223,9 @@ public class BudgetForm extends javax.swing.JDialog {
                     .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(txtAmountLeft)
                     .addComponent(btnSave, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblBudgetID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(lblBudgetID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtBalanceCarryForward)
+                    .addComponent(txtTodayBudget))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -212,12 +238,12 @@ public class BudgetForm extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtStartDate, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtBalanceCarryForward, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtEndDate, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtTodayBudget, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(txtTotalAmount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -229,7 +255,7 @@ public class BudgetForm extends javax.swing.JDialog {
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(txtAmountLeft, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
                 .addComponent(lblBudgetID, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -249,8 +275,23 @@ public class BudgetForm extends javax.swing.JDialog {
     }//GEN-LAST:event_txtTotalAmountKeyTyped
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-        this.saveData();
+        int ask = JOptionPane.showConfirmDialog(null, "Are you sure you want to save this record?, record cannot be deleted", "DELETE RECORDS", JOptionPane.YES_NO_OPTION);
+        if (ask == 0) {
+            this.saveData();
+        }
     }//GEN-LAST:event_btnSaveActionPerformed
+
+    private void txtTodayBudgetKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTodayBudgetKeyReleased
+        this.calculateTotalBudgetToday();
+    }//GEN-LAST:event_txtTodayBudgetKeyReleased
+
+    private void txtTodayBudgetKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTodayBudgetKeyTyped
+        char c = evt.getKeyChar();
+        if (!(Character.isDigit(c) || (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE) || (c == KeyEvent.VK_PERIOD) || (c == KeyEvent.VK_ENTER))) {
+            getToolkit().beep();
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtTodayBudgetKeyTyped
 
     /**
      * @param args the command line arguments
@@ -303,9 +344,9 @@ public class BudgetForm extends javax.swing.JDialog {
     private javax.swing.JLabel lblBudgetID;
     private javax.swing.JTextField txtAmountLeft;
     private javax.swing.JTextField txtAmountUsed;
+    private javax.swing.JTextField txtBalanceCarryForward;
     private javax.swing.JTextField txtBudgetName;
-    private com.toedter.calendar.JDateChooser txtEndDate;
-    private com.toedter.calendar.JDateChooser txtStartDate;
+    private javax.swing.JTextField txtTodayBudget;
     private javax.swing.JTextField txtTotalAmount;
     // End of variables declaration//GEN-END:variables
 }

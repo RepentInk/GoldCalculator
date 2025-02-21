@@ -155,6 +155,12 @@ public class HelperFunctions {
         return date;
     }
 
+    public String returnCurrentDay() {
+        SimpleDateFormat sdf2 = new SimpleDateFormat("dd");
+        String date = sdf2.format(new java.util.Date()).trim();
+        return date;
+    }
+
     // return sql date format
     public java.sql.Date sqlDateFormat(String mydate) {
         java.sql.Date currentDate = null;
@@ -566,6 +572,19 @@ public class HelperFunctions {
         df.setRoundingMode(RoundingMode.DOWN);
         String result = df.format(price);
         return result;
+    }
+
+    public String priceRoundUpWhole(double price) {
+        DecimalFormat df = new DecimalFormat("###,###,###,###,###.00");
+        df.setRoundingMode(RoundingMode.DOWN);
+        String result = df.format(price);
+        String value = result;
+        
+        if(result.contains(".")) {
+            value = splitWord(result, 0, ".");
+        }
+        
+        return value + ".00";
     }
 
     public BigDecimal parse(final String amount, final Locale locale) throws ParseException {

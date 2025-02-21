@@ -16,6 +16,7 @@ public class BuyGoldDTO {
     private static final String BASE_PRICE = "base_price";
     private static final String TOTAL_WEIGHT = "total_weight";
     private static final String TOTAL_AMOUNT = "total_amount";
+    private static final String CREDIT_BALANCE = "credit_balance";
     private static final String CREATED_DATE = "created_date";
     private static final String CREATED_TIME = "created_time";
     private static final String RAW_DATE = "raw_date";
@@ -65,6 +66,10 @@ public class BuyGoldDTO {
 
     public static String getTOTAL_AMOUNT() {
         return TOTAL_AMOUNT;
+    }
+
+    public static String getCREDIT_BALANCE() {
+        return CREDIT_BALANCE;
     }
 
     public static String getCREATED_DATE() {

@@ -12,6 +12,7 @@ public class BuyGold {
     private double base_price;
     private double total_weight;
     private double total_amount;
+    private double credit_balance;
     private String created_date;
     private String created_time;
     private String raw_date;
@@ -35,6 +36,7 @@ public class BuyGold {
             double base_price,
             double total_weight,
             double total_amount,
+            double credit_balance,
             String created_date,
             String created_time,
             String raw_date,
@@ -50,6 +52,7 @@ public class BuyGold {
         this.base_price = base_price;
         this.total_weight = total_weight;
         this.total_amount = total_amount;
+        this.credit_balance = credit_balance;
         this.created_date = created_date;
         this.created_time = created_time;
         this.raw_date = raw_date;
@@ -68,6 +71,7 @@ public class BuyGold {
             double base_price,
             double total_weight,
             double total_amount,
+            double credit_balance,
             String created_date,
             String created_time,
             String raw_date,
@@ -84,6 +88,7 @@ public class BuyGold {
         this.base_price = base_price;
         this.total_weight = total_weight;
         this.total_amount = total_amount;
+        this.credit_balance = credit_balance;
         this.created_date = created_date;
         this.created_time = created_time;
         this.raw_date = raw_date;
@@ -169,6 +174,14 @@ public class BuyGold {
 
     public void setTotal_amount(double total_amount) {
         this.total_amount = total_amount;
+    }
+
+    public double getCredit_balance() {
+        return credit_balance;
+    }
+
+    public void setCredit_balance(double credit_balance) {
+        this.credit_balance = credit_balance;
     }
 
     public String getCreated_date() {

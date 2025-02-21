@@ -9,8 +9,7 @@ public class BudgetDTO {
     private static final String ID = "id";
     private static final String NAME = "name";
     private static final String TOTAL_AMOUNT = "total_amount";
-    private static final String AMOUNT_USED = "amount_used";
-    private static final String AMOUNT_LEFT = "amount_left";
+    private static final String AMOUNT_FORWARD = "amount_forward";
     private static final String STATUS = "status";
     private static final String START_DATE = "start_date";
     private static final String END_DATE = "end_date";
@@ -33,14 +32,6 @@ public class BudgetDTO {
 
     public static String getTOTAL_AMOUNT() {
         return TOTAL_AMOUNT;
-    }
-
-    public static String getAMOUNT_USED() {
-        return AMOUNT_USED;
-    }
-
-    public static String getAMOUNT_LEFT() {
-        return AMOUNT_LEFT;
     }
 
     public static String getSTATUS() {
@@ -77,6 +68,10 @@ public class BudgetDTO {
 
     public static String getUSER() {
         return USER;
+    }
+
+    public static String getAMOUNT_FORWARD() {
+        return AMOUNT_FORWARD;
     }
 
 }

@@ -5,8 +5,10 @@ import Interfaces.AnonymousInterface;
 import ModelDTO.BudgetDTO;
 import ModelDTO.CreditDTO;
 import ModelDTO.CustomerDTO;
+import ModelDTO.ShopDTO;
 import ModelDTO.UserDTO;
 import Models.Credit;
+import Models.Shop;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -360,6 +362,44 @@ public class CreditRepository implements AnonymousInterface<Credit> {
         }
 
         return total;
+    }
+
+    public Credit findCustomerLastCredit(int customer_id) {
+        Credit credit = new Credit();
+
+        try {
+            String query = "SELECT * FROM " + CreditDTO.getCREDIT_DB() + " WHERE " + CreditDTO.getCUSTOMER_ID() + "='" + customer_id + "' ORDER BY " + CreditDTO.getID() + " DESC LIMIT 1";
+            pst = conn.prepareStatement(query);
+            rs = pst.executeQuery();
+
+            if (rs.next()) {
+                credit.setId(rs.getInt(CreditDTO.getID()));
+                credit.setCode(rs.getString(CreditDTO.getCODE()));
+                credit.setAmount(rs.getDouble(CreditDTO.getAMOUNT()));
+                credit.setPrevious_balance(rs.getDouble(CreditDTO.getPREVIOUS_AMOUNT()));
+                credit.setBudget_before(rs.getDouble(CreditDTO.getBUDGET_BEFORE()));
+                credit.setBudget_after(rs.getDouble(CreditDTO.getBUDGET_AFTER()));
+                credit.setBudget_id(rs.getInt(CreditDTO.getBUDGET_ID()));
+                credit.setCustomer_id(rs.getInt(CreditDTO.getCUSTOMER_ID()));
+                credit.setUser_id(rs.getInt(CreditDTO.getUSER_ID()));
+                credit.setCreated_date(rs.getString(CreditDTO.getCREATED_DATE()));
+                credit.setCreated_time(rs.getString(CreditDTO.getCREATED_TIME()));
+                credit.setRaw_date(rs.getString(CreditDTO.getRAW_DATE()));
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
+            return null;
+        } finally {
+            try {
+                rs.close();
+                pst.close();
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, e);
+            }
+        }
+
+        return credit;
     }
 
 }

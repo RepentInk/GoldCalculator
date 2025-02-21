@@ -4,7 +4,6 @@ import ModelDTO.BuyGoldDTO;
 import ModelDTO.CustomerDTO;
 import ModelDTO.PaymentDTO;
 import ModelDTO.UserDTO;
-import Models.Payments;
 import Models.Receipt;
 import java.io.InputStream;
 import java.sql.Connection;

@@ -79,6 +79,7 @@ public class CreditPaymentController {
                 customer_id,
                 amount_left,
                 balance,
+                false,
                 Authuser.getId(),
                 created_date,
                 created_time,
@@ -106,6 +107,34 @@ public class CreditPaymentController {
             creditPayment.getUser()
         };
         tmodel.insertRow(0, object);
+    }
+
+    public void saveCreditPayment(int customer_id, double totalAmount, double previousBalance) {
+        Credit credit = creditRepository.findCustomerLastCredit(customer_id);
+        String created_date = helper.returnDate();
+        String raw_date = helper.returnDate();
+        String created_time = helper.returnTime();
+
+        double balance = 0;
+        double temporalAmount = previousBalance;
+        if (previousBalance > totalAmount) {
+            balance = previousBalance - totalAmount;
+            temporalAmount = totalAmount;
+        }
+
+        CreditPayment creditPayment = new CreditPayment(
+                credit.getId(),
+                customer_id,
+                temporalAmount,
+                balance,
+                true,
+                Authuser.getId(),
+                created_date,
+                created_time,
+                raw_date
+        );
+
+        creditPaymentRepository.save(creditPayment);
     }
 
 }
