@@ -167,7 +167,7 @@ public class BudgetController {
     }
 
     private double budgetUsed(int id) {
-        return reportController.budgetUsedInAll(id);
+        return reportController.budgetUsedAll(id);
     }
 
     public void deleteItem(JTable table, String budgetID, int selectedRow) {

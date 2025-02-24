@@ -3,6 +3,7 @@ package Repository;
 import Helpers.connectDB;
 import Interfaces.AnonymousInterface;
 import ModelDTO.BudgetDTO;
+import ModelDTO.CREDITPAYMENTDTO;
 import ModelDTO.CreditDTO;
 import ModelDTO.CustomerDTO;
 import ModelDTO.ShopDTO;
@@ -345,6 +346,31 @@ public class CreditRepository implements AnonymousInterface<Credit> {
         double total = 0;
         try {
             String query = "SELECT SUM(" + CreditDTO.getAMOUNT() + ") AS total FROM " + CreditDTO.getCREDIT_DB() + " WHERE " + CreditDTO.getBUDGET_ID() + "='" + budget_id + "'";
+            pst = conn.prepareStatement(query);
+            rs = pst.executeQuery();
+            if (rs.next()) {
+                total = rs.getDouble("total");
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
+        } finally {
+            try {
+                rs.close();
+                pst.close();
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, e);
+            }
+        }
+
+        return total;
+    }
+
+    public double summationByCreditPayment(int budget_id, int status) {
+        double total = 0;
+        try {
+            String query = "SELECT SUM(" + CREDITPAYMENTDTO.getPAID() + ") AS total FROM " + CreditDTO.getCREDIT_DB() + " credit "
+                    + "LEFT JOIN " + CREDITPAYMENTDTO.getCREDIT_PAYMENTS_DB() + " creditPayment ON credit.id=creditPayment.credit_id  "
+                    + "WHERE " + CreditDTO.getBUDGET_ID() + "='" + budget_id + "' AND " + CREDITPAYMENTDTO.getPAID_FROM() + "='" + status + "'";
             pst = conn.prepareStatement(query);
             rs = pst.executeQuery();
             if (rs.next()) {

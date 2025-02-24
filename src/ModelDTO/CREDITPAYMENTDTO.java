@@ -13,6 +13,7 @@ public class CREDITPAYMENTDTO {
     private static final String BALANCE = "balance";
     private static final String PAID_FROM = "paid_from";
     private static final String USER_ID = "user_id";
+    private static final String BUY_GOLD_ID = "buy_gold_id";
     private static final String CREATED_DATE = "created_date";
     private static final String CREATED_TIME = "created_time";
     private static final String RAW_DATE = "raw_date";
@@ -66,6 +67,10 @@ public class CREDITPAYMENTDTO {
 
     public static String getUSER() {
         return USER;
+    }
+
+    public static String getBUY_GOLD_ID() {
+        return BUY_GOLD_ID;
     }
 
 }

@@ -43,6 +43,17 @@ public class BuyGoldForm extends javax.swing.JDialog {
     }
 
     private void calculatePounds() {
+        if (cmbCustomer.getSelectedIndex() == 0) {
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Sorry! Cutomer needs to be selected first",
+                    "CUSTOMER SELECTION",
+                    JOptionPane.INFORMATION_MESSAGE
+            );
+            this.clearField();
+            return;
+        }
+
         if (txtTop.getText().isEmpty()) {
             getToolkit().beep();
             this.clearFields();
@@ -59,6 +70,17 @@ public class BuyGoldForm extends javax.swing.JDialog {
     }
 
     private void calculateGoldWeight() {
+        if (cmbCustomer.getSelectedIndex() == 0) {
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Sorry! Cutomer needs to be selected first",
+                    "CUSTOMER SELECTION",
+                    JOptionPane.INFORMATION_MESSAGE
+            );
+            this.clearField();
+            return;
+        }
+
         if (txtTop.getText().isEmpty() || txtDown.getText().isEmpty()) {
             getToolkit().beep();
             return;
@@ -73,6 +95,16 @@ public class BuyGoldForm extends javax.swing.JDialog {
             karat = goldCalculation.karatCalculation(helper.parseAmountWithComma(helper.priceToStringWithoutRoundUp(density)));
         }
 
+        if (karat < 0) {
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Sorry! Top and Down values don't match",
+                    "KARAT REGISTRATION",
+                    JOptionPane.INFORMATION_MESSAGE
+            );
+            return;
+        }
+
         txtDensity.setText(String.valueOf(helper.priceToStringWithoutRoundUp(density)));
         txtKarat.setText(String.valueOf(helper.priceToStringWithoutRoundUp(karat)));
     }
@@ -83,9 +115,9 @@ public class BuyGoldForm extends javax.swing.JDialog {
             return;
         }
 
-        double pounds = txtPounds.getText().isEmpty() ? 0 : Double.parseDouble(txtPounds.getText());
-        double karat = txtKarat.getText().isEmpty() ? 0 : Double.parseDouble(txtKarat.getText());
-        double price = txtBasePrice.getText().isEmpty() ? 0 : Double.parseDouble(txtBasePrice.getText());
+        double pounds = txtPounds.getText().isEmpty() ? 0 : helper.parseAmountWithComma(txtPounds.getText());
+        double karat = txtKarat.getText().isEmpty() ? 0 : helper.parseAmountWithComma(txtKarat.getText());
+        double price = txtBasePrice.getText().isEmpty() ? 0 : helper.parseAmountWithComma(txtBasePrice.getText());
         double credit_balance = txtCreditBalance.getText().isEmpty() ? 0 : helper.parseAmountWithComma(txtCreditBalance.getText());
 
         double amount = 0, basePrice = 0, amountPayable = 0;
@@ -207,6 +239,11 @@ public class BuyGoldForm extends javax.swing.JDialog {
                 cmbCustomer,
                 txtCreditBalance
         );
+    }
+
+    private void clearField() {
+        txtTop.setText("");
+        txtDown.setText("");
     }
 
     /**
@@ -345,6 +382,7 @@ public class BuyGoldForm extends javax.swing.JDialog {
 
         txtBalancePayable.setEditable(false);
         txtBalancePayable.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        txtBalancePayable.setForeground(new java.awt.Color(204, 0, 0));
         txtBalancePayable.setFocusable(false);
 
         txtCreditBalance.setEditable(false);
@@ -355,7 +393,8 @@ public class BuyGoldForm extends javax.swing.JDialog {
         jLabel10.setText("Credit Balance");
 
         jLabel11.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel11.setText("Balance Payable");
+        jLabel11.setForeground(new java.awt.Color(204, 0, 0));
+        jLabel11.setText("Balance or Refund to Pay");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);

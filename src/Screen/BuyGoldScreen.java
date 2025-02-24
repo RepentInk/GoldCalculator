@@ -7,7 +7,9 @@ import Dialogs.PaymentHistoryForm;
 import Helpers.ActionsColumns;
 import Helpers.HelperFunctions;
 import Helpers.ModelType;
+import Helpers.Report;
 import Main.Dashboard;
+import Models.Receipt;
 import java.beans.PropertyChangeEvent;
 import java.util.Vector;
 import javax.swing.JTextField;
@@ -22,6 +24,7 @@ public class BuyGoldScreen extends javax.swing.JPanel {
     Vector searchTableVector;
     HelperFunctions helper = new HelperFunctions();
     BuyGoldController buyGoldController = new BuyGoldController();
+    Report report = new Report();
 
     /**
      * Creates new form DailyBudgetScreen
@@ -67,6 +70,11 @@ public class BuyGoldScreen extends javax.swing.JPanel {
             PaymentHistoryForm paymentHistoryForm = new PaymentHistoryForm(new Dashboard(), true);
             paymentHistoryForm.populateData(table_id);
             paymentHistoryForm.setVisible(true);
+        } else if (buyGoldTable.getSelectedColumn() == columns[2]) {
+            String sql = report.receiptDataGold(table_id);
+            Receipt receipt = buyGoldController.buyGoldData(table_id);
+            receipt.setBalance(receipt.getTotalAmount() - receipt.getAmountPaid());
+            report.paymentReceiptPrint(sql, receipt);
         }
 
         this.countRow();
@@ -199,20 +207,20 @@ public class BuyGoldScreen extends javax.swing.JPanel {
 
         buyGoldTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "id", "Code", "Customer", "Top", "Down", "Pounds", "Density", "Karat", "Base Price", "Price", "Amount", "Amount Paid", "Balance", "Created By", "Date", "", ""
+                "id", "Code", "Customer", "Top", "Down", "Pounds", "Density", "Karat", "Base Price", "Price", "Amount", "A. Paid", "Balance", "Created By", "Date", "", "", ""
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -251,6 +259,8 @@ public class BuyGoldScreen extends javax.swing.JPanel {
             buyGoldTable.getColumnModel().getColumn(15).setMaxWidth(60);
             buyGoldTable.getColumnModel().getColumn(16).setMinWidth(70);
             buyGoldTable.getColumnModel().getColumn(16).setMaxWidth(70);
+            buyGoldTable.getColumnModel().getColumn(17).setMinWidth(70);
+            buyGoldTable.getColumnModel().getColumn(17).setMaxWidth(70);
         }
 
         jLabel32.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N

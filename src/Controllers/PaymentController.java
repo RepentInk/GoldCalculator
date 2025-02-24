@@ -170,7 +170,7 @@ public class PaymentController {
             JTextField amountBeforePayment
     ) {
         Budget budget = budgetController.getSingleBudget(budget_selected);
-        double budget_used = reportController.budgetUsedInAll(budget.getId());
+        double budget_used = reportController.budgetUsedAll(budget.getId());
         amountBeforePayment.setText(helper.priceToString(budget.getTotal_amount() - budget_used));
     }
 

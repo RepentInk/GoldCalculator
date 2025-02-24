@@ -36,7 +36,8 @@ public class CreditPaymentController {
                 creditPayment.getCreated_time(),
                 helper.priceToString(creditPayment.getPaid()),
                 helper.priceToString(creditPayment.getBalance()),
-                creditPayment.getUser()
+                creditPayment.getUser(),
+                this.creditStatus(creditPayment.getPaid_from())
             };
 
             defaultTableModel.addRow(object);
@@ -54,8 +55,15 @@ public class CreditPaymentController {
         Credit credit = creditRepository.find(credit_id);
         lblCrediterID.setText(String.valueOf(credit.getId()));
         lblCustomerID.setText(String.valueOf(credit.getCustomer_id()));
-        double amountPaid = creditPaymentRepository.summationAmountPaid(credit.getId());
+        double amountPaid = this.getTotalAmountPaid(credit.getId());
         amountLeft.setText(helper.priceToString(credit.getAmount() - amountPaid));
+    }
+
+    public double getTotalAmountPaid(int credit_id) {
+        double amount_paid = creditPaymentRepository.summationAmountPaid(credit_id, 0);
+        double amount_refund = creditPaymentRepository.summationAmountPaid(credit_id, 1);
+
+        return amount_paid + amount_refund;
     }
 
     public void saveUpdate(
@@ -79,8 +87,9 @@ public class CreditPaymentController {
                 customer_id,
                 amount_left,
                 balance,
-                false,
+                1,
                 Authuser.getId(),
+                0,
                 created_date,
                 created_time,
                 raw_date
@@ -104,12 +113,13 @@ public class CreditPaymentController {
             creditPayment.getCreated_time(),
             helper.priceToString(creditPayment.getPaid()),
             helper.priceToString(creditPayment.getBalance()),
-            creditPayment.getUser()
+            creditPayment.getUser(),
+            this.creditStatus(creditPayment.getPaid_from())
         };
         tmodel.insertRow(0, object);
     }
 
-    public void saveCreditPayment(int customer_id, double totalAmount, double previousBalance) {
+    public void saveCreditPayment(int customer_id, double totalAmount, double previousBalance, int buy_gold_id) {
         Credit credit = creditRepository.findCustomerLastCredit(customer_id);
         String created_date = helper.returnDate();
         String raw_date = helper.returnDate();
@@ -117,7 +127,7 @@ public class CreditPaymentController {
 
         double balance = 0;
         double temporalAmount = previousBalance;
-        if (previousBalance > totalAmount) {
+        if (totalAmount < previousBalance) {
             balance = previousBalance - totalAmount;
             temporalAmount = totalAmount;
         }
@@ -127,14 +137,19 @@ public class CreditPaymentController {
                 customer_id,
                 temporalAmount,
                 balance,
-                true,
+                0,
                 Authuser.getId(),
+                buy_gold_id,
                 created_date,
                 created_time,
                 raw_date
         );
 
         creditPaymentRepository.save(creditPayment);
+    }
+
+    private String creditStatus(int status) {
+        return status == 1 ? "Refund" : "Paid";
     }
 
 }

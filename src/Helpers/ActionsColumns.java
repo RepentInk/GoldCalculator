@@ -17,7 +17,7 @@ public class ActionsColumns {
                 column = new int[]{9, 10};
                 break;
             case BuyGold:
-                column = new int[]{15, 16};
+                column = new int[]{15, 16, 17};
                 break;
             case Customers:
                 column = new int[]{6, 7};
@@ -32,7 +32,7 @@ public class ActionsColumns {
                 column = new int[]{4};
                 break;
             case Credit:
-                column = new int[]{10, 11};
+                column = new int[]{12, 13};
                 break;
             case ExpensesType:
                 column = new int[]{4, 5};

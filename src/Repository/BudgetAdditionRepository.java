@@ -314,4 +314,28 @@ public class BudgetAdditionRepository implements AnonymousInterface<BudgetAdditi
         return total;
     }
 
+    public double totalAdditionalAmount(int budget_id) {
+        double total = 0;
+        try {
+            String query = "SELECT SUM(" + BudgetAdditionDTO.getAMOUNT() + ") AS total FROM " + BudgetAdditionDTO.getBUDGET_ADDITION_DB() + " "
+                    + "WHERE " + BudgetAdditionDTO.getBUDGET_ID() + "='" + budget_id + "'";
+            pst = conn.prepareStatement(query);
+            rs = pst.executeQuery();
+            if (rs.next()) {
+                total = rs.getDouble("total");
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
+        } finally {
+            try {
+                rs.close();
+                pst.close();
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, e);
+            }
+        }
+
+        return total;
+    }
+
 }

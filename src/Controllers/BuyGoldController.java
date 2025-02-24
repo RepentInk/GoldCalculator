@@ -6,6 +6,7 @@ import Helpers.TableActions;
 import ModelDTO.BuyGoldDTO;
 import Models.BuyGold;
 import Models.Customer;
+import Models.Receipt;
 import Repository.AnonymousRepository;
 import Repository.BuyGoldRepository;
 import Repository.CustomerRepository;
@@ -58,7 +59,8 @@ public class BuyGoldController {
                 buyGold.getUser(),
                 buyGold.getCreated_date(),
                 TableActions.View.toString(),
-                TableActions.History.toString()
+                TableActions.History.toString(),
+                TableActions.Print.toString()
             };
 
             defaultTableModel.addRow(object);
@@ -113,6 +115,11 @@ public class BuyGoldController {
             buy_gold_id = Integer.parseInt(buyGoldID.getText());
         }
 
+        double credit_balance = total_amount;
+        if (total_amount > credit_amount) {
+            credit_balance = credit_amount;
+        }
+
         if (buy_gold_id > 0) {
             BuyGold buyGold = new BuyGold(
                     buy_gold_id,
@@ -125,7 +132,7 @@ public class BuyGoldController {
                     base_price,
                     value_value,
                     total_amount,
-                    credit_amount,
+                    credit_balance,
                     created_date,
                     created_time,
                     raw_date,
@@ -151,7 +158,7 @@ public class BuyGoldController {
                     base_price,
                     value_value,
                     total_amount,
-                    credit_amount,
+                    credit_balance,
                     created_date,
                     created_time,
                     raw_date,
@@ -163,16 +170,18 @@ public class BuyGoldController {
 
             this.populateAfterSaving(table, last_insert_id);
 
+            if (credit_amount > 0) {
+                creditPaymentController.saveCreditPayment(
+                        customer_id,
+                        total_amount,
+                        credit_amount,
+                        last_insert_id
+                );
+            }
+
             dialog.setVisible(false);
         }
 
-        if (credit_amount > 0) {
-            creditPaymentController.saveCreditPayment(
-                    customer_id,
-                    total_amount,
-                    credit_amount
-            );
-        }
     }
 
     private void populateAfterSaving(JTable table, int buy_gold_id) {
@@ -194,13 +203,15 @@ public class BuyGoldController {
             helper.priceToString(buyGold.getTotal_weight()),
             helper.priceToString(buyGold.getBase_price()),
             helper.priceToString(buyGold.getTotal_amount()),
-            helper.priceToString(amount_paid),
-            helper.priceToString(buyGold.getTotal_amount() - amount_paid),
+            helper.priceToString(amount_paid + buyGold.getCredit_balance()),
+            helper.priceToString(buyGold.getTotal_amount() - (amount_paid + buyGold.getCredit_balance())),
             buyGold.getUser(),
             buyGold.getCreated_date(),
             TableActions.View.toString(),
-            TableActions.History.toString()
+            TableActions.History.toString(),
+            TableActions.Print.toString()
         };
+
         tmodel.insertRow(0, object);
     }
 
@@ -308,5 +319,10 @@ public class BuyGoldController {
     private double amountPaid(int id) {
         double total = paymentsRepository.summationOfPurchasePayment(id);
         return total;
+    }
+
+    public Receipt buyGoldData(int buyGoldId) {
+        Receipt receiptData = buyGoldRepository.receiptData(buyGoldId);
+        return receiptData;
     }
 }

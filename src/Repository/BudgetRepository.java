@@ -349,4 +349,41 @@ public class BudgetRepository implements AnonymousInterface<Budget> {
         }
     }
 
+    public Budget todayBudget(String createdDate) {
+        Budget budget = new Budget();
+
+        try {
+            String query = "SELECT * FROM " + BudgetDTO.getBUDGET_DB() + " WHERE " + BudgetDTO.getCREATED_DATE() + "='" + createdDate + "'";
+            pst = conn.prepareStatement(query);
+            rs = pst.executeQuery();
+
+            if (rs.next()) {
+                budget.setId(rs.getInt(BudgetDTO.getID()));
+                budget.setName(rs.getString(BudgetDTO.getNAME()));
+                budget.setTotal_amount(rs.getDouble(BudgetDTO.getTOTAL_AMOUNT()));
+                budget.setAmount_forward(rs.getDouble(BudgetDTO.getAMOUNT_FORWARD()));
+                budget.setStatus(rs.getBoolean(BudgetDTO.getSTATUS()));
+                budget.setStart_date(rs.getString(BudgetDTO.getSTART_DATE()));
+                budget.setEnd_date(rs.getString(BudgetDTO.getEND_DATE()));
+                budget.setCreated_time(rs.getString(BudgetDTO.getCREATED_TIME()));
+                budget.setCreated_date(rs.getString(BudgetDTO.getCREATED_DATE()));
+                budget.setRaw_date(rs.getString(BudgetDTO.getRAW_DATE()));
+                budget.setUser_id(rs.getInt(BudgetDTO.getUSER_ID()));
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
+            return null;
+        } finally {
+            try {
+                rs.close();
+                pst.close();
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, e);
+            }
+        }
+
+        return budget;
+    }
+
 }

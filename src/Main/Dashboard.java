@@ -339,7 +339,6 @@ public class Dashboard extends javax.swing.JFrame {
         DailyBudgetLayout.setHorizontalGroup(
             DailyBudgetLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, DailyBudgetLayout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(lbl_DailyBudget, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
@@ -366,7 +365,6 @@ public class Dashboard extends javax.swing.JFrame {
         BuyGoldLayout.setHorizontalGroup(
             BuyGoldLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, BuyGoldLayout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(lbl_BuyGold, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
@@ -393,7 +391,6 @@ public class Dashboard extends javax.swing.JFrame {
         PricingLayout.setHorizontalGroup(
             PricingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PricingLayout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(lbl_Pricing, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
@@ -420,7 +417,6 @@ public class Dashboard extends javax.swing.JFrame {
         CreditLayout.setHorizontalGroup(
             CreditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, CreditLayout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(lbl_Credit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
@@ -447,7 +443,6 @@ public class Dashboard extends javax.swing.JFrame {
         UsersLayout.setHorizontalGroup(
             UsersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, UsersLayout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(lbl_Users, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
@@ -472,7 +467,6 @@ public class Dashboard extends javax.swing.JFrame {
         LogoutLayout.setHorizontalGroup(
             LogoutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, LogoutLayout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(lbl_Logout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
@@ -496,7 +490,6 @@ public class Dashboard extends javax.swing.JFrame {
         CustomersLayout.setHorizontalGroup(
             CustomersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, CustomersLayout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(lbl_Customers, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
@@ -520,7 +513,6 @@ public class Dashboard extends javax.swing.JFrame {
         ShopDetailsLayout.setHorizontalGroup(
             ShopDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ShopDetailsLayout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(lbl_ShopDetails, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
@@ -546,8 +538,7 @@ public class Dashboard extends javax.swing.JFrame {
         Payments.setLayout(PaymentsLayout);
         PaymentsLayout.setHorizontalGroup(
             PaymentsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(PaymentsLayout.createSequentialGroup()
-                .addContainerGap()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PaymentsLayout.createSequentialGroup()
                 .addComponent(lbl_Payments, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
@@ -574,7 +565,6 @@ public class Dashboard extends javax.swing.JFrame {
         ExpensesLayout.setHorizontalGroup(
             ExpensesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ExpensesLayout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(lbl_Expenses, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
@@ -597,9 +587,8 @@ public class Dashboard extends javax.swing.JFrame {
         ExpensesType.setLayout(ExpensesTypeLayout);
         ExpensesTypeLayout.setHorizontalGroup(
             ExpensesTypeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(ExpensesTypeLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lbl_ExpensesType, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ExpensesTypeLayout.createSequentialGroup()
+                .addComponent(lbl_ExpensesType, javax.swing.GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE)
                 .addContainerGap())
         );
         ExpensesTypeLayout.setVerticalGroup(

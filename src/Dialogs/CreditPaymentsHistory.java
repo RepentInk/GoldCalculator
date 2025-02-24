@@ -126,20 +126,20 @@ public class CreditPaymentsHistory extends javax.swing.JDialog {
 
         creditPaymentHistoryTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Id", "Created Date", "Time", "Amount", "Balance", "Received By"
+                "Id", "Created Date", "Time", "Amount", "Balance", "Received By", "Status"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.Double.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Integer.class, java.lang.Double.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -154,6 +154,8 @@ public class CreditPaymentsHistory extends javax.swing.JDialog {
         if (creditPaymentHistoryTable.getColumnModel().getColumnCount() > 0) {
             creditPaymentHistoryTable.getColumnModel().getColumn(0).setMinWidth(0);
             creditPaymentHistoryTable.getColumnModel().getColumn(0).setMaxWidth(0);
+            creditPaymentHistoryTable.getColumnModel().getColumn(6).setMinWidth(80);
+            creditPaymentHistoryTable.getColumnModel().getColumn(6).setMaxWidth(80);
         }
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Make Payment", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 18))); // NOI18N

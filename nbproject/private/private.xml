@@ -3,13 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/nyark/Documents/NetBeansProjects/GoldCalculator/src/Helpers/ActionsColumns.java</file>
-            <file>file:/C:/Users/nyark/Documents/NetBeansProjects/GoldCalculator/src/Screen/ExpensesScreen.java</file>
-            <file>file:/C:/Users/nyark/Documents/NetBeansProjects/GoldCalculator/src/Screen/ExpensesTypeScreen.java</file>
-            <file>file:/C:/Users/nyark/Documents/NetBeansProjects/GoldCalculator/src/Main/Dashboard.java</file>
-            <file>file:/C:/Users/nyark/Documents/NetBeansProjects/GoldCalculator/src/Controllers/BudgetController.java</file>
-            <file>file:/C:/Users/nyark/Documents/NetBeansProjects/GoldCalculator/src/Screen/DailyBudgetScreen.java</file>
-            <file>file:/C:/Users/nyark/Documents/NetBeansProjects/GoldCalculator/src/Screen/CreditScreen.java</file>
+            <file>file:/C:/Users/nyark/Documents/NetBeansProjects/GoldCalculator/src/Repository/PaymentsRepository.java</file>
+            <file>file:/C:/Users/nyark/Documents/NetBeansProjects/GoldCalculator/src/Controllers/ReportController.java</file>
+            <file>file:/C:/Users/nyark/Documents/NetBeansProjects/GoldCalculator/src/Repository/BuyGoldRepository.java</file>
+            <file>file:/C:/Users/nyark/Documents/NetBeansProjects/GoldCalculator/src/Repository/BudgetRepository.java</file>
+            <file>file:/C:/Users/nyark/Documents/NetBeansProjects/GoldCalculator/src/Repository/BudgetAdditionRepository.java</file>
+            <file>file:/C:/Users/nyark/Documents/NetBeansProjects/GoldCalculator/src/Controllers/DashboardController.java</file>
+            <file>file:/C:/Users/nyark/Documents/NetBeansProjects/GoldCalculator/src/Screen/DashboardScreen.java</file>
         </group>
     </open-files>
 </project-private>

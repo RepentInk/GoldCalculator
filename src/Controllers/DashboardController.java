@@ -1,16 +1,17 @@
 package Controllers;
 
 import Helpers.HelperFunctions;
-import Helpers.PricingData;
 import Helpers.TableActions;
+import Models.Budget;
 import Models.Daily;
 import Models.Monthly;
 import Models.Yearly;
-import Repository.CustomerRepository;
+import Repository.BudgetRepository;
+import Repository.BuyGoldRepository;
+import Repository.CreditPaymentRepository;
 import Repository.DailyReportRepository;
 import Repository.MonthlyReportRepository;
-import Repository.ReportRespository;
-import Repository.UserRepository;
+import Repository.PaymentsRepository;
 import Repository.YearlyReportRepository;
 import java.time.Month;
 import java.util.List;
@@ -24,29 +25,54 @@ import javax.swing.table.DefaultTableModel;
  */
 public class DashboardController {
 
-    CustomerRepository customerRepository = new CustomerRepository();
-    UserRepository userRepository = new UserRepository();
     MonthlyReportRepository monthlyReportRepository = new MonthlyReportRepository();
     YearlyReportRepository yearlyReportRepository = new YearlyReportRepository();
-    ReportRespository reportRespository = new ReportRespository();
     DailyReportRepository dailyReportRepository = new DailyReportRepository();
+    BuyGoldRepository buyGoldRepository = new BuyGoldRepository();
+    PaymentsRepository paymentsRepository = new PaymentsRepository();
+    BudgetRepository budgetRepository = new BudgetRepository();
+    CreditPaymentRepository creditPaymentRepository = new CreditPaymentRepository();
+
+    ReportController reportController = new ReportController();
 
     HelperFunctions helper = new HelperFunctions();
 
-    public void dashboardCount(
-            JTextField customers,
-            JTextField users,
-            JTextField basePrice,
+    public void dashboardData(
+            String createdDate,
             JTextField totalGoldBought,
-            JTextField toalPayments,
-            JTextField totalBalance
+            JTextField totalGoldPayments,
+            JTextField totalGoldBalance,
+            JTextField totalDailyBudget,
+            JTextField totalBudgetUsed,
+            JTextField txtTotalBudgetBalance,
+            JTextField txtBudgetUsedPayment,
+            JTextField txtBudgetUsedCredit,
+            JTextField txtBudgetUsedExpense
     ) {
-        customers.setText(String.valueOf(customerRepository.count()));
-        users.setText(String.valueOf(userRepository.count()));
-        basePrice.setText(helper.priceToString(PricingData.getCurrent_price()));
-        totalGoldBought.setText(helper.priceToString(reportRespository.totalPurchaseSummation()));
-        toalPayments.setText(helper.priceToString(reportRespository.totalPaymentSummation()));
-        totalBalance.setText(helper.priceToString(reportRespository.totalPurchaseSummation() - reportRespository.totalPaymentSummation()));
+
+        double total_gold_bought = buyGoldRepository.summationDaily(createdDate);
+        double total_payments_gold = paymentsRepository.summationOfPayments(createdDate);
+        double total_used_to_pay_credit = creditPaymentRepository.summationAmountPaidToday(createdDate, 0);
+        double totalPayments = total_payments_gold + total_used_to_pay_credit;
+        
+        
+        
+        
+        Budget budget = budgetRepository.todayBudget(helper.returnDate());
+        double budget_used = reportController.budgetUsedAll(budget.getId());
+        double budgetUsedOnPayment = reportController.budgetUsedOnPayment(budget.getId());
+        double budgetUsedOnCredit = reportController.budgetUsedOnCredit(budget.getId());
+        double budgetUsedOnExpenses = reportController.budgetUsedOnExpenses(budget.getId());
+
+        totalGoldBought.setText(helper.priceToString(total_gold_bought));
+        totalGoldPayments.setText(helper.priceToString(totalPayments));
+        totalGoldBalance.setText(helper.priceToString(total_gold_bought - totalPayments));
+        totalDailyBudget.setText(helper.priceToString(budget.getTotal_amount()));
+        totalBudgetUsed.setText(helper.priceToString(budget_used));
+        txtTotalBudgetBalance.setText(helper.priceToString(budget.getTotal_amount() - budget_used));
+        txtBudgetUsedPayment.setText(helper.priceToString(budgetUsedOnPayment));
+        txtBudgetUsedCredit.setText(helper.priceToString(budgetUsedOnCredit));
+        txtBudgetUsedExpense.setText(helper.priceToString(budgetUsedOnExpenses));
     }
 
     public void populateMonthlyTable(JTable table, String year, boolean showButtonColumn) {

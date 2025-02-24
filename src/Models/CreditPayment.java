@@ -11,8 +11,9 @@ public class CreditPayment {
     private int customer_id;
     private double paid;
     private double balance;
-    private boolean paid_from;
+    private int paid_from;
     private int user_id;
+    private int buy_gold_id;
     private String created_date;
     private String created_time;
     private String raw_date;
@@ -27,8 +28,9 @@ public class CreditPayment {
             int customer_id,
             double paid,
             double balance,
-            boolean paid_from,
+            int paid_from,
             int user_id,
+            int buy_gold_id,
             String created_date,
             String created_time,
             String raw_date
@@ -39,6 +41,7 @@ public class CreditPayment {
         this.balance = balance;
         this.paid_from = paid_from;
         this.user_id = user_id;
+        this.buy_gold_id = buy_gold_id;
         this.created_date = created_date;
         this.created_time = created_time;
         this.raw_date = raw_date;
@@ -50,8 +53,9 @@ public class CreditPayment {
             int customer_id,
             double paid,
             double balance,
-            boolean paid_from,
+            int paid_from,
             int user_id,
+            int buy_gold_id,
             String created_date,
             String created_time,
             String raw_date
@@ -63,6 +67,7 @@ public class CreditPayment {
         this.balance = balance;
         this.paid_from = paid_from;
         this.user_id = user_id;
+        this.buy_gold_id = buy_gold_id;
         this.created_date = created_date;
         this.created_time = created_time;
         this.raw_date = raw_date;
@@ -108,11 +113,11 @@ public class CreditPayment {
         this.balance = balance;
     }
 
-    public boolean getPaid_from() {
+    public int getPaid_from() {
         return paid_from;
     }
 
-    public void setPaid_from(boolean paid_from) {
+    public void setPaid_from(int paid_from) {
         this.paid_from = paid_from;
     }
 
@@ -154,6 +159,14 @@ public class CreditPayment {
 
     public void setUser(String user) {
         this.user = user;
+    }
+
+    public int getBuy_gold_id() {
+        return buy_gold_id;
+    }
+
+    public void setBuy_gold_id(int buy_gold_id) {
+        this.buy_gold_id = buy_gold_id;
     }
 
 }

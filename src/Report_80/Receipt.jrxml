@@ -25,8 +25,6 @@
 	<field name="Value" class="java.lang.String"/>
 	<field name="Price" class="java.lang.String"/>
 	<field name="Total" class="java.lang.String"/>
-	<field name="Amount" class="java.lang.String"/>
-	<field name="Balance" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>

@@ -43,6 +43,17 @@ public class Report {
         return query;
     }
 
+    public String receiptDataGold(int buy_gold_id) {
+        String query = "SELECT user.fullname AS User,gold.code AS Code,gold.created_date AS Created,gold.created_time AS Time,"
+                + "gold.top AS Top, gold.down AS Down, gold.density AS Density, gold.karat AS Karat, gold.pounds AS Pounds, gold.base_price AS Price,"
+                + "gold.total_weight AS Value, gold.total_amount AS Total, customer.fullname AS Customer FROM " + BuyGoldDTO.getBUY_GOLD_DB() + " gold "
+                + "LEFT JOIN " + UserDTO.getUSERS_DB() + " user ON gold.user_id=user.id "
+                + "LEFT JOIN " + CustomerDTO.getCUSTOMER_DB() + " customer ON gold.customer_id=customer.id "
+                + "WHERE gold.id = '" + buy_gold_id + "'";
+
+        return query;
+    }
+
     public void paymentReceiptPrint(String sql, Receipt receipt) {
         try {
             InputStream url = getClass().getResourceAsStream("/Report_80/Receipt.jrxml");

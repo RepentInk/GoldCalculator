@@ -51,8 +51,10 @@ public class CreditController {
                 credit.getCustomer(),
                 credit.getBudget(),
                 helper.priceToString(credit.getAmount()),
-                helper.priceToString(this.getCreditPayments(credit.getId())),
-                helper.priceToString(credit.getAmount() - this.getCreditPayments(credit.getId())),
+                helper.priceToString(this.getTotalAmountPaid(credit.getId())),
+                helper.priceToString(credit.getAmount() - this.getTotalAmountPaid(credit.getId())),
+                helper.priceToString(this.getCreditPaymentsPaid(credit.getId())),
+                helper.priceToString(this.getCreditPaymentsRefund(credit.getId())),
                 credit.getUser(),
                 credit.getCreated_time(),
                 credit.getCreated_date(),
@@ -163,8 +165,10 @@ public class CreditController {
             credit.getCustomer(),
             credit.getBudget(),
             helper.priceToString(credit.getAmount()),
-            helper.priceToString(this.getCreditPayments(credit.getId())),
-            helper.priceToString(credit.getAmount() - this.getCreditPayments(credit.getId())),
+            helper.priceToString(this.getTotalAmountPaid(credit.getId())),
+            helper.priceToString(credit.getAmount() - this.getTotalAmountPaid(credit.getId())),
+            helper.priceToString(this.getCreditPaymentsPaid(credit.getId())),
+            helper.priceToString(this.getCreditPaymentsRefund(credit.getId())),
             credit.getUser(),
             credit.getCreated_time(),
             credit.getCreated_date(),
@@ -184,11 +188,13 @@ public class CreditController {
         table.setValueAt(credit.getCustomer(), selectedRow, 2);
         table.setValueAt(credit.getBudget(), selectedRow, 3);
         table.setValueAt(helper.priceToString(credit.getAmount()), selectedRow, 4);
-        table.setValueAt(helper.priceToString(this.getCreditPayments(credit.getId())), selectedRow, 5);
-        table.setValueAt(helper.priceToString(credit.getAmount() - this.getCreditPayments(credit.getId())), selectedRow, 6);
-        table.setValueAt(credit.getUser(), selectedRow, 7);
-        table.setValueAt(credit.getCreated_time(), selectedRow, 8);
-        table.setValueAt(credit.getCreated_date(), selectedRow, 9);
+        table.setValueAt(helper.priceToString(this.getTotalAmountPaid(credit.getId())), selectedRow, 5);
+        table.setValueAt(helper.priceToString(credit.getAmount() - this.getTotalAmountPaid(credit.getId())), selectedRow, 6);
+        table.setValueAt(helper.priceToString(this.getCreditPaymentsPaid(credit_id)), selectedRow, 7);
+        table.setValueAt(helper.priceToString(this.getCreditPaymentsRefund(credit_id)), selectedRow, 8);
+        table.setValueAt(credit.getUser(), selectedRow, 9);
+        table.setValueAt(credit.getCreated_time(), selectedRow, 10);
+        table.setValueAt(credit.getCreated_date(), selectedRow, 11);
     }
 
     public void deleteItem(JTable table, String rowID, int selectedRow) {
@@ -220,9 +226,21 @@ public class CreditController {
         return code;
     }
 
-    private double getCreditPayments(int credit_id) {
-        double totalAmount = creditPaymentRepository.summationAmountPaid(credit_id);
+    private double getCreditPaymentsPaid(int credit_id) {
+        double totalAmount = creditPaymentRepository.summationAmountPaid(credit_id, 0);
         return totalAmount;
+    }
+
+    private double getCreditPaymentsRefund(int credit_id) {
+        double totalAmount = creditPaymentRepository.summationAmountPaid(credit_id, 1);
+        return totalAmount;
+    }
+
+    public double getTotalAmountPaid(int credit_id) {
+        double amount_paid = creditPaymentRepository.summationAmountPaid(credit_id, 0);
+        double amount_refund = creditPaymentRepository.summationAmountPaid(credit_id, 1);
+
+        return amount_paid + amount_refund;
     }
 
     public void onTableClicked(

@@ -322,6 +322,9 @@ public class HelperFunctions {
                 case 17:
                     col = colorSeventeen[i];
                     break;
+                case 18:
+                    col = colorEighteen[i];
+                    break;
                 default:
                     col = colorEighteen[i];
                     break;

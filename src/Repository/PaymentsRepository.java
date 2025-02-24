@@ -447,4 +447,27 @@ public class PaymentsRepository implements AnonymousInterface<Payments> {
         return paymentsList;
     }
 
+    public double summationOfPayments(String createdDate) {
+        double total = 0;
+        try {
+            String query = "SELECT SUM(" + PaymentDTO.getAMOUNT_PAID() + ") AS total_budget FROM " + PaymentDTO.getPAYMENT_DB() + " WHERE " + PaymentDTO.getCREATED_DATE() + "='" + createdDate + "'";
+            pst = conn.prepareStatement(query);
+            rs = pst.executeQuery();
+            if (rs.next()) {
+                total = rs.getDouble(PaymentDTO.getTOTAL_BUDGET());
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
+        } finally {
+            try {
+                rs.close();
+                pst.close();
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, e);
+            }
+        }
+
+        return total;
+    }
+
 }

@@ -3,9 +3,11 @@ package Repository;
 import Helpers.connectDB;
 import Interfaces.AnonymousInterface;
 import ModelDTO.BuyGoldDTO;
+import ModelDTO.CREDITPAYMENTDTO;
 import ModelDTO.CustomerDTO;
 import ModelDTO.UserDTO;
 import Models.BuyGold;
+import Models.Receipt;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -384,6 +386,61 @@ public class BuyGoldRepository implements AnonymousInterface<BuyGold> {
         }
 
         return buyGold;
+    }
+
+    public double summationDaily(String createdDate) {
+        double total = 0;
+        try {
+            String query = "SELECT SUM(" + BuyGoldDTO.getTOTAL_AMOUNT() + ") AS total FROM " + BuyGoldDTO.getBUY_GOLD_DB() + " WHERE " + BuyGoldDTO.getCREATED_DATE() + "='" + createdDate + "'";
+            pst = conn.prepareStatement(query);
+            rs = pst.executeQuery();
+            if (rs.next()) {
+                total = rs.getDouble("total");
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
+        } finally {
+            try {
+                rs.close();
+                pst.close();
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, e);
+            }
+        }
+
+        return total;
+    }
+
+    public Receipt receiptData(int id) {
+        Receipt receipt = new Receipt();
+
+        try {
+            String query = "SELECT gold.*,credit_payment.paid,credit_payment.balance FROM " + BuyGoldDTO.getBUY_GOLD_DB() + " gold "
+                    + "LEFT JOIN " + CREDITPAYMENTDTO.getCREDIT_PAYMENTS_DB() + " credit_payment ON credit_payment.buy_gold_id=gold.id "
+                    + "WHERE gold.id= '" + id + "'";
+            pst = conn.prepareStatement(query);
+            rs = pst.executeQuery();
+
+            if (rs.next()) {
+                receipt.setTotalAmount(rs.getDouble("total_amount"));
+                receipt.setAmountPaid(rs.getDouble("paid"));
+                receipt.setBasePrice(rs.getDouble("base_price"));
+                receipt.setBalance(rs.getDouble("balance"));
+                receipt.setCredit_balance(rs.getDouble("credit_balance"));
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
+            return null;
+        } finally {
+            try {
+                rs.close();
+                pst.close();
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, e);
+            }
+        }
+        return receipt;
     }
 
 }
