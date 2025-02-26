@@ -1,6 +1,7 @@
 package Dialogs;
 
 import Controllers.CreditPaymentController;
+import Controllers.CreditTopupController;
 import Helpers.HelperFunctions;
 import Helpers.LookAndFeel;
 import javax.swing.JOptionPane;
@@ -15,6 +16,7 @@ public class CreditPaymentsHistory extends javax.swing.JDialog {
 
     HelperFunctions helper = new HelperFunctions();
     CreditPaymentController creditPaymentController = new CreditPaymentController();
+    CreditTopupController creditTopupController = new CreditTopupController();
 
     /**
      * Creates new form CreditPaymentsHistory
@@ -33,13 +35,20 @@ public class CreditPaymentsHistory extends javax.swing.JDialog {
 
     public void populateData(int credit_id) {
         creditPaymentController.populateTable(creditPaymentHistoryTable, credit_id);
+        creditTopupController.populateTable(creditTopupTable, credit_id);
         creditPaymentController.viewDetails(
                 credit_id,
                 lblCreditID,
                 lblCustomerID,
                 txtAmountLeft
         );
+        creditTopupController.setCreditAmount(
+                credit_id,
+                txtInitialAmount,
+                txtBudgetBalance
+        );
         helper.TableColor(creditPaymentHistoryTable);
+        helper.TableColor(creditTopupTable);
     }
 
     private void calculateBalance() {
@@ -99,6 +108,33 @@ public class CreditPaymentsHistory extends javax.swing.JDialog {
         return message.length() <= 0;
     }
 
+    private void saveUpdateCreditTopUp() {
+        if (!this.checkFieldsTopUp()) {
+            return;
+        }
+
+        creditTopupController.saveUpdate(
+                lblCreditID,
+                txtTopupAmount,
+                txtInitialAmount,
+                creditTopupTable
+        );
+    }
+
+    private boolean checkFieldsTopUp() {
+        String message = "";
+
+        if (txtTopupAmount.getText().isEmpty()) {
+            message = message + "Top Up is required \n";
+        }
+
+        if (message.length() > 0) {
+            JOptionPane.showMessageDialog(this, message, "Form Validation", 0);
+        }
+
+        return message.length() <= 0;
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -108,8 +144,8 @@ public class CreditPaymentsHistory extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        creditPaymentHistoryTable = new javax.swing.JTable();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        jPanel2 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         txtBalance = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
@@ -120,45 +156,26 @@ public class CreditPaymentsHistory extends javax.swing.JDialog {
         txtAmountPaying = new javax.swing.JTextField();
         lblCreditID = new javax.swing.JLabel();
         lblCustomerID = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        creditPaymentHistoryTable = new javax.swing.JTable();
+        jPanel3 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        creditTopupTable = new javax.swing.JTable();
+        jPanel4 = new javax.swing.JPanel();
+        txtTopupAmount = new javax.swing.JTextField();
+        txtInitialAmount = new javax.swing.JTextField();
+        btnSaveTopUp = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        txtBudgetBalance = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("CREDIT PAYMENT HISTORY");
 
-        creditPaymentHistoryTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
-            },
-            new String [] {
-                "Id", "Created Date", "Time", "Amount", "Balance", "Received By", "Status"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.Double.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false
-            };
+        jTabbedPane1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
 
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane1.setViewportView(creditPaymentHistoryTable);
-        if (creditPaymentHistoryTable.getColumnModel().getColumnCount() > 0) {
-            creditPaymentHistoryTable.getColumnModel().getColumn(0).setMinWidth(0);
-            creditPaymentHistoryTable.getColumnModel().getColumn(0).setMaxWidth(0);
-            creditPaymentHistoryTable.getColumnModel().getColumn(6).setMinWidth(80);
-            creditPaymentHistoryTable.getColumnModel().getColumn(6).setMaxWidth(80);
-        }
-
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Make Payment", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 18))); // NOI18N
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 18))); // NOI18N
 
         txtBalance.setEditable(false);
         txtBalance.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -213,7 +230,7 @@ public class CreditPaymentsHistory extends javax.swing.JDialog {
                 .addGap(19, 19, 19)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtBalance)
-                    .addComponent(btnSave, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 327, Short.MAX_VALUE)
+                    .addComponent(btnSave, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 323, Short.MAX_VALUE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -233,31 +250,203 @@ public class CreditPaymentsHistory extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtBalance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(lblCreditID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtAmountPaying, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addComponent(txtAmountPaying, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnSave, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        creditPaymentHistoryTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "Id", "Created Date", "Time", "Amount", "Balance", "Received By", "Status"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.Double.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(creditPaymentHistoryTable);
+        if (creditPaymentHistoryTable.getColumnModel().getColumnCount() > 0) {
+            creditPaymentHistoryTable.getColumnModel().getColumn(0).setMinWidth(0);
+            creditPaymentHistoryTable.getColumnModel().getColumn(0).setMaxWidth(0);
+            creditPaymentHistoryTable.getColumnModel().getColumn(6).setMinWidth(80);
+            creditPaymentHistoryTable.getColumnModel().getColumn(6).setMaxWidth(80);
+        }
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+            .addComponent(jScrollPane1)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 394, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Refund", jPanel2);
+
+        creditTopupTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "Id", "Date", "Amount Paid", "Time", "Created By"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.Double.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(creditTopupTable);
+        if (creditTopupTable.getColumnModel().getColumnCount() > 0) {
+            creditTopupTable.getColumnModel().getColumn(0).setMinWidth(0);
+            creditTopupTable.getColumnModel().getColumn(0).setMaxWidth(0);
+        }
+
+        txtTopupAmount.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+
+        txtInitialAmount.setEditable(false);
+        txtInitialAmount.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        txtInitialAmount.setFocusable(false);
+
+        btnSaveTopUp.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnSaveTopUp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/save.png"))); // NOI18N
+        btnSaveTopUp.setText("Save");
+        btnSaveTopUp.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveTopUpActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel4.setText("Total Initial Amount");
+
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel5.setText("Topup Amount");
+
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel6.setText("Budget Balance");
+
+        txtBudgetBalance.setEditable(false);
+        txtBudgetBalance.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        txtBudgetBalance.setFocusable(false);
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
+                    .addComponent(txtBudgetBalance))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtInitialAmount)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 212, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 169, Short.MAX_VALUE)
+                    .addComponent(txtTopupAmount))
+                .addGap(18, 18, 18)
+                .addComponent(btnSaveTopUp, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnSaveTopUp, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel6))
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(txtTopupAmount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtInitialAmount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txtBudgetBalance)))))
+                .addContainerGap(12, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane2)
+            .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 457, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Top Up Credit", jPanel3);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1)
-            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 404, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(jTabbedPane1)
         );
 
         pack();
@@ -274,6 +463,13 @@ public class CreditPaymentsHistory extends javax.swing.JDialog {
             this.saveUpdate();
         }
     }//GEN-LAST:event_btnSaveActionPerformed
+
+    private void btnSaveTopUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveTopUpActionPerformed
+        int ask = JOptionPane.showConfirmDialog(null, "Are you sure you want to save this record?, record cannot be deleted", "DELETE RECORDS", JOptionPane.YES_NO_OPTION);
+        if (ask == 0) {
+            this.saveUpdateCreditTopUp();
+        }
+    }//GEN-LAST:event_btnSaveTopUpActionPerformed
 
     /**
      * @param args the command line arguments
@@ -322,16 +518,29 @@ public class CreditPaymentsHistory extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSave;
+    private javax.swing.JButton btnSaveTopUp;
     private javax.swing.JTable creditPaymentHistoryTable;
+    private javax.swing.JTable creditTopupTable;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel lblCreditID;
     private javax.swing.JLabel lblCustomerID;
     private javax.swing.JTextField txtAmountLeft;
     private javax.swing.JTextField txtAmountPaying;
     private javax.swing.JTextField txtBalance;
+    private javax.swing.JTextField txtBudgetBalance;
+    private javax.swing.JTextField txtInitialAmount;
+    private javax.swing.JTextField txtTopupAmount;
     // End of variables declaration//GEN-END:variables
 }

@@ -2,6 +2,7 @@ package Repository;
 
 import Helpers.connectDB;
 import ModelDTO.BuyGoldDTO;
+import ModelDTO.CREDITPAYMENTDTO;
 import ModelDTO.PaymentDTO;
 import Models.Daily;
 import java.sql.Connection;
@@ -36,7 +37,7 @@ public class DailyReportRepository {
 
             while (rs.next()) {
                 Daily daily = new Daily();
-                
+
                 daily.setDay(rs.getString("day"));
                 daily.setTotal(rs.getDouble("total"));
                 dailyList.add(daily);
@@ -62,6 +63,33 @@ public class DailyReportRepository {
             String query = "SELECT id,SUM(" + PaymentDTO.getAMOUNT_PAID() + ") AS total FROM " + PaymentDTO.getPAYMENT_DB() + " WHERE "
                     + "strftime('%Y'," + PaymentDTO.getRAW_DATE() + ")='" + year + "' AND "
                     + "strftime('%m'," + PaymentDTO.getRAW_DATE() + ")='" + month + "' AND " + PaymentDTO.getRAW_DATE() + "='" + day + "'";
+            pst = conn.prepareStatement(query);
+            rs = pst.executeQuery();
+
+            if (rs.next()) {
+                dailyTotal = rs.getDouble("total");
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
+        } finally {
+            try {
+                rs.close();
+                pst.close();
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, e);
+            }
+        }
+
+        return dailyTotal;
+    }
+
+    public double dailyCreditPaymentTotal(String year, String month, String day, int paidFrom) {
+        double dailyTotal = 0;
+        try {
+            String query = "SELECT id,SUM(" + CREDITPAYMENTDTO.getPAID() + ") AS total FROM " + CREDITPAYMENTDTO.getCREDIT_PAYMENTS_DB() + " WHERE "
+                    + "strftime('%Y'," + CREDITPAYMENTDTO.getRAW_DATE() + ")='" + year + "' AND "
+                    + "strftime('%m'," + CREDITPAYMENTDTO.getRAW_DATE() + ")='" + month + "' AND " + CREDITPAYMENTDTO.getRAW_DATE() + "='" + day + "' AND " + CREDITPAYMENTDTO.getPAID_FROM() + "='" + paidFrom + "'";
             pst = conn.prepareStatement(query);
             rs = pst.executeQuery();
 

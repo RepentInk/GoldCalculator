@@ -6,10 +6,8 @@ import ModelDTO.BudgetDTO;
 import ModelDTO.CREDITPAYMENTDTO;
 import ModelDTO.CreditDTO;
 import ModelDTO.CustomerDTO;
-import ModelDTO.ShopDTO;
 import ModelDTO.UserDTO;
 import Models.Credit;
-import Models.Shop;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -426,6 +424,50 @@ public class CreditRepository implements AnonymousInterface<Credit> {
         }
 
         return credit;
+    }
+
+    public boolean findCustomerCreditExit(int customer_id, int budget_id, String createdDate) {
+        boolean status = false;
+
+        try {
+            String query = "SELECT * FROM " + CreditDTO.getCREDIT_DB() + " WHERE " + CreditDTO.getCUSTOMER_ID() + "='" + customer_id + "' AND " + CreditDTO.getBUDGET_ID() + "= '" + budget_id + "' AND " + CreditDTO.getCREATED_DATE() + "='" + createdDate + "'";
+            pst = conn.prepareStatement(query);
+            rs = pst.executeQuery();
+
+            if (rs.next()) {
+                status = true;
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
+            return false;
+        } finally {
+            try {
+                rs.close();
+                pst.close();
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, e);
+            }
+        }
+
+        return status;
+    }
+
+    public void updateCreditAmount(int credit_id, double amount) {
+        try {
+            String query = "UPDATE " + CreditDTO.getCREDIT_DB() + " SET " + CreditDTO.getAMOUNT() + "= amount + '" + amount + "' WHERE " + CreditDTO.getID() + "='" + credit_id + "'";
+            pst = conn.prepareStatement(query);
+            pst.executeUpdate();
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
+        } finally {
+            try {
+                pst.close();
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, e);
+            }
+        }
     }
 
 }

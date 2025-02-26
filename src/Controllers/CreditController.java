@@ -14,6 +14,7 @@ import Repository.CustomerRepository;
 import java.util.List;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
@@ -30,7 +31,6 @@ public class CreditController {
     CreditPaymentRepository creditPaymentRepository = new CreditPaymentRepository();
     BudgetController budgetController = new BudgetController();
     AnonymousRepository anonymousRepository = new AnonymousRepository();
-    ReportController reportController = new ReportController();
 
     public void populateTable(JTable table, String createdDate) {
         if (createdDate.isEmpty()) {
@@ -105,6 +105,16 @@ public class CreditController {
 
         if (!creditID.getText().isEmpty()) {
             credit_id = Integer.parseInt(creditID.getText());
+        }
+
+        if (creditRepository.findCustomerCreditExit(customer_id, budget.getId(), helper.returnDate())) {
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Sorry! Credit is already registered for this customer go to history and topup",
+                    "CUSTOMER CREDIT REGISTRATION",
+                    JOptionPane.INFORMATION_MESSAGE
+            );
+            return;
         }
 
         if (credit_id > 0) {

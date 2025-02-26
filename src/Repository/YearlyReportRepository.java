@@ -2,6 +2,7 @@ package Repository;
 
 import Helpers.connectDB;
 import ModelDTO.BuyGoldDTO;
+import ModelDTO.CREDITPAYMENTDTO;
 import ModelDTO.PaymentDTO;
 import Models.Yearly;
 import java.sql.Connection;
@@ -78,6 +79,32 @@ public class YearlyReportRepository {
         }
 
         return monthTotal;
+    }
+
+    public double yearlyCreditPaymentTotal(String year, int paidFrom) {
+        double yearTotal = 0;
+        try {
+            String query = "SELECT id,SUM(" + CREDITPAYMENTDTO.getPAID() + ") AS total FROM " + CREDITPAYMENTDTO.getCREDIT_PAYMENTS_DB() + " "
+                    + "WHERE strftime('%Y'," + CREDITPAYMENTDTO.getRAW_DATE() + ")='" + year + "' AND " + CREDITPAYMENTDTO.getPAID_FROM() + "='" + paidFrom + "'";
+            pst = conn.prepareStatement(query);
+            rs = pst.executeQuery();
+
+            if (rs.next()) {
+                yearTotal = rs.getDouble("total");
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
+        } finally {
+            try {
+                rs.close();
+                pst.close();
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, e);
+            }
+        }
+
+        return yearTotal;
     }
 
 }

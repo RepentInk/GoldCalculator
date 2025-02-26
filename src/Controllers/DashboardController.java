@@ -54,11 +54,8 @@ public class DashboardController {
         double total_payments_gold = paymentsRepository.summationOfPayments(createdDate);
         double total_used_to_pay_credit = creditPaymentRepository.summationAmountPaidToday(createdDate, 0);
         double totalPayments = total_payments_gold + total_used_to_pay_credit;
-        
-        
-        
-        
-        Budget budget = budgetRepository.todayBudget(helper.returnDate());
+
+        Budget budget = budgetRepository.todayBudget(createdDate);
         double budget_used = reportController.budgetUsedAll(budget.getId());
         double budgetUsedOnPayment = reportController.budgetUsedOnPayment(budget.getId());
         double budgetUsedOnCredit = reportController.budgetUsedOnCredit(budget.getId());
@@ -116,7 +113,8 @@ public class DashboardController {
 
     private double getMonthlyPayment(String year, String month) {
         double total = monthlyReportRepository.monthlyPaymentTotal(year, month);
-        return total;
+        double totalCreditPayment = monthlyReportRepository.monthlyCreditPaymentTotal(year, month, 0);
+        return total + totalCreditPayment;
     }
 
     public void populateYearlyTable(JTable table) {
@@ -145,7 +143,8 @@ public class DashboardController {
 
     private double getYearlyPayment(String year) {
         double total = yearlyReportRepository.yearlyPaymentTotal(year);
-        return total;
+        double totalCreditPayment = yearlyReportRepository.yearlyCreditPaymentTotal(year, 0);
+        return total + totalCreditPayment;
     }
 
     public void populateDailyTable(JTable table, String month, String year) {
@@ -173,7 +172,8 @@ public class DashboardController {
 
     private double getDailyPayment(String year, String month, String day) {
         double total = dailyReportRepository.dailyPaymentTotal(year, month, day);
-        return total;
+        double totalCreditPayment = dailyReportRepository.dailyCreditPaymentTotal(year, month, day, 0);
+        return total + totalCreditPayment;
     }
 
 }

@@ -2,11 +2,9 @@ package Repository;
 
 import Helpers.connectDB;
 import Interfaces.AnonymousInterface;
-import ModelDTO.BuyGoldDTO;
 import ModelDTO.CREDITPAYMENTDTO;
 import ModelDTO.UserDTO;
 import Models.CreditPayment;
-import Models.Receipt;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
