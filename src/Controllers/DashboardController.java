@@ -89,16 +89,25 @@ public class DashboardController {
                 object = new Object[]{
                     monthly.getMonth(),
                     Month.of(Integer.parseInt(monthly.getMonth())),
+                    helper.priceToStringNotAmount(monthly.getTop()),
+                    helper.priceToStringNotAmount(monthly.getDown()),
+                    helper.priceToStringNotAmount(monthly.getDensity()),
+                    helper.priceToStringNotAmount(monthly.getKarat()),
+                    helper.priceToStringNotAmount(monthly.getPounds()),
                     helper.priceToString(monthly.getTotal()),
                     helper.priceToString(totalPayment),
                     helper.priceToString(monthly.getTotal() - totalPayment),
                     TableActions.Daily.toString()
                 };
-
             } else {
                 object = new Object[]{
                     monthly.getMonth(),
                     Month.of(Integer.parseInt(monthly.getMonth())),
+                    helper.priceToStringNotAmount(monthly.getTop()),
+                    helper.priceToStringNotAmount(monthly.getDown()),
+                    helper.priceToStringNotAmount(monthly.getDensity()),
+                    helper.priceToStringNotAmount(monthly.getKarat()),
+                    helper.priceToStringNotAmount(monthly.getPounds()),
                     helper.priceToString(monthly.getTotal()),
                     helper.priceToString(totalPayment),
                     helper.priceToString(monthly.getTotal() - totalPayment)
@@ -129,6 +138,11 @@ public class DashboardController {
 
             object = new Object[]{
                 yearly.getYear(),
+                helper.priceToStringNotAmount(yearly.getTop()),
+                helper.priceToStringNotAmount(yearly.getDown()),
+                helper.priceToStringNotAmount(yearly.getDensity()),
+                helper.priceToStringNotAmount(yearly.getKarat()),
+                helper.priceToStringNotAmount(yearly.getPounds()),
                 helper.priceToString(yearly.getTotal()),
                 helper.priceToString(totalPayment),
                 helper.priceToString(yearly.getTotal() - totalPayment),
@@ -159,6 +173,11 @@ public class DashboardController {
 
             object = new Object[]{
                 daily.getDay(),
+                helper.priceToStringNotAmount(daily.getTop()),
+                helper.priceToStringNotAmount(daily.getDown()),
+                helper.priceToStringNotAmount(daily.getDensity()),
+                helper.priceToStringNotAmount(daily.getKarat()),
+                helper.priceToStringNotAmount(daily.getPounds()),
                 helper.priceToString(daily.getTotal()),
                 helper.priceToString(totalPayment),
                 helper.priceToString(daily.getTotal() - totalPayment)

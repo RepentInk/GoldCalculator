@@ -28,11 +28,17 @@ public class PaymentController {
 
     ReportController reportController = new ReportController();
 
-    public void populateTable(JTable table, String createdDate) {
-        if (createdDate.equals("")) {
-            createdDate = helper.returnDate();
+    public void populateTable(JTable table, String startDate, String endDate) {
+        if (endDate.equals("")) {
+            endDate = helper.returnDate();
         }
-        List<Payments> payments = paymentsRepository.list(createdDate);
+
+        List<Payments> payments;
+        if (!startDate.isEmpty() && !endDate.isEmpty()) {
+            payments = paymentsRepository.findPaymentBetweenDates(startDate, endDate);
+        } else {
+            payments = paymentsRepository.list(endDate);
+        }
 
         DefaultTableModel defaultTableModel = (DefaultTableModel) table.getModel();
         defaultTableModel.setRowCount(0);

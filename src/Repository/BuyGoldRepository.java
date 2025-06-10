@@ -443,4 +443,54 @@ public class BuyGoldRepository implements AnonymousInterface<BuyGold> {
         return receipt;
     }
 
+    public List<BuyGold> findBuyGoldBetweenDates(String startDate, String endDate) {
+        List<BuyGold> buyGoldsList = new ArrayList<>();
+        try {
+            String query = "SELECT gold.*,user.fullname AS user,customer.fullname AS customer FROM " + BuyGoldDTO.getBUY_GOLD_DB() + " gold "
+                    + "LEFT JOIN " + UserDTO.getUSERS_DB() + " user ON gold.user_id=user.id "
+                    + "LEFT JOIN " + CustomerDTO.getCUSTOMER_DB() + " customer ON gold.customer_id=customer.id "
+                    + "WHERE gold.created_date >= '" + startDate + "' AND gold.created_date <= '" + endDate + "' ORDER BY gold.id DESC";
+            pst = conn.prepareStatement(query);
+            rs = pst.executeQuery();
+
+            while (rs.next()) {
+                BuyGold buyGold = new BuyGold();
+
+                buyGold.setId(rs.getInt(BuyGoldDTO.getID()));
+                buyGold.setCode(rs.getString(BuyGoldDTO.getCODE()));
+                buyGold.setTop(rs.getDouble(BuyGoldDTO.getTOP()));
+                buyGold.setDown(rs.getDouble(BuyGoldDTO.getDOWN()));
+                buyGold.setDensity(rs.getDouble(BuyGoldDTO.getDENSITY()));
+                buyGold.setKarat(rs.getDouble(BuyGoldDTO.getKARAT()));
+                buyGold.setPounds(rs.getDouble(BuyGoldDTO.getPOUNDS()));
+                buyGold.setBase_price(rs.getDouble(BuyGoldDTO.getBASE_PRICE()));
+                buyGold.setTotal_weight(rs.getDouble(BuyGoldDTO.getTOTAL_WEIGHT()));
+                buyGold.setTotal_amount(rs.getDouble(BuyGoldDTO.getTOTAL_AMOUNT()));
+                buyGold.setCredit_balance(rs.getDouble(BuyGoldDTO.getCREDIT_BALANCE()));
+                buyGold.setCreated_date(rs.getString(BuyGoldDTO.getCREATED_DATE()));
+                buyGold.setCreated_time(rs.getString(BuyGoldDTO.getCREATED_TIME()));
+                buyGold.setRaw_date(rs.getString(BuyGoldDTO.getRAW_DATE()));
+                buyGold.setUser_id(rs.getInt(BuyGoldDTO.getUSER_ID()));
+                buyGold.setCustomer_id(rs.getInt(BuyGoldDTO.getCUSTOMER_ID()));
+
+                buyGold.setUser(rs.getString(BuyGoldDTO.getUSER()));
+                buyGold.setCustomer(rs.getString(BuyGoldDTO.getCUSTOMER()));
+
+                buyGoldsList.add(buyGold);
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
+        } finally {
+            try {
+                rs.close();
+                pst.close();
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, e);
+            }
+        }
+
+        return buyGoldsList;
+    }
+
 }

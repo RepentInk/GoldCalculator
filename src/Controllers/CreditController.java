@@ -32,12 +32,17 @@ public class CreditController {
     BudgetController budgetController = new BudgetController();
     AnonymousRepository anonymousRepository = new AnonymousRepository();
 
-    public void populateTable(JTable table, String createdDate) {
-        if (createdDate.isEmpty()) {
-            createdDate = helper.returnDate();
+    public void populateTable(JTable table, String startDate, String endDate) {
+        if (endDate.equals("")) {
+            endDate = helper.returnDate();
         }
 
-        List<Credit> credits = creditRepository.list(createdDate);
+        List<Credit> credits;
+        if (!startDate.isEmpty() && !endDate.isEmpty()) {
+            credits = creditRepository.findCreditBetweenDates(startDate, endDate);
+        } else {
+            credits = creditRepository.list(endDate);
+        }
 
         DefaultTableModel defaultTableModel = (DefaultTableModel) table.getModel();
         defaultTableModel.setRowCount(0);
@@ -55,11 +60,12 @@ public class CreditController {
                 helper.priceToString(credit.getAmount() - this.getTotalAmountPaid(credit.getId())),
                 helper.priceToString(this.getCreditPaymentsPaid(credit.getId())),
                 helper.priceToString(this.getCreditPaymentsRefund(credit.getId())),
-                credit.getUser(),
+                this.statusOfCredit(credit.isStatus()),
                 credit.getCreated_time(),
                 credit.getCreated_date(),
                 TableActions.View.toString(),
-                TableActions.History.toString()
+                TableActions.History.toString(),
+                TableActions.Close.toString()
             };
 
             defaultTableModel.addRow(object);
@@ -179,11 +185,12 @@ public class CreditController {
             helper.priceToString(credit.getAmount() - this.getTotalAmountPaid(credit.getId())),
             helper.priceToString(this.getCreditPaymentsPaid(credit.getId())),
             helper.priceToString(this.getCreditPaymentsRefund(credit.getId())),
-            credit.getUser(),
+            this.statusOfCredit(credit.isStatus()),
             credit.getCreated_time(),
             credit.getCreated_date(),
             TableActions.View.toString(),
-            TableActions.History.toString()
+            TableActions.History.toString(),
+            TableActions.Close.toString()
         };
 
         tmodel.insertRow(0, object);
@@ -202,7 +209,7 @@ public class CreditController {
         table.setValueAt(helper.priceToString(credit.getAmount() - this.getTotalAmountPaid(credit.getId())), selectedRow, 6);
         table.setValueAt(helper.priceToString(this.getCreditPaymentsPaid(credit_id)), selectedRow, 7);
         table.setValueAt(helper.priceToString(this.getCreditPaymentsRefund(credit_id)), selectedRow, 8);
-        table.setValueAt(credit.getUser(), selectedRow, 9);
+        table.setValueAt(this.statusOfCredit(credit.isStatus()), selectedRow, 9);
         table.setValueAt(credit.getCreated_time(), selectedRow, 10);
         table.setValueAt(credit.getCreated_date(), selectedRow, 11);
     }
@@ -279,6 +286,25 @@ public class CreditController {
         totalAmount.setText(helper.priceToString(credit.getAmount()));
         previousAmount.setText(helper.priceToString(credit.getPrevious_balance()));
         amountPaid.setText(helper.priceToString(credit.getAmount() - credit.getPrevious_balance()));
+    }
+
+    private String statusOfCredit(boolean status) {
+        return status ? "Closed" : "Opened";
+    }
+
+    public void changeStatus(
+            int credit_id,
+            int status,
+            JTable table,
+            int selectedRow
+    ) {
+        creditRepository.updateStatus(credit_id, status);
+        this.populateAfterUpdating(table, selectedRow, credit_id);
+    }
+
+    public Credit getSingleCredit(int credit_id) {
+        Credit credit = creditRepository.find(credit_id);
+        return credit;
     }
 
 }

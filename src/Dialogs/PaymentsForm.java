@@ -45,6 +45,8 @@ public class PaymentsForm extends javax.swing.JDialog {
                 txtTotalAmountPaid,
                 txtRemainAmount
         );
+
+        this.hideOrShowButton();
     }
 
     private void budgetData() {
@@ -172,6 +174,15 @@ public class PaymentsForm extends javax.swing.JDialog {
         );
 
         btnSave.setEnabled(false);
+    }
+
+    private void hideOrShowButton() {
+        double amount_paying = txtRemainAmount.getText().isEmpty() ? 0 : helper.parseAmountWithComma(txtRemainAmount.getText());
+        if (amount_paying > 0) {
+            btnSave.setEnabled(true);
+        } else {
+            btnSave.setEnabled(false);
+        }
     }
 
     /**

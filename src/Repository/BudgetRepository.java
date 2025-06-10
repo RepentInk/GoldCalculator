@@ -386,4 +386,64 @@ public class BudgetRepository implements AnonymousInterface<Budget> {
         return budget;
     }
 
+    public void updateStatus(int id, int status) {
+        try {
+            String query = "UPDATE " + BudgetDTO.getBUDGET_DB() + " SET " + BudgetDTO.getSTATUS() + "='" + status + "' WHERE " + BudgetDTO.getID() + "='" + id + "'";
+            pst = conn.prepareStatement(query);
+            pst.executeUpdate();
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
+        } finally {
+            try {
+                rs.close();
+                pst.close();
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, e);
+            }
+        }
+    }
+
+    public List<Budget> findBudgetBetweenDates(String startDate, String endDate) {
+        List<Budget> budgetsList = new ArrayList<>();
+        try {
+            String query = "SELECT bud.*,user.fullname AS user FROM " + BudgetDTO.getBUDGET_DB() + " bud LEFT JOIN " + UserDTO.getUSERS_DB() + " user "
+                    + "ON bud.user_id=user.id WHERE bud.created_date >= '" + startDate + "' AND bud.created_date <= '" + endDate + "' ORDER BY bud.id DESC";
+            pst = conn.prepareStatement(query);
+            rs = pst.executeQuery();
+
+            while (rs.next()) {
+                Budget budget = new Budget();
+
+                budget.setId(rs.getInt(BudgetDTO.getID()));
+                budget.setName(rs.getString(BudgetDTO.getNAME()));
+                budget.setTotal_amount(rs.getDouble(BudgetDTO.getTOTAL_AMOUNT()));
+                budget.setAmount_forward(rs.getDouble(BudgetDTO.getAMOUNT_FORWARD()));
+                budget.setStatus(rs.getBoolean(BudgetDTO.getSTATUS()));
+                budget.setStart_date(rs.getString(BudgetDTO.getSTART_DATE()));
+                budget.setEnd_date(rs.getString(BudgetDTO.getEND_DATE()));
+                budget.setCreated_time(rs.getString(BudgetDTO.getCREATED_TIME()));
+                budget.setCreated_date(rs.getString(BudgetDTO.getCREATED_DATE()));
+                budget.setRaw_date(rs.getString(BudgetDTO.getRAW_DATE()));
+                budget.setUser_id(rs.getInt(BudgetDTO.getUSER_ID()));
+
+                budget.setUser(rs.getString(BudgetDTO.getUSER()));
+
+                budgetsList.add(budget);
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
+        } finally {
+            try {
+                rs.close();
+                pst.close();
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, e);
+            }
+        }
+
+        return budgetsList;
+    }
+
 }

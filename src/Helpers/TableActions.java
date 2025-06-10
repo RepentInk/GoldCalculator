@@ -16,5 +16,6 @@ public enum TableActions {
     Print,
     Daily,
     Monthly,
-    Weekly
+    Weekly,
+    Close
 }

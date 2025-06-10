@@ -6,6 +6,7 @@ import Helpers.TableActions;
 import Models.Budget;
 import Repository.BudgetRepository;
 import Repository.PaymentsRepository;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -26,11 +27,17 @@ public class BudgetController {
 
     ReportController reportController = new ReportController();
 
-    public void populateTable(JTable table, String createdDate) {
-        if (createdDate.equals("")) {
-            createdDate = helper.returnDate();
+    public void populateTable(JTable table, String startDate, String endDate) {
+        if (endDate.equals("")) {
+            endDate = helper.returnDate();
         }
-        List<Budget> budgets = budgetRepository.list(createdDate);
+
+        List<Budget> budgets;
+        if (!startDate.isEmpty() && !endDate.isEmpty()) {
+            budgets = budgetRepository.findBudgetBetweenDates(startDate, endDate);
+        } else {
+            budgets = budgetRepository.list(endDate);
+        }
 
         DefaultTableModel defaultTableModel = (DefaultTableModel) table.getModel();
         defaultTableModel.setRowCount(0);
@@ -43,14 +50,15 @@ public class BudgetController {
                 budget.getId(),
                 budget.getName(),
                 helper.priceToString(budget.getTotal_amount()),
-                helper.priceToString(budget.getAmount_forward()),
                 helper.priceToString(total_budget_used),
                 helper.priceToString(budget.getTotal_amount() - total_budget_used),
                 budget.getUser(),
                 budget.getCreated_time(),
                 budget.getCreated_date(),
+                this.statusOfBudget(budget.isStatus()),
                 TableActions.View.toString(),
-                TableActions.Add.toString()
+                TableActions.Add.toString(),
+                TableActions.Close.toString()
             };
 
             defaultTableModel.addRow(object);
@@ -59,11 +67,14 @@ public class BudgetController {
         defaultTableModel.fireTableDataChanged();
     }
 
+    private String statusOfBudget(boolean status) {
+        return status ? "Closed" : "Opened";
+    }
+
     public void saveUpdate(
             JLabel budgetID,
             JTextField name,
             JTextField totalAmount,
-            JTextField amountForward,
             JTable table,
             int selectedRow,
             javax.swing.JDialog dialog
@@ -74,7 +85,6 @@ public class BudgetController {
         String start_date = helper.returnDate();
         String end_date = helper.returnDate();
         double total_amount = totalAmount.getText().isEmpty() ? 0 : helper.parseAmountWithComma(totalAmount.getText());
-        double amount_forward = totalAmount.getText().isEmpty() ? 0 : helper.parseAmountWithComma(amountForward.getText());
         String created_date = helper.returnDate();
         String created_time = helper.returnTime();
         String raw_date = helper.returnDate();
@@ -89,7 +99,7 @@ public class BudgetController {
                     budget_id,
                     budget_name,
                     total_amount,
-                    amount_forward,
+                    0,
                     false,
                     start_date,
                     end_date,
@@ -110,7 +120,7 @@ public class BudgetController {
             Budget budget = new Budget(
                     budget_name,
                     total_amount,
-                    amount_forward,
+                    0,
                     false,
                     start_date,
                     end_date,
@@ -140,14 +150,15 @@ public class BudgetController {
             budget.getId(),
             budget.getName(),
             helper.priceToString(budget.getTotal_amount()),
-            helper.priceToString(budget.getAmount_forward()),
             helper.priceToString(total_budget_used),
             helper.priceToString(budget.getTotal_amount() - total_budget_used),
             budget.getUser(),
             budget.getCreated_time(),
             budget.getCreated_date(),
+            this.statusOfBudget(budget.isStatus()),
             TableActions.View.toString(),
-            TableActions.Add.toString()
+            TableActions.Add.toString(),
+            TableActions.Close.toString()
         };
 
         tmodel.insertRow(0, object);
@@ -161,9 +172,9 @@ public class BudgetController {
         table.setValueAt(budget.getId(), selectedRow, 0);
         table.setValueAt(budget.getName(), selectedRow, 1);
         table.setValueAt(helper.priceToString(budget.getTotal_amount()), selectedRow, 2);
-        table.setValueAt(helper.priceToString(budget.getAmount_forward()), selectedRow, 3);
-        table.setValueAt(helper.priceToString(total_budget_used), selectedRow, 4);
-        table.setValueAt(helper.priceToString(budget.getTotal_amount() - total_budget_used), selectedRow, 5);
+        table.setValueAt(helper.priceToString(total_budget_used), selectedRow, 3);
+        table.setValueAt(helper.priceToString(budget.getTotal_amount() - total_budget_used), selectedRow, 4);
+        table.setValueAt(this.statusOfBudget(budget.isStatus()), selectedRow, 8);
     }
 
     private double budgetUsed(int id) {
@@ -190,9 +201,7 @@ public class BudgetController {
             JTextField name,
             JTextField totalAmount,
             JTextField amountUsed,
-            JTextField amountLeft,
-            JTextField amountForward,
-            JTextField txtTodayBudget
+            JTextField amountLeft
     ) {
         Budget budget = budgetRepository.find(budget_id);
 
@@ -203,8 +212,6 @@ public class BudgetController {
         totalAmount.setText(helper.priceToString(budget.getTotal_amount()));
         amountUsed.setText(helper.priceToString(total_budget_used));
         amountLeft.setText(helper.priceToString(budget.getTotal_amount() - total_budget_used));
-        amountForward.setText(helper.priceToString(budget.getAmount_forward()));
-        txtTodayBudget.setText(helper.priceToString(budget.getTotal_amount() - budget.getAmount_forward()));
     }
 
     public void populateDropdownData(JComboBox comboBox, String title, String createdDate) {
@@ -234,6 +241,16 @@ public class BudgetController {
         double balance = budget.getTotal_amount() - budgetUsed;
 
         amountForward.setText(helper.priceToString(balance));
+    }
+
+    public void changeStatus(
+            int budget_id,
+            int status,
+            JTable table,
+            int selectedRow
+    ) {
+        budgetRepository.updateStatus(budget_id, status);
+        this.populateAfterUpdating(table, selectedRow, budget_id);
     }
 
 }

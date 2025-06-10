@@ -32,8 +32,17 @@ public class BuyGoldController {
     CreditPaymentController creditPaymentController = new CreditPaymentController();
     HelperFunctions helper = new HelperFunctions();
 
-    public void populateData(JTable table, String createdDate) {
-        List<BuyGold> buyGolds = buyGoldRepository.list(createdDate);
+    public void populateData(JTable table, String startDate, String endDate) {
+        if (endDate.equals("")) {
+            endDate = helper.returnDate();
+        }
+
+        List<BuyGold> buyGolds;
+        if (!startDate.isEmpty() && !endDate.isEmpty()) {
+            buyGolds = buyGoldRepository.findBuyGoldBetweenDates(startDate, endDate);
+        } else {
+            buyGolds = buyGoldRepository.list(endDate);
+        }
 
         DefaultTableModel defaultTableModel = (DefaultTableModel) table.getModel();
         defaultTableModel.setRowCount(0);

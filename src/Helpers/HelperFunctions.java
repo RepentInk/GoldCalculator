@@ -666,5 +666,12 @@ public class HelperFunctions {
 
         return yearList;
     }
+    
+    public String priceToStringNotAmount(double price) {
+        DecimalFormat df = new DecimalFormat("###.##");
+        df.setRoundingMode(RoundingMode.DOWN);
+        String result = df.format(price);
+        return result;
+    }
 
 }

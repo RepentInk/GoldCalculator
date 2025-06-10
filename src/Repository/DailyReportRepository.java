@@ -30,7 +30,14 @@ public class DailyReportRepository {
     public List<Daily> dailyPurchasesReport(String month, String year) {
         List<Daily> dailyList = new ArrayList<>();
         try {
-            String query = "SELECT id," + BuyGoldDTO.getRAW_DATE() + " AS day, SUM(" + BuyGoldDTO.getTOTAL_AMOUNT() + ") AS total FROM " + BuyGoldDTO.getBUY_GOLD_DB() + " WHERE "
+            String query = "SELECT id," + BuyGoldDTO.getRAW_DATE() + " AS day, "
+                    + "SUM(" + BuyGoldDTO.getTOTAL_AMOUNT() + ") AS total, "
+                    + "SUM(" + BuyGoldDTO.getTOP() + ") AS top, "
+                    + "SUM(" + BuyGoldDTO.getDOWN() + ") AS down, "
+                    + "SUM(" + BuyGoldDTO.getDENSITY() + ") AS density, "
+                    + "SUM(" + BuyGoldDTO.getKARAT() + ") AS karat, "
+                    + "SUM(" + BuyGoldDTO.getPOUNDS() + ") AS pounds "
+                    + "FROM " + BuyGoldDTO.getBUY_GOLD_DB() + " WHERE "
                     + "strftime('%m'," + BuyGoldDTO.getRAW_DATE() + ")='" + month + "' AND strftime('%Y'," + BuyGoldDTO.getRAW_DATE() + ")='" + year + "' GROUP BY day ORDER BY day DESC";
             pst = conn.prepareStatement(query);
             rs = pst.executeQuery();
@@ -40,6 +47,11 @@ public class DailyReportRepository {
 
                 daily.setDay(rs.getString("day"));
                 daily.setTotal(rs.getDouble("total"));
+                daily.setTop(rs.getDouble("top"));
+                daily.setDown(rs.getDouble("down"));
+                daily.setDensity(rs.getDouble("density"));
+                daily.setKarat(rs.getDouble("karat"));
+                daily.setPounds(rs.getDouble("pounds"));
                 dailyList.add(daily);
             }
 

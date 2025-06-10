@@ -57,6 +57,7 @@ public class CreditRepository implements AnonymousInterface<Credit> {
                 credit.setCreated_date(rs.getString(CreditDTO.getCREATED_DATE()));
                 credit.setCreated_time(rs.getString(CreditDTO.getCREATED_TIME()));
                 credit.setRaw_date(rs.getString(CreditDTO.getRAW_DATE()));
+                credit.setStatus(rs.getBoolean(CreditDTO.getSTATUS()));
 
                 credit.setUser(rs.getString(CreditDTO.getUSER()));
                 credit.setCustomer(rs.getString(CreditDTO.getCUSTOMER()));
@@ -107,6 +108,8 @@ public class CreditRepository implements AnonymousInterface<Credit> {
                 credit.setCreated_time(rs.getString(CreditDTO.getCREATED_TIME()));
                 credit.setRaw_date(rs.getString(CreditDTO.getRAW_DATE()));
 
+                credit.setStatus(rs.getBoolean(CreditDTO.getSTATUS()));
+
                 credit.setUser(rs.getString(CreditDTO.getUSER()));
                 credit.setCustomer(rs.getString(CreditDTO.getCUSTOMER()));
                 credit.setBudget(rs.getString(CreditDTO.getBUDGET()));
@@ -154,6 +157,8 @@ public class CreditRepository implements AnonymousInterface<Credit> {
                 credit.setCreated_date(rs.getString(CreditDTO.getCREATED_DATE()));
                 credit.setCreated_time(rs.getString(CreditDTO.getCREATED_TIME()));
                 credit.setRaw_date(rs.getString(CreditDTO.getRAW_DATE()));
+
+                credit.setStatus(rs.getBoolean(CreditDTO.getSTATUS()));
 
                 credit.setUser(rs.getString(CreditDTO.getUSER()));
                 credit.setCustomer(rs.getString(CreditDTO.getCUSTOMER()));
@@ -409,6 +414,7 @@ public class CreditRepository implements AnonymousInterface<Credit> {
                 credit.setCreated_date(rs.getString(CreditDTO.getCREATED_DATE()));
                 credit.setCreated_time(rs.getString(CreditDTO.getCREATED_TIME()));
                 credit.setRaw_date(rs.getString(CreditDTO.getRAW_DATE()));
+                credit.setStatus(rs.getBoolean(CreditDTO.getSTATUS()));
             }
 
         } catch (SQLException e) {
@@ -468,6 +474,74 @@ public class CreditRepository implements AnonymousInterface<Credit> {
                 JOptionPane.showMessageDialog(null, e);
             }
         }
+    }
+
+    public void updateStatus(int id, int status) {
+        try {
+            String query = "UPDATE " + CreditDTO.getCREDIT_DB() + " SET " + CreditDTO.getSTATUS() + "='" + status + "' WHERE " + CreditDTO.getID() + "='" + id + "'";
+            pst = conn.prepareStatement(query);
+            pst.executeUpdate();
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
+        } finally {
+            try {
+                rs.close();
+                pst.close();
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, e);
+            }
+        }
+    }
+
+    public List<Credit> findCreditBetweenDates(String startDate, String endDate) {
+        List<Credit> creditsList = new ArrayList<>();
+        try {
+            String query = "SELECT credit.*,user.fullname AS user,customer.fullname AS customer,budget.name AS budget FROM " + CreditDTO.getCREDIT_DB() + " credit "
+                    + "LEFT JOIN " + UserDTO.getUSERS_DB() + " user ON credit.user_id=user.id "
+                    + "LEFT JOIN " + CustomerDTO.getCUSTOMER_DB() + " customer ON credit.customer_id=customer.id "
+                    + "LEFT JOIN " + BudgetDTO.getBUDGET_DB() + " budget ON credit.budget_id=budget.id "
+                    + "WHERE credit.created_date >= '" + startDate + "' AND credit.created_date <= '" + endDate + "' ORDER BY credit.id DESC";
+            pst = conn.prepareStatement(query);
+            rs = pst.executeQuery();
+
+            while (rs.next()) {
+                Credit credit = new Credit();
+
+                credit.setId(rs.getInt(CreditDTO.getID()));
+                credit.setCode(rs.getString(CreditDTO.getCODE()));
+                credit.setAmount(rs.getDouble(CreditDTO.getAMOUNT()));
+                credit.setPrevious_balance(rs.getDouble(CreditDTO.getPREVIOUS_AMOUNT()));
+                credit.setBudget_before(rs.getDouble(CreditDTO.getBUDGET_BEFORE()));
+                credit.setBudget_after(rs.getDouble(CreditDTO.getBUDGET_AFTER()));
+                credit.setBudget_id(rs.getInt(CreditDTO.getBUDGET_ID()));
+                credit.setCustomer_id(rs.getInt(CreditDTO.getCUSTOMER_ID()));
+                credit.setUser_id(rs.getInt(CreditDTO.getUSER_ID()));
+                credit.setCreated_date(rs.getString(CreditDTO.getCREATED_DATE()));
+                credit.setCreated_time(rs.getString(CreditDTO.getCREATED_TIME()));
+                credit.setRaw_date(rs.getString(CreditDTO.getRAW_DATE()));
+
+                credit.setStatus(rs.getBoolean(CreditDTO.getSTATUS()));
+
+                credit.setUser(rs.getString(CreditDTO.getUSER()));
+                credit.setCustomer(rs.getString(CreditDTO.getCUSTOMER()));
+                credit.setBudget(rs.getString(CreditDTO.getBUDGET()));
+
+                creditsList.add(credit);
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
+        } finally {
+            try {
+                rs.close();
+                pst.close();
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, e);
+            }
+        }
+
+        return creditsList;
     }
 
 }

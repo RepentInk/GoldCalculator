@@ -30,8 +30,14 @@ public class MonthlyReportRepository {
     public List<Monthly> monthlyPurchasesReport(String year) {
         List<Monthly> monthlyList = new ArrayList<>();
         try {
-            String query = "SELECT id,strftime('%m', " + BuyGoldDTO.getRAW_DATE() + ") AS month, SUM(" + BuyGoldDTO.getTOTAL_AMOUNT() + ") AS total FROM " + BuyGoldDTO.getBUY_GOLD_DB() + " "
-                    + "WHERE strftime('%Y'," + BuyGoldDTO.getRAW_DATE() + ")='" + year + "' GROUP BY month ORDER BY month DESC";
+            String query = "SELECT id,strftime('%m', " + BuyGoldDTO.getRAW_DATE() + ") AS month, "
+                    + "SUM(" + BuyGoldDTO.getTOTAL_AMOUNT() + ") AS total, "
+                    + "SUM(" + BuyGoldDTO.getTOP() + ") AS top, "
+                    + "SUM(" + BuyGoldDTO.getDOWN() + ") AS down, "
+                    + "SUM(" + BuyGoldDTO.getDENSITY() + ") AS density, "
+                    + "SUM(" + BuyGoldDTO.getKARAT() + ") AS karat, "
+                    + "SUM(" + BuyGoldDTO.getPOUNDS() + ") AS pounds "
+                    + "FROM " + BuyGoldDTO.getBUY_GOLD_DB() + " WHERE strftime('%Y'," + BuyGoldDTO.getRAW_DATE() + ")='" + year + "' GROUP BY month ORDER BY month DESC";
             pst = conn.prepareStatement(query);
             rs = pst.executeQuery();
 
@@ -40,6 +46,11 @@ public class MonthlyReportRepository {
 
                 month.setMonth(rs.getString("month"));
                 month.setTotal(rs.getDouble("total"));
+                month.setTop(rs.getDouble("top"));
+                month.setDown(rs.getDouble("down"));
+                month.setDensity(rs.getDouble("density"));
+                month.setKarat(rs.getDouble("karat"));
+                month.setPounds(rs.getDouble("pounds"));
                 monthlyList.add(month);
             }
 

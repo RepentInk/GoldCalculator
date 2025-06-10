@@ -30,7 +30,14 @@ public class YearlyReportRepository {
     public List<Yearly> yearlyPurchaseReport() {
         List<Yearly> yearlyList = new ArrayList<>();
         try {
-            String sql = "SELECT id,strftime('%Y'," + BuyGoldDTO.getRAW_DATE() + ") AS year, SUM(" + BuyGoldDTO.getTOTAL_AMOUNT() + ") AS total FROM " + BuyGoldDTO.getBUY_GOLD_DB() + " GROUP BY year ORDER BY year DESC";
+            String sql = "SELECT id,strftime('%Y'," + BuyGoldDTO.getRAW_DATE() + ") AS year, "
+                    + "SUM(" + BuyGoldDTO.getTOTAL_AMOUNT() + ") AS total, "
+                    + "SUM(" + BuyGoldDTO.getTOP() + ") AS top, "
+                    + "SUM(" + BuyGoldDTO.getDOWN() + ") AS down, "
+                    + "SUM(" + BuyGoldDTO.getDENSITY() + ") AS density, "
+                    + "SUM(" + BuyGoldDTO.getKARAT() + ") AS karat, "
+                    + "SUM(" + BuyGoldDTO.getPOUNDS() + ") AS pounds, "
+                    + "SUM(" + BuyGoldDTO.getTOTAL_AMOUNT() + ") AS total FROM " + BuyGoldDTO.getBUY_GOLD_DB() + " GROUP BY year ORDER BY year DESC";
             pst = conn.prepareStatement(sql);
             rs = pst.executeQuery();
 
@@ -39,6 +46,11 @@ public class YearlyReportRepository {
 
                 yearly.setYear(rs.getString("year"));
                 yearly.setTotal(rs.getDouble("total"));
+                yearly.setTop(rs.getDouble("top"));
+                yearly.setDown(rs.getDouble("down"));
+                yearly.setDensity(rs.getDouble("density"));
+                yearly.setKarat(rs.getDouble("karat"));
+                yearly.setPounds(rs.getDouble("pounds"));
                 yearlyList.add(yearly);
             }
         } catch (SQLException e) {

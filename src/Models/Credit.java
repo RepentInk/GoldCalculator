@@ -15,6 +15,7 @@ public class Credit {
     private double budget_before;
     private double budget_after;
     private int user_id;
+    private boolean status;
     private String created_date;
     private String created_time;
     private String raw_date;
@@ -196,6 +197,14 @@ public class Credit {
 
     public void setUser(String user) {
         this.user = user;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 
 }

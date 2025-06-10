@@ -358,4 +358,50 @@ public class ExpensesRepository implements AnonymousInterface<Expenses> {
         return status;
     }
 
+    public List<Expenses> findExpensesBetweenDates(String startDate, String endDate) {
+        List<Expenses> expensesList = new ArrayList<>();
+        try {
+            String query = "SELECT expense.*,user.fullname AS user,expenseType.name AS expense_type,budget.name AS budget FROM " + ExpensesDTO.getEXPENSES_DB() + " expense "
+                    + "LEFT JOIN " + UserDTO.getUSERS_DB() + " user ON expense.user_id=user.id "
+                    + "LEFT JOIN " + ExpensesTypeDTO.getEXPENSE_TYPE_DB() + " expenseType ON expense.expenses_type_id=expenseType.id "
+                    + "LEFT JOIN " + BudgetDTO.getBUDGET_DB() + " budget ON expense.budget_id=budget.id "
+                    + "WHERE expense.created_date >= '" + startDate + "' AND expense.created_date <= '" + endDate + "' ORDER BY expense.id DESC";
+            pst = conn.prepareStatement(query);
+            rs = pst.executeQuery();
+
+            while (rs.next()) {
+                Expenses expenses = new Expenses();
+
+                expenses.setId(rs.getInt(ExpensesDTO.getID()));
+                expenses.setExpenses_type_id(rs.getInt(ExpensesDTO.getEXPENSE_TYPE_ID()));
+                expenses.setBudget_id(rs.getInt(ExpensesDTO.getBUDGET_ID()));
+                expenses.setAmount(rs.getDouble(ExpensesDTO.getAMOUNT()));
+                expenses.setPaid_to(rs.getString(ExpensesDTO.getPAID_TO()));
+                expenses.setBudget_before(rs.getDouble(ExpensesDTO.getBUDGET_BEFORE()));
+                expenses.setBudget_after(rs.getDouble(ExpensesDTO.getBUDGET_AFTER()));
+                expenses.setUser_id(rs.getInt(ExpensesDTO.getUSER_ID()));
+                expenses.setCreated_time(rs.getString(ExpensesDTO.getCREATED_TIME()));
+                expenses.setCreated_date(rs.getString(ExpensesDTO.getCREATED_DATE()));
+
+                expenses.setUser(rs.getString(ExpensesDTO.getUSER()));
+                expenses.setBudget(rs.getString(ExpensesDTO.getBUDGET()));
+                expenses.setExpense_type(rs.getString(ExpensesDTO.getEXPENSE_TYPE()));
+
+                expensesList.add(expenses);
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
+        } finally {
+            try {
+                rs.close();
+                pst.close();
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, e);
+            }
+        }
+
+        return expensesList;
+    }
+
 }

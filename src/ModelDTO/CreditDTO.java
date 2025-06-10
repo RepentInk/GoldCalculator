@@ -19,6 +19,8 @@ public class CreditDTO {
     private static final String CREATED_TIME = "created_time";
     private static final String RAW_DATE = "raw_date";
 
+    private static final String STATUS = "status";
+
     private static final String CREDIT_DB = "credits";
     private static final String CUSTOMER = "customer";
     private static final String BUDGET = "budget";
@@ -90,6 +92,10 @@ public class CreditDTO {
 
     public static String getUSER() {
         return USER;
+    }
+
+    public static String getSTATUS() {
+        return STATUS;
     }
 
 }

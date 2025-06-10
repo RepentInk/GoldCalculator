@@ -28,8 +28,17 @@ public class ExpensesController {
     HelperFunctions helper = new HelperFunctions();
     ReportController reportController = new ReportController();
 
-    public void populateData(JTable table, String createdDate) {
-        List<Expenses> expenses = expensesRepository.list(createdDate);
+    public void populateData(JTable table, String startDate, String endDate) {
+        if (endDate.equals("")) {
+            endDate = helper.returnDate();
+        }
+
+        List<Expenses> expenses;
+        if (!startDate.isEmpty() && !endDate.isEmpty()) {
+            expenses = expensesRepository.findExpensesBetweenDates(startDate, endDate);
+        } else {
+            expenses = expensesRepository.list(endDate);
+        }
 
         DefaultTableModel defaultTableModel = (DefaultTableModel) table.getModel();
         defaultTableModel.setRowCount(0);
