@@ -2,7 +2,6 @@ package Main;
 
 import Helpers.HelperFunctions;
 import Helpers.LookAndFeel;
-import Models.Expenses;
 import Screen.BuyGoldScreen;
 import Screen.CreditScreen;
 import Screen.CustomerScreen;
