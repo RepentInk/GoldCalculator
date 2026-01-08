@@ -26,35 +26,44 @@ public class DashboardScreen extends javax.swing.JPanel {
     public DashboardScreen() {
         initComponents();
 
-        this.populateData(helper.returnDate());
-        dateCurrentDate.setDate(helper.convertChooserDate(helper.returnDate()));
+        this.populateData(helper.returnDate(), "");
+        txtCurrentDate.setDate(helper.convertChooserDate(helper.returnDate()));
         this.populateMonthlyData();
         this.populateYearlyData();
         this.onDateChooserAction();
     }
 
     private void onDateChooserAction() {
-        dateCurrentDate.addPropertyChangeListener((PropertyChangeEvent evt) -> {
-            String currentDate = ((JTextField) dateCurrentDate.getDateEditor().getUiComponent()).getText().toLowerCase();
+        txtCurrentDate.addPropertyChangeListener((PropertyChangeEvent evt) -> {
+            String startDate = ((JTextField) txtStartDate.getDateEditor().getUiComponent()).getText().toLowerCase();
+            String currentDate = ((JTextField) txtCurrentDate.getDateEditor().getUiComponent()).getText().toLowerCase();
             if (currentDate.equals("")) {
                 return;
             }
-            this.populateData(currentDate);
+            this.populateData(startDate, currentDate);
         });
+
+        txtStartDate.addPropertyChangeListener((PropertyChangeEvent evt) -> {
+            String startDate = ((JTextField) txtStartDate.getDateEditor().getUiComponent()).getText().toLowerCase();
+            String currentDate = ((JTextField) txtCurrentDate.getDateEditor().getUiComponent()).getText().toLowerCase();
+            if (startDate.equals("") && currentDate.equals("")) {
+                return;
+            }
+            this.populateData(startDate, currentDate);
+        });
+
     }
 
-    private void populateData(String createdDate) {
+    private void populateData(String txtStartDate, String dateEndDate) {
         dashboardController.dashboardData(
-                createdDate,
+                txtStartDate,
+                dateEndDate,
+                txtTotalBudget,
                 txtTotalGoldBought,
-                txtTotalGoldPayments,
-                txtTotalGoldBalance,
-                txtTotalDailyBudget,
-                txtTotalBudgetUsed,
-                txtTotalBudgetBalance,
-                txtBudgetUsedPayment,
-                txtBudgetUsedCredit,
-                txtBudgetUsedExpenses
+                txtTotalPayment,
+                txtTotalCredit,
+                txtTotalExpenses,
+                txtTotalCreditPayment
         );
     }
 
@@ -120,33 +129,28 @@ public class DashboardScreen extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        txtTotalGoldBought = new javax.swing.JTextField();
+        txtTotalBudget = new javax.swing.JTextField();
         jPanel7 = new javax.swing.JPanel();
         jLabel16 = new javax.swing.JLabel();
-        txtTotalGoldPayments = new javax.swing.JTextField();
+        txtTotalGoldBought = new javax.swing.JTextField();
         jPanel20 = new javax.swing.JPanel();
         jLabel17 = new javax.swing.JLabel();
-        txtTotalGoldBalance = new javax.swing.JTextField();
-        jPanel2 = new javax.swing.JPanel();
+        txtTotalPayment = new javax.swing.JTextField();
         jPanel6 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        txtTotalDailyBudget = new javax.swing.JTextField();
+        txtTotalCredit = new javax.swing.JTextField();
         jPanel8 = new javax.swing.JPanel();
         jLabel18 = new javax.swing.JLabel();
-        txtTotalBudgetUsed = new javax.swing.JTextField();
+        txtTotalExpenses = new javax.swing.JTextField();
         jPanel21 = new javax.swing.JPanel();
         jLabel19 = new javax.swing.JLabel();
-        txtTotalBudgetBalance = new javax.swing.JTextField();
-        jPanel9 = new javax.swing.JPanel();
+        txtTotalCreditPayment = new javax.swing.JTextField();
+        jPanel2 = new javax.swing.JPanel();
+        txtCurrentDate = new com.toedter.calendar.JDateChooser();
         jLabel3 = new javax.swing.JLabel();
-        txtBudgetUsedPayment = new javax.swing.JTextField();
-        jPanel10 = new javax.swing.JPanel();
-        jLabel20 = new javax.swing.JLabel();
-        txtBudgetUsedCredit = new javax.swing.JTextField();
-        jPanel22 = new javax.swing.JPanel();
-        jLabel21 = new javax.swing.JLabel();
-        txtBudgetUsedExpenses = new javax.swing.JTextField();
-        dateCurrentDate = new com.toedter.calendar.JDateChooser();
+        txtStartDate = new com.toedter.calendar.JDateChooser();
+        jLabel4 = new javax.swing.JLabel();
+        btnRefreshBtn = new javax.swing.JButton();
 
         javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
         jDialog1.getContentPane().setLayout(jDialog1Layout);
@@ -159,8 +163,8 @@ public class DashboardScreen extends javax.swing.JPanel {
             .addGap(0, 300, Short.MAX_VALUE)
         );
 
-        jTabbedPane1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Statistics", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14))); // NOI18N
-        jTabbedPane1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jTabbedPane1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Statistics", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 15))); // NOI18N
+        jTabbedPane1.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
 
         monthlyGoldBuying.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -205,11 +209,11 @@ public class DashboardScreen extends javax.swing.JPanel {
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 905, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 917, Short.MAX_VALUE)
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 357, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Monthly Purchases", jPanel4);
@@ -257,11 +261,11 @@ public class DashboardScreen extends javax.swing.JPanel {
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 905, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 917, Short.MAX_VALUE)
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 357, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Yearly Purchases", jPanel5);
@@ -270,11 +274,11 @@ public class DashboardScreen extends javax.swing.JPanel {
         jPanel11.setLayout(jPanel11Layout);
         jPanel11Layout.setHorizontalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 905, Short.MAX_VALUE)
+            .addGap(0, 917, Short.MAX_VALUE)
         );
         jPanel11Layout.setVerticalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 181, Short.MAX_VALUE)
+            .addGap(0, 357, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Daily Gold", jPanel11);
@@ -283,16 +287,16 @@ public class DashboardScreen extends javax.swing.JPanel {
         jPanel12.setLayout(jPanel12Layout);
         jPanel12Layout.setHorizontalGroup(
             jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 905, Short.MAX_VALUE)
+            .addGap(0, 917, Short.MAX_VALUE)
         );
         jPanel12Layout.setVerticalGroup(
             jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 181, Short.MAX_VALUE)
+            .addGap(0, 357, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Monthly Gold", jPanel12);
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Today Gold Bought", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 18))); // NOI18N
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Total Summations", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 15))); // NOI18N
 
         jPanel3.setBackground(new java.awt.Color(204, 204, 204));
         jPanel3.setMinimumSize(new java.awt.Dimension(273, 201));
@@ -301,15 +305,15 @@ public class DashboardScreen extends javax.swing.JPanel {
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Total Gold Bought GH₵");
+        jLabel1.setText("Budget GH₵");
         jLabel1.setOpaque(true);
 
-        txtTotalGoldBought.setEditable(false);
-        txtTotalGoldBought.setFont(new java.awt.Font("Tahoma", 1, 25)); // NOI18N
-        txtTotalGoldBought.setForeground(new java.awt.Color(0, 0, 204));
-        txtTotalGoldBought.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txtTotalGoldBought.setBorder(null);
-        txtTotalGoldBought.setFocusable(false);
+        txtTotalBudget.setEditable(false);
+        txtTotalBudget.setFont(new java.awt.Font("Tahoma", 1, 25)); // NOI18N
+        txtTotalBudget.setForeground(new java.awt.Color(0, 0, 204));
+        txtTotalBudget.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtTotalBudget.setBorder(null);
+        txtTotalBudget.setFocusable(false);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -318,7 +322,7 @@ public class DashboardScreen extends javax.swing.JPanel {
             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(txtTotalGoldBought)
+                .addComponent(txtTotalBudget)
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -326,7 +330,7 @@ public class DashboardScreen extends javax.swing.JPanel {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(txtTotalGoldBought, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtTotalBudget, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -337,15 +341,15 @@ public class DashboardScreen extends javax.swing.JPanel {
         jLabel16.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
         jLabel16.setForeground(new java.awt.Color(255, 255, 255));
         jLabel16.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel16.setText("Total Payments GH₵");
+        jLabel16.setText("Gold Bought GH₵");
         jLabel16.setOpaque(true);
 
-        txtTotalGoldPayments.setEditable(false);
-        txtTotalGoldPayments.setFont(new java.awt.Font("Tahoma", 1, 25)); // NOI18N
-        txtTotalGoldPayments.setForeground(new java.awt.Color(0, 102, 102));
-        txtTotalGoldPayments.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txtTotalGoldPayments.setBorder(null);
-        txtTotalGoldPayments.setFocusable(false);
+        txtTotalGoldBought.setEditable(false);
+        txtTotalGoldBought.setFont(new java.awt.Font("Tahoma", 1, 25)); // NOI18N
+        txtTotalGoldBought.setForeground(new java.awt.Color(0, 102, 102));
+        txtTotalGoldBought.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtTotalGoldBought.setBorder(null);
+        txtTotalGoldBought.setFocusable(false);
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
@@ -354,7 +358,7 @@ public class DashboardScreen extends javax.swing.JPanel {
             .addComponent(jLabel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(txtTotalGoldPayments)
+                .addComponent(txtTotalGoldBought)
                 .addContainerGap())
         );
         jPanel7Layout.setVerticalGroup(
@@ -362,7 +366,7 @@ public class DashboardScreen extends javax.swing.JPanel {
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(txtTotalGoldPayments, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtTotalGoldBought, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
@@ -373,15 +377,15 @@ public class DashboardScreen extends javax.swing.JPanel {
         jLabel17.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
         jLabel17.setForeground(new java.awt.Color(255, 255, 255));
         jLabel17.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel17.setText("Total Balance GH₵");
+        jLabel17.setText("Payments GH₵");
         jLabel17.setOpaque(true);
 
-        txtTotalGoldBalance.setEditable(false);
-        txtTotalGoldBalance.setFont(new java.awt.Font("Tahoma", 1, 25)); // NOI18N
-        txtTotalGoldBalance.setForeground(new java.awt.Color(204, 204, 0));
-        txtTotalGoldBalance.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txtTotalGoldBalance.setBorder(null);
-        txtTotalGoldBalance.setFocusable(false);
+        txtTotalPayment.setEditable(false);
+        txtTotalPayment.setFont(new java.awt.Font("Tahoma", 1, 25)); // NOI18N
+        txtTotalPayment.setForeground(new java.awt.Color(204, 204, 0));
+        txtTotalPayment.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtTotalPayment.setBorder(null);
+        txtTotalPayment.setFocusable(false);
 
         javax.swing.GroupLayout jPanel20Layout = new javax.swing.GroupLayout(jPanel20);
         jPanel20.setLayout(jPanel20Layout);
@@ -390,7 +394,7 @@ public class DashboardScreen extends javax.swing.JPanel {
             .addComponent(jLabel17, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel20Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(txtTotalGoldBalance)
+                .addComponent(txtTotalPayment)
                 .addContainerGap())
         );
         jPanel20Layout.setVerticalGroup(
@@ -398,35 +402,9 @@ public class DashboardScreen extends javax.swing.JPanel {
             .addGroup(jPanel20Layout.createSequentialGroup()
                 .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(txtTotalGoldBalance, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtTotalPayment, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel20, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jPanel7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 120, Short.MAX_VALUE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel20, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Today Budget Usage", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 18))); // NOI18N
 
         jPanel6.setBackground(new java.awt.Color(204, 204, 204));
         jPanel6.setMinimumSize(new java.awt.Dimension(273, 201));
@@ -435,15 +413,15 @@ public class DashboardScreen extends javax.swing.JPanel {
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Total Budget GH₵");
+        jLabel2.setText("Credit GH₵");
         jLabel2.setOpaque(true);
 
-        txtTotalDailyBudget.setEditable(false);
-        txtTotalDailyBudget.setFont(new java.awt.Font("Tahoma", 1, 25)); // NOI18N
-        txtTotalDailyBudget.setForeground(new java.awt.Color(0, 0, 204));
-        txtTotalDailyBudget.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txtTotalDailyBudget.setBorder(null);
-        txtTotalDailyBudget.setFocusable(false);
+        txtTotalCredit.setEditable(false);
+        txtTotalCredit.setFont(new java.awt.Font("Tahoma", 1, 25)); // NOI18N
+        txtTotalCredit.setForeground(new java.awt.Color(153, 0, 0));
+        txtTotalCredit.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtTotalCredit.setBorder(null);
+        txtTotalCredit.setFocusable(false);
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -452,7 +430,7 @@ public class DashboardScreen extends javax.swing.JPanel {
             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(txtTotalDailyBudget)
+                .addComponent(txtTotalCredit)
                 .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
@@ -460,7 +438,7 @@ public class DashboardScreen extends javax.swing.JPanel {
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(txtTotalDailyBudget, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtTotalCredit, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -471,15 +449,15 @@ public class DashboardScreen extends javax.swing.JPanel {
         jLabel18.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
         jLabel18.setForeground(new java.awt.Color(255, 255, 255));
         jLabel18.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel18.setText("Total Budget Used GH₵");
+        jLabel18.setText("Expenses GH₵");
         jLabel18.setOpaque(true);
 
-        txtTotalBudgetUsed.setEditable(false);
-        txtTotalBudgetUsed.setFont(new java.awt.Font("Tahoma", 1, 25)); // NOI18N
-        txtTotalBudgetUsed.setForeground(new java.awt.Color(0, 102, 102));
-        txtTotalBudgetUsed.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txtTotalBudgetUsed.setBorder(null);
-        txtTotalBudgetUsed.setFocusable(false);
+        txtTotalExpenses.setEditable(false);
+        txtTotalExpenses.setFont(new java.awt.Font("Tahoma", 1, 25)); // NOI18N
+        txtTotalExpenses.setForeground(new java.awt.Color(0, 153, 153));
+        txtTotalExpenses.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtTotalExpenses.setBorder(null);
+        txtTotalExpenses.setFocusable(false);
 
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
@@ -488,7 +466,7 @@ public class DashboardScreen extends javax.swing.JPanel {
             .addComponent(jLabel18, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(txtTotalBudgetUsed)
+                .addComponent(txtTotalExpenses)
                 .addContainerGap())
         );
         jPanel8Layout.setVerticalGroup(
@@ -496,26 +474,26 @@ public class DashboardScreen extends javax.swing.JPanel {
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(txtTotalBudgetUsed, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtTotalExpenses, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
         jPanel21.setBackground(new java.awt.Color(204, 204, 204));
         jPanel21.setMinimumSize(new java.awt.Dimension(273, 201));
 
-        jLabel19.setBackground(new java.awt.Color(153, 0, 51));
+        jLabel19.setBackground(new java.awt.Color(102, 102, 102));
         jLabel19.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
         jLabel19.setForeground(new java.awt.Color(255, 255, 255));
         jLabel19.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel19.setText("Total Budget Left GH₵");
+        jLabel19.setText("Credit Payments GH₵");
         jLabel19.setOpaque(true);
 
-        txtTotalBudgetBalance.setEditable(false);
-        txtTotalBudgetBalance.setFont(new java.awt.Font("Tahoma", 1, 25)); // NOI18N
-        txtTotalBudgetBalance.setForeground(new java.awt.Color(204, 204, 0));
-        txtTotalBudgetBalance.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txtTotalBudgetBalance.setBorder(null);
-        txtTotalBudgetBalance.setFocusable(false);
+        txtTotalCreditPayment.setEditable(false);
+        txtTotalCreditPayment.setFont(new java.awt.Font("Tahoma", 1, 25)); // NOI18N
+        txtTotalCreditPayment.setForeground(new java.awt.Color(102, 0, 102));
+        txtTotalCreditPayment.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtTotalCreditPayment.setBorder(null);
+        txtTotalCreditPayment.setFocusable(false);
 
         javax.swing.GroupLayout jPanel21Layout = new javax.swing.GroupLayout(jPanel21);
         jPanel21.setLayout(jPanel21Layout);
@@ -524,7 +502,7 @@ public class DashboardScreen extends javax.swing.JPanel {
             .addComponent(jLabel19, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel21Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(txtTotalBudgetBalance)
+                .addComponent(txtTotalCreditPayment)
                 .addContainerGap())
         );
         jPanel21Layout.setVerticalGroup(
@@ -532,186 +510,110 @@ public class DashboardScreen extends javax.swing.JPanel {
             .addGroup(jPanel21Layout.createSequentialGroup()
                 .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(txtTotalBudgetBalance, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtTotalCreditPayment, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
-        jPanel9.setBackground(new java.awt.Color(204, 204, 204));
-        jPanel9.setMinimumSize(new java.awt.Dimension(273, 201));
-
-        jLabel3.setBackground(new java.awt.Color(102, 102, 102));
-        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setText("Budget Used for Payments GH₵");
-        jLabel3.setOpaque(true);
-
-        txtBudgetUsedPayment.setEditable(false);
-        txtBudgetUsedPayment.setFont(new java.awt.Font("Tahoma", 1, 25)); // NOI18N
-        txtBudgetUsedPayment.setForeground(new java.awt.Color(0, 0, 204));
-        txtBudgetUsedPayment.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txtBudgetUsedPayment.setBorder(null);
-        txtBudgetUsedPayment.setFocusable(false);
-
-        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
-        jPanel9.setLayout(jPanel9Layout);
-        jPanel9Layout.setHorizontalGroup(
-            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(jPanel9Layout.createSequentialGroup()
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(txtBudgetUsedPayment)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel20, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel21, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
-        jPanel9Layout.setVerticalGroup(
-            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel9Layout.createSequentialGroup()
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(txtBudgetUsedPayment, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jPanel7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 120, Short.MAX_VALUE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel20, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jPanel8, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 120, Short.MAX_VALUE)
+                    .addComponent(jPanel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel21, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel10.setBackground(new java.awt.Color(204, 204, 204));
-        jPanel10.setMinimumSize(new java.awt.Dimension(273, 201));
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Filter Data", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 15))); // NOI18N
 
-        jLabel20.setBackground(new java.awt.Color(102, 102, 102));
-        jLabel20.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
-        jLabel20.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel20.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel20.setText("Budget Credited GH₵");
-        jLabel20.setOpaque(true);
+        txtCurrentDate.setToolTipText("Filter by Date");
+        txtCurrentDate.setDateFormatString("yyyy-MM-dd");
+        txtCurrentDate.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
 
-        txtBudgetUsedCredit.setEditable(false);
-        txtBudgetUsedCredit.setFont(new java.awt.Font("Tahoma", 1, 25)); // NOI18N
-        txtBudgetUsedCredit.setForeground(new java.awt.Color(0, 102, 102));
-        txtBudgetUsedCredit.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txtBudgetUsedCredit.setBorder(null);
-        txtBudgetUsedCredit.setFocusable(false);
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        jLabel3.setText("Current Date:");
 
-        javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
-        jPanel10.setLayout(jPanel10Layout);
-        jPanel10Layout.setHorizontalGroup(
-            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel20, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(jPanel10Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(txtBudgetUsedCredit)
-                .addContainerGap())
-        );
-        jPanel10Layout.setVerticalGroup(
-            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel10Layout.createSequentialGroup()
-                .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(txtBudgetUsedCredit, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-        );
+        txtStartDate.setDateFormatString("yyyy-MM-dd");
+        txtStartDate.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
 
-        jPanel22.setBackground(new java.awt.Color(204, 204, 204));
-        jPanel22.setMinimumSize(new java.awt.Dimension(273, 201));
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        jLabel4.setText("Start Date:");
 
-        jLabel21.setBackground(new java.awt.Color(102, 102, 102));
-        jLabel21.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
-        jLabel21.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel21.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel21.setText("Budget Used for Expenses GH₵");
-        jLabel21.setOpaque(true);
-
-        txtBudgetUsedExpenses.setEditable(false);
-        txtBudgetUsedExpenses.setFont(new java.awt.Font("Tahoma", 1, 25)); // NOI18N
-        txtBudgetUsedExpenses.setForeground(new java.awt.Color(204, 204, 0));
-        txtBudgetUsedExpenses.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txtBudgetUsedExpenses.setBorder(null);
-        txtBudgetUsedExpenses.setFocusable(false);
-
-        javax.swing.GroupLayout jPanel22Layout = new javax.swing.GroupLayout(jPanel22);
-        jPanel22.setLayout(jPanel22Layout);
-        jPanel22Layout.setHorizontalGroup(
-            jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel21, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(jPanel22Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(txtBudgetUsedExpenses)
-                .addContainerGap())
-        );
-        jPanel22Layout.setVerticalGroup(
-            jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel22Layout.createSequentialGroup()
-                .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(txtBudgetUsedExpenses, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-        );
+        btnRefreshBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/ref.png"))); // NOI18N
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel21, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel22, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addComponent(btnRefreshBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtStartDate, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtCurrentDate, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jPanel8, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 120, Short.MAX_VALUE)
-                    .addComponent(jPanel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel21, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jPanel10, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 120, Short.MAX_VALUE)
-                    .addComponent(jPanel9, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel22, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtStartDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtCurrentDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnRefreshBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE))
+                .addGap(14, 14, 14))
         );
-
-        dateCurrentDate.setToolTipText("Filter by Date");
-        dateCurrentDate.setDateFormatString("yyyy-MM-dd");
-        dateCurrentDate.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTabbedPane1)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(dateCurrentDate, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(dateCurrentDate, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTabbedPane1)
-                .addContainerGap())
+                .addComponent(jTabbedPane1))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -725,7 +627,7 @@ public class DashboardScreen extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private com.toedter.calendar.JDateChooser dateCurrentDate;
+    private javax.swing.JButton btnRefreshBtn;
     private javax.swing.JDialog jDialog1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel16;
@@ -733,37 +635,32 @@ public class DashboardScreen extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel20;
-    private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel20;
     private javax.swing.JPanel jPanel21;
-    private javax.swing.JPanel jPanel22;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
-    private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable monthlyGoldBuying;
-    private javax.swing.JTextField txtBudgetUsedCredit;
-    private javax.swing.JTextField txtBudgetUsedExpenses;
-    private javax.swing.JTextField txtBudgetUsedPayment;
-    private javax.swing.JTextField txtTotalBudgetBalance;
-    private javax.swing.JTextField txtTotalBudgetUsed;
-    private javax.swing.JTextField txtTotalDailyBudget;
-    private javax.swing.JTextField txtTotalGoldBalance;
+    private com.toedter.calendar.JDateChooser txtCurrentDate;
+    private com.toedter.calendar.JDateChooser txtStartDate;
+    private javax.swing.JTextField txtTotalBudget;
+    private javax.swing.JTextField txtTotalCredit;
+    private javax.swing.JTextField txtTotalCreditPayment;
+    private javax.swing.JTextField txtTotalExpenses;
     private javax.swing.JTextField txtTotalGoldBought;
-    private javax.swing.JTextField txtTotalGoldPayments;
+    private javax.swing.JTextField txtTotalPayment;
     private javax.swing.JTable yearlyGoldBuying;
     // End of variables declaration//GEN-END:variables
 }

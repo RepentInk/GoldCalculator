@@ -337,9 +337,7 @@ public class Dashboard extends javax.swing.JFrame {
         DailyBudget.setLayout(DailyBudgetLayout);
         DailyBudgetLayout.setHorizontalGroup(
             DailyBudgetLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, DailyBudgetLayout.createSequentialGroup()
-                .addComponent(lbl_DailyBudget, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(lbl_DailyBudget, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         DailyBudgetLayout.setVerticalGroup(
             DailyBudgetLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

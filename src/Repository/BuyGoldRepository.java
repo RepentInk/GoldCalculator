@@ -5,6 +5,7 @@ import Interfaces.AnonymousInterface;
 import ModelDTO.BuyGoldDTO;
 import ModelDTO.CREDITPAYMENTDTO;
 import ModelDTO.CustomerDTO;
+import ModelDTO.PaymentDTO;
 import ModelDTO.UserDTO;
 import Models.BuyGold;
 import Models.Receipt;
@@ -54,7 +55,6 @@ public class BuyGoldRepository implements AnonymousInterface<BuyGold> {
                 buyGold.setBase_price(rs.getDouble(BuyGoldDTO.getBASE_PRICE()));
                 buyGold.setTotal_weight(rs.getDouble(BuyGoldDTO.getTOTAL_WEIGHT()));
                 buyGold.setTotal_amount(rs.getDouble(BuyGoldDTO.getTOTAL_AMOUNT()));
-                buyGold.setCredit_balance(rs.getDouble(BuyGoldDTO.getCREDIT_BALANCE()));
                 buyGold.setCreated_date(rs.getString(BuyGoldDTO.getCREATED_DATE()));
                 buyGold.setCreated_time(rs.getString(BuyGoldDTO.getCREATED_TIME()));
                 buyGold.setRaw_date(rs.getString(BuyGoldDTO.getRAW_DATE()));
@@ -105,7 +105,6 @@ public class BuyGoldRepository implements AnonymousInterface<BuyGold> {
                 buyGold.setBase_price(rs.getDouble(BuyGoldDTO.getBASE_PRICE()));
                 buyGold.setTotal_weight(rs.getDouble(BuyGoldDTO.getTOTAL_WEIGHT()));
                 buyGold.setTotal_amount(rs.getDouble(BuyGoldDTO.getTOTAL_AMOUNT()));
-                buyGold.setCredit_balance(rs.getDouble(BuyGoldDTO.getCREDIT_BALANCE()));
                 buyGold.setCreated_date(rs.getString(BuyGoldDTO.getCREATED_DATE()));
                 buyGold.setCreated_time(rs.getString(BuyGoldDTO.getCREATED_TIME()));
                 buyGold.setRaw_date(rs.getString(BuyGoldDTO.getRAW_DATE()));
@@ -156,7 +155,6 @@ public class BuyGoldRepository implements AnonymousInterface<BuyGold> {
                 buyGold.setBase_price(rs.getDouble(BuyGoldDTO.getBASE_PRICE()));
                 buyGold.setTotal_weight(rs.getDouble(BuyGoldDTO.getTOTAL_WEIGHT()));
                 buyGold.setTotal_amount(rs.getDouble(BuyGoldDTO.getTOTAL_AMOUNT()));
-                buyGold.setCredit_balance(rs.getDouble(BuyGoldDTO.getCREDIT_BALANCE()));
                 buyGold.setCreated_date(rs.getString(BuyGoldDTO.getCREATED_DATE()));
                 buyGold.setCreated_time(rs.getString(BuyGoldDTO.getCREATED_TIME()));
                 buyGold.setRaw_date(rs.getString(BuyGoldDTO.getRAW_DATE()));
@@ -197,12 +195,11 @@ public class BuyGoldRepository implements AnonymousInterface<BuyGold> {
                     + BuyGoldDTO.getBASE_PRICE() + ","
                     + BuyGoldDTO.getTOTAL_WEIGHT() + ","
                     + BuyGoldDTO.getTOTAL_AMOUNT() + ","
-                    + BuyGoldDTO.getCREDIT_BALANCE() + ","
                     + BuyGoldDTO.getUSER_ID() + ","
                     + BuyGoldDTO.getCUSTOMER_ID() + ","
                     + BuyGoldDTO.getRAW_DATE() + ","
                     + BuyGoldDTO.getCREATED_DATE() + ","
-                    + BuyGoldDTO.getCREATED_TIME() + " ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                    + BuyGoldDTO.getCREATED_TIME() + " ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
             pst = conn.prepareStatement(query);
 
@@ -215,12 +212,11 @@ public class BuyGoldRepository implements AnonymousInterface<BuyGold> {
             pst.setDouble(7, buyGold.getBase_price());
             pst.setDouble(8, buyGold.getTotal_weight());
             pst.setDouble(9, buyGold.getTotal_amount());
-            pst.setDouble(10, buyGold.getCredit_balance());
-            pst.setInt(11, buyGold.getUser_id());
-            pst.setInt(12, buyGold.getCustomer_id());
-            pst.setString(13, buyGold.getRaw_date());
-            pst.setString(14, buyGold.getCreated_date());
-            pst.setString(15, buyGold.getCreated_time());
+            pst.setInt(10, buyGold.getUser_id());
+            pst.setInt(11, buyGold.getCustomer_id());
+            pst.setString(12, buyGold.getRaw_date());
+            pst.setString(13, buyGold.getCreated_date());
+            pst.setString(14, buyGold.getCreated_time());
 
             pst.executeUpdate();
 
@@ -256,7 +252,6 @@ public class BuyGoldRepository implements AnonymousInterface<BuyGold> {
                     + BuyGoldDTO.getBASE_PRICE() + "='" + buyGold.getBase_price() + "',"
                     + BuyGoldDTO.getTOTAL_WEIGHT() + "='" + buyGold.getTotal_weight() + "',"
                     + BuyGoldDTO.getTOTAL_AMOUNT() + "='" + buyGold.getTotal_amount() + "',"
-                    + BuyGoldDTO.getCREDIT_BALANCE() + "='" + buyGold.getCredit_balance() + "',"
                     + BuyGoldDTO.getUSER_ID() + "='" + buyGold.getUser_id() + "',"
                     + BuyGoldDTO.getCUSTOMER_ID() + "='" + buyGold.getCustomer_id() + "',"
                     + BuyGoldDTO.getRAW_DATE() + "='" + buyGold.getRaw_date() + "',"
@@ -362,7 +357,6 @@ public class BuyGoldRepository implements AnonymousInterface<BuyGold> {
                 buyGold.setBase_price(rs.getDouble(BuyGoldDTO.getBASE_PRICE()));
                 buyGold.setTotal_weight(rs.getDouble(BuyGoldDTO.getTOTAL_WEIGHT()));
                 buyGold.setTotal_amount(rs.getDouble(BuyGoldDTO.getTOTAL_AMOUNT()));
-                buyGold.setCredit_balance(rs.getDouble(BuyGoldDTO.getCREDIT_BALANCE()));
                 buyGold.setCreated_date(rs.getString(BuyGoldDTO.getCREATED_DATE()));
                 buyGold.setCreated_time(rs.getString(BuyGoldDTO.getCREATED_TIME()));
                 buyGold.setRaw_date(rs.getString(BuyGoldDTO.getRAW_DATE()));
@@ -415,8 +409,8 @@ public class BuyGoldRepository implements AnonymousInterface<BuyGold> {
         Receipt receipt = new Receipt();
 
         try {
-            String query = "SELECT gold.*,credit_payment.paid,credit_payment.balance FROM " + BuyGoldDTO.getBUY_GOLD_DB() + " gold "
-                    + "LEFT JOIN " + CREDITPAYMENTDTO.getCREDIT_PAYMENTS_DB() + " credit_payment ON credit_payment.buy_gold_id=gold.id "
+            String query = "SELECT gold.*,payment.amount_paid,payment.balance FROM " + BuyGoldDTO.getBUY_GOLD_DB() + " gold "
+                    + "LEFT JOIN " + PaymentDTO.getPAYMENT_DB() + " payment ON payment.buy_gold_id=gold.id "
                     + "WHERE gold.id= '" + id + "'";
             pst = conn.prepareStatement(query);
             rs = pst.executeQuery();
@@ -426,7 +420,6 @@ public class BuyGoldRepository implements AnonymousInterface<BuyGold> {
                 receipt.setAmountPaid(rs.getDouble("paid"));
                 receipt.setBasePrice(rs.getDouble("base_price"));
                 receipt.setBalance(rs.getDouble("balance"));
-                receipt.setCredit_balance(rs.getDouble("credit_balance"));
             }
 
         } catch (SQLException e) {
@@ -466,7 +459,6 @@ public class BuyGoldRepository implements AnonymousInterface<BuyGold> {
                 buyGold.setBase_price(rs.getDouble(BuyGoldDTO.getBASE_PRICE()));
                 buyGold.setTotal_weight(rs.getDouble(BuyGoldDTO.getTOTAL_WEIGHT()));
                 buyGold.setTotal_amount(rs.getDouble(BuyGoldDTO.getTOTAL_AMOUNT()));
-                buyGold.setCredit_balance(rs.getDouble(BuyGoldDTO.getCREDIT_BALANCE()));
                 buyGold.setCreated_date(rs.getString(BuyGoldDTO.getCREATED_DATE()));
                 buyGold.setCreated_time(rs.getString(BuyGoldDTO.getCREATED_TIME()));
                 buyGold.setRaw_date(rs.getString(BuyGoldDTO.getRAW_DATE()));
@@ -491,6 +483,57 @@ public class BuyGoldRepository implements AnonymousInterface<BuyGold> {
         }
 
         return buyGoldsList;
+    }
+
+    public double goldBuySummation(String createdDate) {
+        double totalGoldBought = 0;
+        try {
+            String query = "SELECT SUM(" + BuyGoldDTO.getTOTAL_AMOUNT() + ") AS total FROM " + BuyGoldDTO.getBUY_GOLD_DB() + " WHERE " + BuyGoldDTO.getRAW_DATE() + " = '" + createdDate + "'";
+            pst = conn.prepareStatement(query);
+            rs = pst.executeQuery();
+
+            if (rs.next()) {
+                totalGoldBought = rs.getDouble("total");
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
+        } finally {
+            try {
+                rs.close();
+                pst.close();
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, e);
+            }
+        }
+
+        return totalGoldBought;
+    }
+
+    public double buyGoldSummationBetweenDates(String startDate, String endDate) {
+        double totalGoldBought = 0;
+        try {
+            String query = "SELECT SUM(" + BuyGoldDTO.getTOTAL_AMOUNT() + ") AS total FROM " + BuyGoldDTO.getBUY_GOLD_DB() + " "
+                    + "WHERE " + BuyGoldDTO.getRAW_DATE() + " >= '" + startDate + "' AND " + BuyGoldDTO.getRAW_DATE() + " <= '" + endDate + "'";
+            pst = conn.prepareStatement(query);
+            rs = pst.executeQuery();
+
+            if (rs.next()) {
+                totalGoldBought = rs.getDouble("total");
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
+        } finally {
+            try {
+                rs.close();
+                pst.close();
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, e);
+            }
+        }
+
+        return totalGoldBought;
     }
 
 }

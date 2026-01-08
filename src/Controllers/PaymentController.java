@@ -49,11 +49,9 @@ public class PaymentController {
                 payment.getId(),
                 payment.getBuy_gold(),
                 payment.getCustomer(),
-                payment.getBudget(),
+                helper.priceToString(payment.getTotal_amount()),
                 helper.priceToString(payment.getAmount_paid()),
                 helper.priceToString(payment.getBalance()),
-                helper.priceToString(payment.getBudget_before_payment()),
-                helper.priceToString(payment.getBudget_after_payment()),
                 payment.getUser(),
                 payment.getCreated_time(),
                 payment.getCreated_date(),
@@ -63,8 +61,6 @@ public class PaymentController {
 
             defaultTableModel.addRow(object);
         }
-
-        defaultTableModel.fireTableDataChanged();
     }
 
     public void saveUpdate(
@@ -72,22 +68,16 @@ public class PaymentController {
             JComboBox buyGoldSelected,
             JTextField amountPaying,
             JTextField balance,
-            JComboBox budgetSelected,
-            JTextField budgetBeforePayment,
-            JTextField budgetAfterPayment,
             JTable table,
             int selectedRow,
             javax.swing.JDialog dialog
     ) {
 
-        Budget budget = budgetController.getSingleBudget(budgetSelected.getSelectedItem().toString());
         BuyGold buyGold = buyGoldController.getSingleData(buyGoldSelected.getSelectedItem().toString());
 
         int payment_id = 0;
         double amount_paying = amountPaying.getText().isEmpty() ? 0 : helper.parseAmountWithComma(amountPaying.getText());
         double balance_remain = balance.getText().isEmpty() ? 0 : helper.parseAmountWithComma(balance.getText());
-        double budget_before_payement = budgetBeforePayment.getText().isEmpty() ? 0 : helper.parseAmountWithComma(budgetBeforePayment.getText());
-        double budget_after_payment = budgetAfterPayment.getText().isEmpty() ? 0 : helper.parseAmountWithComma(budgetAfterPayment.getText());
         String created_date = helper.returnDate();
         String raw_date = helper.returnDate();
         String created_time = helper.returnTime();
@@ -101,11 +91,8 @@ public class PaymentController {
             Payments payments = new Payments(
                     payment_id,
                     buyGold.getId(),
-                    budget.getId(),
                     amount_paying,
                     balance_remain,
-                    budget_before_payement,
-                    budget_after_payment,
                     Authuser.getId(),
                     created_date,
                     created_time,
@@ -122,11 +109,8 @@ public class PaymentController {
 
             Payments payments = new Payments(
                     buyGold.getId(),
-                    budget.getId(),
                     amount_paying,
                     balance_remain,
-                    budget_before_payement,
-                    budget_after_payment,
                     Authuser.getId(),
                     created_date,
                     created_time,
@@ -142,13 +126,12 @@ public class PaymentController {
         }
     }
 
-    public void populateDropDownData(JComboBox cmdGoldPurchase, JComboBox cmbBudget, String createdDate) {
+    public void populateDropDownData(JComboBox cmdGoldPurchase, String createdDate) {
         if (createdDate.equals("")) {
             createdDate = helper.returnDate();
         }
 
         buyGoldController.populateDropdownData(cmdGoldPurchase, "Select Purchase", createdDate);
-        budgetController.populateDropdownData(cmbBudget, "Select Budget", createdDate);
     }
 
     public void setPurchaseDetails(
@@ -159,15 +142,14 @@ public class PaymentController {
     ) {
         BuyGold buyGold = buyGoldController.getSingleData(purchase);
         double total_payment = paymentsRepository.summationOfPurchasePayment(buyGold.getId());
-        double total_amount_paid = total_payment + buyGold.getCredit_balance();
-        double amount_remains = (buyGold.getTotal_amount() - total_amount_paid);
+        double amount_remains = buyGold.getTotal_amount() - total_payment;
 
         if (amount_remains < 0) {
             amount_remains = -(amount_remains);
         }
 
         totalAmount.setText(helper.priceToString(buyGold.getTotal_amount()));
-        amountPaid.setText(helper.priceToString(total_amount_paid));
+        amountPaid.setText(helper.priceToString(total_payment));
         amountRemains.setText(helper.priceToString(amount_remains));
     }
 
@@ -190,11 +172,9 @@ public class PaymentController {
             payment.getId(),
             payment.getBuy_gold(),
             payment.getCustomer(),
-            payment.getBudget(),
+            helper.priceToString(payment.getTotal_amount()),
             helper.priceToString(payment.getAmount_paid()),
             helper.priceToString(payment.getBalance()),
-            helper.priceToString(payment.getBudget_before_payment()),
-            helper.priceToString(payment.getBudget_after_payment()),
             payment.getUser(),
             payment.getCreated_time(),
             payment.getCreated_date(),
@@ -212,14 +192,12 @@ public class PaymentController {
         table.setValueAt(payment.getId(), selectedRow, 0);
         table.setValueAt(payment.getBuy_gold(), selectedRow, 1);
         table.setValueAt(payment.getCustomer(), selectedRow, 2);
-        table.setValueAt(payment.getBudget(), selectedRow, 3);
+        table.setValueAt(helper.priceToString(payment.getTotal_amount()), selectedRow, 3);
         table.setValueAt(helper.priceToString(payment.getAmount_paid()), selectedRow, 4);
         table.setValueAt(helper.priceToString(payment.getBalance()), selectedRow, 5);
-        table.setValueAt(helper.priceToString(payment.getBudget_before_payment()), selectedRow, 6);
-        table.setValueAt(helper.priceToString(payment.getBudget_after_payment()), selectedRow, 7);
-        table.setValueAt(payment.getUser(), selectedRow, 8);
-        table.setValueAt(payment.getCreated_time(), selectedRow, 9);
-        table.setValueAt(payment.getCreated_date(), selectedRow, 10);
+        table.setValueAt(payment.getUser(), selectedRow, 6);
+        table.setValueAt(payment.getCreated_time(), selectedRow, 7);
+        table.setValueAt(payment.getCreated_date(), selectedRow, 8);
     }
 
     public void deleteItem(JTable table, String rowID, int selectedRow) {
@@ -236,31 +214,22 @@ public class PaymentController {
             JTextField totalAmount,
             JTextField amountPaid,
             JTextField amountRemaining,
-            JComboBox budgetSelected,
-            JTextField budgetBeforePayment,
             JTextField amountPaying,
             JTextField balance,
-            JTextField budgetAfterPayment,
             int selectedRow
     ) {
 
         Payments payment = paymentsRepository.find(payment_id);
-        Budget budget = budgetController.getSingleBudgetWithID(payment.getBudget_id());
-
         BuyGold buyGold = buyGoldController.getSingleDataWithID(payment.getBuy_gold_id());
+
         double total_payment = paymentsRepository.summationOfPurchasePayment(buyGold.getId());
 
         paymentID.setText(String.valueOf(payment.getId()));
         buyGoldSelected.setSelectedItem(buyGold.getCode() + " | " + buyGold.getCustomer());
-        budgetSelected.setSelectedItem(budget.getId() + " | " + budget.getName());
 
         totalAmount.setText(helper.priceToString(buyGold.getTotal_amount()));
-        amountPaid.setText(helper.priceToString(total_payment + buyGold.getCredit_balance()));
-        amountRemaining.setText(helper.priceToString(buyGold.getTotal_amount() - (total_payment + buyGold.getCredit_balance())));
-
-        budgetBeforePayment.setText(helper.priceToString(payment.getBudget_before_payment()));
-        budgetAfterPayment.setText(helper.priceToString(payment.getBudget_after_payment()));
-
+        amountPaid.setText(helper.priceToString(total_payment));
+        amountRemaining.setText(helper.priceToString(buyGold.getTotal_amount() - total_payment));
         amountPaying.setText(helper.priceToString(payment.getAmount_paid()));
         balance.setText(helper.priceToString(payment.getBalance()));
     }

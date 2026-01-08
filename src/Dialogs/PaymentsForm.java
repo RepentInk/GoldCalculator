@@ -29,7 +29,7 @@ public class PaymentsForm extends javax.swing.JDialog {
     }
 
     public void populateData(String createdDate) {
-        paymentController.populateDropDownData(cmdGoldPurchase, cmbBudget, createdDate);
+        paymentController.populateDropDownData(cmdGoldPurchase, createdDate);
         lblSelectedYear.setText(createdDate);
         btnSave.setEnabled(true);
     }
@@ -49,17 +49,6 @@ public class PaymentsForm extends javax.swing.JDialog {
         this.hideOrShowButton();
     }
 
-    private void budgetData() {
-        if (cmbBudget.getSelectedIndex() == 0) {
-            return;
-        }
-
-        paymentController.setBudgetDetails(
-                cmbBudget.getSelectedItem().toString(),
-                txtAmountBeforePayment
-        );
-    }
-
     private void saveData() {
         if (!this.checkFields()) {
             return;
@@ -70,9 +59,6 @@ public class PaymentsForm extends javax.swing.JDialog {
                 cmdGoldPurchase,
                 txtTotalAmountPaying,
                 txtBalance,
-                cmbBudget,
-                txtAmountBeforePayment,
-                txtAmountAfterPayment,
                 PaymentsScreen.paymentsTable,
                 this.selectedRow,
                 this
@@ -86,24 +72,12 @@ public class PaymentsForm extends javax.swing.JDialog {
             message = message + "Purchase name is required \n";
         }
 
-        if (cmbBudget.getSelectedIndex() == 0) {
-            message = message + "Select budget to pay from \n";
-        }
-
         if (txtTotalAmountPaying.getText().isEmpty()) {
             message = message + "Amount paying is required \n";
         }
 
         if (txtBalance.getText().isEmpty()) {
             message = message + "Balance is required \n";
-        }
-
-        if (txtAmountBeforePayment.getText().isEmpty()) {
-            message = message + "Budget amount before payment is required \n";
-        }
-
-        if (txtAmountAfterPayment.getText().isEmpty()) {
-            message = message + "Budget amount after payment value is required \n";
         }
 
         if (message.length() > 0) {
@@ -121,20 +95,9 @@ public class PaymentsForm extends javax.swing.JDialog {
 
         double amount_paying = txtTotalAmountPaying.getText().isEmpty() ? 0 : Double.parseDouble(txtTotalAmountPaying.getText());
         double amount_remain = txtRemainAmount.getText().isEmpty() ? 0 : helper.parseAmountWithComma(txtRemainAmount.getText());
-        double budget_before_payment = txtAmountBeforePayment.getText().isEmpty() ? 0 : helper.parseAmountWithComma(txtAmountBeforePayment.getText());
 
-        double budget_after_payment = 0, balance = 0;
+        double balance = 0;
         if (amount_paying <= 0) {
-            return;
-        }
-
-        if (amount_paying > budget_before_payment) {
-            JOptionPane.showMessageDialog(
-                    null,
-                    "Sorry! Amount paying cannot be more than budget remain amount",
-                    "PAYMENT AMOUNT LIMIT",
-                    JOptionPane.INFORMATION_MESSAGE
-            );
             return;
         }
 
@@ -148,10 +111,8 @@ public class PaymentsForm extends javax.swing.JDialog {
             return;
         }
 
-        budget_after_payment = budget_before_payment - amount_paying;
         balance = amount_remain - amount_paying;
 
-        txtAmountAfterPayment.setText(String.valueOf(helper.priceToString(budget_after_payment)));
         txtBalance.setText(String.valueOf(helper.priceToString(balance)));
     }
 
@@ -165,11 +126,8 @@ public class PaymentsForm extends javax.swing.JDialog {
                 txtPurchaseAmount,
                 txtTotalAmountPaid,
                 txtRemainAmount,
-                cmbBudget,
-                txtAmountBeforePayment,
                 txtTotalAmountPaying,
                 txtBalance,
-                txtAmountAfterPayment,
                 selectedRow
         );
 
@@ -198,16 +156,10 @@ public class PaymentsForm extends javax.swing.JDialog {
         cmdGoldPurchase = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
         txtPurchaseAmount = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
-        cmbBudget = new javax.swing.JComboBox<>();
-        jLabel4 = new javax.swing.JLabel();
-        txtAmountBeforePayment = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         txtTotalAmountPaying = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         txtBalance = new javax.swing.JTextField();
-        jLabel7 = new javax.swing.JLabel();
-        txtAmountAfterPayment = new javax.swing.JTextField();
         btnSave = new javax.swing.JButton();
         lblSelectedYear = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
@@ -230,28 +182,11 @@ public class PaymentsForm extends javax.swing.JDialog {
         });
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel2.setText("Purchase Amount");
+        jLabel2.setText("Total Amount");
 
         txtPurchaseAmount.setEditable(false);
         txtPurchaseAmount.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         txtPurchaseAmount.setFocusable(false);
-
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel3.setText("Budget");
-
-        cmbBudget.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        cmbBudget.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmbBudgetActionPerformed(evt);
-            }
-        });
-
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel4.setText("Budget Amount Before Payment");
-
-        txtAmountBeforePayment.setEditable(false);
-        txtAmountBeforePayment.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        txtAmountBeforePayment.setFocusable(false);
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel5.setText("Amount Paying");
@@ -269,13 +204,6 @@ public class PaymentsForm extends javax.swing.JDialog {
         txtBalance.setEditable(false);
         txtBalance.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         txtBalance.setFocusable(false);
-
-        jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel7.setText("Budget Amount After Payment");
-
-        txtAmountAfterPayment.setEditable(false);
-        txtAmountAfterPayment.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        txtAmountAfterPayment.setFocusable(false);
 
         btnSave.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/save.png"))); // NOI18N
@@ -313,12 +241,6 @@ public class PaymentsForm extends javax.swing.JDialog {
                     .addComponent(cmdGoldPurchase, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(txtPurchaseAmount)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(cmbBudget, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 443, Short.MAX_VALUE)
-                    .addComponent(txtAmountBeforePayment)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtAmountAfterPayment)
                     .addComponent(btnSave, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 335, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -326,7 +248,7 @@ public class PaymentsForm extends javax.swing.JDialog {
                         .addComponent(lblSelectedYear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 203, Short.MAX_VALUE)
                             .addComponent(txtTotalAmountPaying))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -367,14 +289,6 @@ public class PaymentsForm extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtRemainAmount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cmbBudget, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtAmountBeforePayment, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel5)
@@ -385,12 +299,8 @@ public class PaymentsForm extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtBalance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel7)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtAmountAfterPayment, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblPaymentID, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -402,10 +312,6 @@ public class PaymentsForm extends javax.swing.JDialog {
     private void cmdGoldPurchaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdGoldPurchaseActionPerformed
         this.purchasePayments();
     }//GEN-LAST:event_cmdGoldPurchaseActionPerformed
-
-    private void cmbBudgetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbBudgetActionPerformed
-        this.budgetData();
-    }//GEN-LAST:event_cmbBudgetActionPerformed
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         int ask = JOptionPane.showConfirmDialog(null, "Are you sure you want to save this record?, record cannot be deleted", "DELETE RECORDS", JOptionPane.YES_NO_OPTION);
@@ -460,21 +366,15 @@ public class PaymentsForm extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSave;
-    private javax.swing.JComboBox<String> cmbBudget;
     private javax.swing.JComboBox<String> cmdGoldPurchase;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JLabel lblPaymentID;
     private javax.swing.JLabel lblSelectedYear;
-    private javax.swing.JTextField txtAmountAfterPayment;
-    private javax.swing.JTextField txtAmountBeforePayment;
     private javax.swing.JTextField txtBalance;
     private javax.swing.JTextField txtPurchaseAmount;
     private javax.swing.JTextField txtRemainAmount;

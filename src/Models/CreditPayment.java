@@ -8,12 +8,9 @@ public class CreditPayment {
 
     private int id;
     private int credit_id;
-    private int customer_id;
     private double paid;
     private double balance;
-    private int paid_from;
     private int user_id;
-    private int buy_gold_id;
     private String created_date;
     private String created_time;
     private String raw_date;
@@ -25,23 +22,17 @@ public class CreditPayment {
 
     public CreditPayment(
             int credit_id,
-            int customer_id,
             double paid,
             double balance,
-            int paid_from,
             int user_id,
-            int buy_gold_id,
             String created_date,
             String created_time,
             String raw_date
     ) {
         this.credit_id = credit_id;
-        this.customer_id = customer_id;
         this.paid = paid;
         this.balance = balance;
-        this.paid_from = paid_from;
         this.user_id = user_id;
-        this.buy_gold_id = buy_gold_id;
         this.created_date = created_date;
         this.created_time = created_time;
         this.raw_date = raw_date;
@@ -50,24 +41,18 @@ public class CreditPayment {
     public CreditPayment(
             int id,
             int credit_id,
-            int customer_id,
             double paid,
             double balance,
-            int paid_from,
             int user_id,
-            int buy_gold_id,
             String created_date,
             String created_time,
             String raw_date
     ) {
         this.id = id;
         this.credit_id = credit_id;
-        this.customer_id = customer_id;
         this.paid = paid;
         this.balance = balance;
-        this.paid_from = paid_from;
         this.user_id = user_id;
-        this.buy_gold_id = buy_gold_id;
         this.created_date = created_date;
         this.created_time = created_time;
         this.raw_date = raw_date;
@@ -89,14 +74,6 @@ public class CreditPayment {
         this.credit_id = credit_id;
     }
 
-    public int getCustomer_id() {
-        return customer_id;
-    }
-
-    public void setCustomer_id(int customer_id) {
-        this.customer_id = customer_id;
-    }
-
     public double getPaid() {
         return paid;
     }
@@ -111,14 +88,6 @@ public class CreditPayment {
 
     public void setBalance(double balance) {
         this.balance = balance;
-    }
-
-    public int getPaid_from() {
-        return paid_from;
-    }
-
-    public void setPaid_from(int paid_from) {
-        this.paid_from = paid_from;
     }
 
     public int getUser_id() {
@@ -160,13 +129,4 @@ public class CreditPayment {
     public void setUser(String user) {
         this.user = user;
     }
-
-    public int getBuy_gold_id() {
-        return buy_gold_id;
-    }
-
-    public void setBuy_gold_id(int buy_gold_id) {
-        this.buy_gold_id = buy_gold_id;
-    }
-
 }

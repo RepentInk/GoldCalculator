@@ -97,7 +97,7 @@ public class YearlyReportRepository {
         double yearTotal = 0;
         try {
             String query = "SELECT id,SUM(" + CREDITPAYMENTDTO.getPAID() + ") AS total FROM " + CREDITPAYMENTDTO.getCREDIT_PAYMENTS_DB() + " "
-                    + "WHERE strftime('%Y'," + CREDITPAYMENTDTO.getRAW_DATE() + ")='" + year + "' AND " + CREDITPAYMENTDTO.getPAID_FROM() + "='" + paidFrom + "'";
+                    + "WHERE strftime('%Y'," + CREDITPAYMENTDTO.getRAW_DATE() + ")='" + year + "'";
             pst = conn.prepareStatement(query);
             rs = pst.executeQuery();
 

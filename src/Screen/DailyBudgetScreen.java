@@ -40,11 +40,14 @@ public class DailyBudgetScreen extends javax.swing.JPanel {
         lblEndDate.setVisible(false);
         startDate.setVisible(false);
         lblStartDate.setVisible(false);
+
+        this.sumUpTotalAmount();
     }
 
     private void addForm() {
         BudgetForm budgetForm = new BudgetForm(new Dashboard(), true);
         budgetForm.setVisible(true);
+        this.sumUpTotalAmount();
     }
 
     private void populateData(String startDate, String endDate) {
@@ -64,7 +67,6 @@ public class DailyBudgetScreen extends javax.swing.JPanel {
     public void onTableClicked() {
         int[] columns = ActionsColumns.tableActionColumn(ModelType.Budget);
         String tableID = dailyBudgetTable.getModel().getValueAt(dailyBudgetTable.getSelectedRow(), 0).toString();
-        String balanceAmount = dailyBudgetTable.getModel().getValueAt(dailyBudgetTable.getSelectedRow(), 4).toString();
         int table_id = Integer.parseInt(tableID);
         Budget budget = budgetController.getSingleBudgetWithID(table_id);
 
@@ -78,20 +80,17 @@ public class DailyBudgetScreen extends javax.swing.JPanel {
             budgetForm.viewDetails(table_id, dailyBudgetTable.getSelectedRow());
             budgetForm.setVisible(true);
         } else if (dailyBudgetTable.getSelectedColumn() == columns[1]) {
-            BudgetAddUpForm budgetAddUpForm = new BudgetAddUpForm(new Dashboard(), true);
-            budgetAddUpForm.populateData(table_id);
-            budgetAddUpForm.setVisible(true);
-        } else if (dailyBudgetTable.getSelectedColumn() == columns[2]) {
-            JLabel label = new JLabel("Are you sure you want to close budget?. You are closing the day budget with a balance of " + balanceAmount);
+            JLabel label = new JLabel("Are you sure you want to delete budget?.");
             label.setFont(new Font("serif", Font.BOLD, 16));
-            int ask = JOptionPane.showConfirmDialog(null, label, "CLOSE DAILY BUDGET", JOptionPane.OK_OPTION);
+            int ask = JOptionPane.showConfirmDialog(null, label, "DELETING RECORD", JOptionPane.OK_OPTION);
             if (ask == 0) {
-                budgetController.changeStatus(table_id, 1, dailyBudgetTable, dailyBudgetTable.getSelectedRow());
+                budgetController.deleteItem(dailyBudgetTable, tableID, dailyBudgetTable.getSelectedRow());
             }
         }
 
         this.countRow();
         this.refresh();
+        this.sumUpTotalAmount();
     }
 
     private void refresh() {
@@ -110,6 +109,7 @@ public class DailyBudgetScreen extends javax.swing.JPanel {
                 return;
             }
             this.populateData(startDateValue, endDate);
+            this.sumUpTotalAmount();
         });
 
         startDate.addPropertyChangeListener((PropertyChangeEvent evt) -> {
@@ -119,6 +119,7 @@ public class DailyBudgetScreen extends javax.swing.JPanel {
                 return;
             }
             this.populateData(startDateValue, endDate);
+            this.sumUpTotalAmount();
         });
     }
 
@@ -136,6 +137,12 @@ public class DailyBudgetScreen extends javax.swing.JPanel {
         }
     }
 
+    private void sumUpTotalAmount() {
+        Double total = helper.summationOfTableColumnReturnDouble(dailyBudgetTable, 3);
+
+        txtTotalAmount.setText(String.valueOf(total));
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -148,6 +155,8 @@ public class DailyBudgetScreen extends javax.swing.JPanel {
         jPanel30 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         btn_addUser = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        txtTotalAmount = new javax.swing.JTextField();
         jPanel37 = new javax.swing.JPanel();
         txtSearch = new javax.swing.JTextField();
         lbl_SearchIcon1 = new javax.swing.JLabel();
@@ -180,6 +189,13 @@ public class DailyBudgetScreen extends javax.swing.JPanel {
             }
         });
 
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel1.setText("Total:");
+
+        txtTotalAmount.setEditable(false);
+        txtTotalAmount.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        txtTotalAmount.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+
         javax.swing.GroupLayout jPanel30Layout = new javax.swing.GroupLayout(jPanel30);
         jPanel30.setLayout(jPanel30Layout);
         jPanel30Layout.setHorizontalGroup(
@@ -187,16 +203,23 @@ public class DailyBudgetScreen extends javax.swing.JPanel {
             .addGroup(jPanel30Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 518, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtTotalAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btn_addUser, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel30Layout.setVerticalGroup(
             jPanel30Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(btn_addUser, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
             .addGroup(jPanel30Layout.createSequentialGroup()
                 .addGap(2, 2, 2)
-                .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(btn_addUser, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
+                .addGroup(jPanel30Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+            .addComponent(txtTotalAmount)
         );
 
         jPanel37.setBorder(javax.swing.BorderFactory.createTitledBorder("Search"));
@@ -247,10 +270,10 @@ public class DailyBudgetScreen extends javax.swing.JPanel {
                 .addComponent(lbl_SearchIcon1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(8, 8, 8)
                 .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnRefresh1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(filterCheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(filterCheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(lblStartDate, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -278,20 +301,20 @@ public class DailyBudgetScreen extends javax.swing.JPanel {
 
         dailyBudgetTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Id", "Name", "Total Amount", "Amount Used", "Amount Left", "Created By", "Time", "Date", "Status", "", "", ""
+                "Id", "Name", "Source of fund", "Amount", "Created By", "Time", "Date", "Status", "", ""
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -314,18 +337,16 @@ public class DailyBudgetScreen extends javax.swing.JPanel {
             dailyBudgetTable.getColumnModel().getColumn(0).setMaxWidth(0);
             dailyBudgetTable.getColumnModel().getColumn(1).setMinWidth(100);
             dailyBudgetTable.getColumnModel().getColumn(1).setMaxWidth(100);
+            dailyBudgetTable.getColumnModel().getColumn(5).setMinWidth(100);
+            dailyBudgetTable.getColumnModel().getColumn(5).setMaxWidth(100);
             dailyBudgetTable.getColumnModel().getColumn(6).setMinWidth(100);
             dailyBudgetTable.getColumnModel().getColumn(6).setMaxWidth(100);
-            dailyBudgetTable.getColumnModel().getColumn(7).setMinWidth(100);
-            dailyBudgetTable.getColumnModel().getColumn(7).setMaxWidth(100);
-            dailyBudgetTable.getColumnModel().getColumn(8).setMinWidth(80);
-            dailyBudgetTable.getColumnModel().getColumn(8).setMaxWidth(80);
-            dailyBudgetTable.getColumnModel().getColumn(9).setMinWidth(70);
-            dailyBudgetTable.getColumnModel().getColumn(9).setMaxWidth(70);
-            dailyBudgetTable.getColumnModel().getColumn(10).setMinWidth(80);
-            dailyBudgetTable.getColumnModel().getColumn(10).setMaxWidth(80);
-            dailyBudgetTable.getColumnModel().getColumn(11).setMinWidth(80);
-            dailyBudgetTable.getColumnModel().getColumn(11).setMaxWidth(80);
+            dailyBudgetTable.getColumnModel().getColumn(7).setMinWidth(80);
+            dailyBudgetTable.getColumnModel().getColumn(7).setMaxWidth(80);
+            dailyBudgetTable.getColumnModel().getColumn(8).setMinWidth(70);
+            dailyBudgetTable.getColumnModel().getColumn(8).setMaxWidth(70);
+            dailyBudgetTable.getColumnModel().getColumn(9).setMinWidth(80);
+            dailyBudgetTable.getColumnModel().getColumn(9).setMaxWidth(80);
         }
 
         jLabel32.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -402,6 +423,7 @@ public class DailyBudgetScreen extends javax.swing.JPanel {
     private com.toedter.calendar.JDateChooser dateCurrentDate;
     public static javax.swing.JLabel dudgetRowCount;
     private javax.swing.JCheckBox filterCheckBox;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel30;
@@ -413,5 +435,6 @@ public class DailyBudgetScreen extends javax.swing.JPanel {
     private javax.swing.JLabel lbl_SearchIcon1;
     private com.toedter.calendar.JDateChooser startDate;
     private javax.swing.JTextField txtSearch;
+    private javax.swing.JTextField txtTotalAmount;
     // End of variables declaration//GEN-END:variables
 }

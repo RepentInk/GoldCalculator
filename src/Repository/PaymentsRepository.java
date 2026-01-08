@@ -35,11 +35,10 @@ public class PaymentsRepository implements AnonymousInterface<Payments> {
     public List<Payments> list(String createdDate) {
         List<Payments> paymentsList = new ArrayList<>();
         try {
-            String query = "SELECT payment.*,user.fullname AS user,gold.code AS buy_gold,customer.fullname AS customer,budget.name AS budget FROM " + PaymentDTO.getPAYMENT_DB() + " payment "
+            String query = "SELECT payment.*,user.fullname AS user,gold.code AS buy_gold,gold.total_amount,customer.fullname AS customer FROM " + PaymentDTO.getPAYMENT_DB() + " payment "
                     + "LEFT JOIN " + UserDTO.getUSERS_DB() + " user ON payment.user_id=user.id "
                     + "LEFT JOIN " + BuyGoldDTO.getBUY_GOLD_DB() + " gold ON payment.buy_gold_id=gold.id "
                     + "LEFT JOIN " + CustomerDTO.getCUSTOMER_DB() + " customer ON gold.customer_id=customer.id "
-                    + "LEFT JOIN " + BudgetDTO.getBUDGET_DB() + " budget ON payment.budget_id=budget.id "
                     + "WHERE payment.created_date = '" + createdDate + "' ORDER BY payment.id DESC";
             pst = conn.prepareStatement(query);
             rs = pst.executeQuery();
@@ -50,18 +49,15 @@ public class PaymentsRepository implements AnonymousInterface<Payments> {
                 payment.setId(rs.getInt(PaymentDTO.getID()));
                 payment.setAmount_paid(rs.getDouble(PaymentDTO.getAMOUNT_PAID()));
                 payment.setBalance(rs.getDouble(PaymentDTO.getBALANCE()));
-                payment.setBudget_after_payment(rs.getDouble(PaymentDTO.getBUDGET_AFTER_PAYMENT()));
-                payment.setBudget_before_payment(rs.getDouble(PaymentDTO.getBUDGET_BEFORE_PAYMENT()));
-                payment.setBudget_id(rs.getInt(PaymentDTO.getBUDGET_ID()));
                 payment.setBuy_gold_id(rs.getInt(PaymentDTO.getBUY_GOLD_ID()));
                 payment.setUser_id(rs.getInt(PaymentDTO.getUSER_ID()));
                 payment.setCreated_date(rs.getString(PaymentDTO.getCREATED_DATE()));
                 payment.setCreated_time(rs.getString(PaymentDTO.getCREATED_TIME()));
                 payment.setRaw_date(rs.getString(PaymentDTO.getRAW_DATE()));
+                payment.setTotal_amount(rs.getDouble(PaymentDTO.getTOTAL_AMOUNT()));
 
                 payment.setUser(rs.getString(PaymentDTO.getUSER()));
                 payment.setCustomer(rs.getString(PaymentDTO.getCUSTOMER()));
-                payment.setBudget(rs.getString(PaymentDTO.getBUDGET()));
                 payment.setBuy_gold(rs.getString(PaymentDTO.getBUY_GOLD()));
 
                 paymentsList.add(payment);
@@ -85,11 +81,10 @@ public class PaymentsRepository implements AnonymousInterface<Payments> {
     public List<Payments> list() {
         List<Payments> paymentsList = new ArrayList<>();
         try {
-            String query = "SELECT payment.*,user.fullname AS user,gold.code AS buy_gold,customer.fullname AS customer,budget.name AS budget FROM " + PaymentDTO.getPAYMENT_DB() + " payment "
+            String query = "SELECT payment.*,user.fullname AS user,gold.code AS buy_gold,gold.total_amount,customer.fullname AS customer FROM " + PaymentDTO.getPAYMENT_DB() + " payment "
                     + "LEFT JOIN " + UserDTO.getUSERS_DB() + " user ON payment.user_id=user.id "
                     + "LEFT JOIN " + BuyGoldDTO.getBUY_GOLD_DB() + " gold ON payment.buy_gold_id=gold.id "
                     + "LEFT JOIN " + CustomerDTO.getCUSTOMER_DB() + " customer ON gold.customer_id=customer.id "
-                    + "LEFT JOIN " + BudgetDTO.getBUDGET_DB() + " budget ON payment.budget_id=budget.id "
                     + "ORDER BY payment.id DESC";
             pst = conn.prepareStatement(query);
             rs = pst.executeQuery();
@@ -100,18 +95,15 @@ public class PaymentsRepository implements AnonymousInterface<Payments> {
                 payment.setId(rs.getInt(PaymentDTO.getID()));
                 payment.setAmount_paid(rs.getDouble(PaymentDTO.getAMOUNT_PAID()));
                 payment.setBalance(rs.getDouble(PaymentDTO.getBALANCE()));
-                payment.setBudget_after_payment(rs.getDouble(PaymentDTO.getBUDGET_AFTER_PAYMENT()));
-                payment.setBudget_before_payment(rs.getDouble(PaymentDTO.getBUDGET_BEFORE_PAYMENT()));
-                payment.setBudget_id(rs.getInt(PaymentDTO.getBUDGET_ID()));
                 payment.setBuy_gold_id(rs.getInt(PaymentDTO.getBUY_GOLD_ID()));
                 payment.setUser_id(rs.getInt(PaymentDTO.getUSER_ID()));
                 payment.setCreated_date(rs.getString(PaymentDTO.getCREATED_DATE()));
                 payment.setCreated_time(rs.getString(PaymentDTO.getCREATED_TIME()));
                 payment.setRaw_date(rs.getString(PaymentDTO.getRAW_DATE()));
+                payment.setTotal_amount(rs.getDouble(PaymentDTO.getTOTAL_AMOUNT()));
 
                 payment.setUser(rs.getString(PaymentDTO.getUSER()));
                 payment.setCustomer(rs.getString(PaymentDTO.getCUSTOMER()));
-                payment.setBudget(rs.getString(PaymentDTO.getBUDGET()));
                 payment.setBuy_gold(rs.getString(PaymentDTO.getBUY_GOLD()));
 
                 paymentsList.add(payment);
@@ -136,11 +128,10 @@ public class PaymentsRepository implements AnonymousInterface<Payments> {
         Payments payment = new Payments();
 
         try {
-            String query = "SELECT payment.*,user.fullname AS user,gold.code AS buy_gold,customer.fullname AS customer,budget.name AS budget FROM " + PaymentDTO.getPAYMENT_DB() + " payment "
+            String query = "SELECT payment.*,user.fullname AS user,gold.code AS buy_gold,gold.total_amount,customer.fullname AS customer FROM " + PaymentDTO.getPAYMENT_DB() + " payment "
                     + "LEFT JOIN " + UserDTO.getUSERS_DB() + " user ON payment.user_id=user.id "
                     + "LEFT JOIN " + BuyGoldDTO.getBUY_GOLD_DB() + " gold ON payment.buy_gold_id=gold.id "
                     + "LEFT JOIN " + CustomerDTO.getCUSTOMER_DB() + " customer ON gold.customer_id=customer.id "
-                    + "LEFT JOIN " + BudgetDTO.getBUDGET_DB() + " budget ON payment.budget_id=budget.id "
                     + "WHERE payment.id = '" + id + "'";
             pst = conn.prepareStatement(query);
             rs = pst.executeQuery();
@@ -150,18 +141,15 @@ public class PaymentsRepository implements AnonymousInterface<Payments> {
                 payment.setId(rs.getInt(PaymentDTO.getID()));
                 payment.setAmount_paid(rs.getDouble(PaymentDTO.getAMOUNT_PAID()));
                 payment.setBalance(rs.getDouble(PaymentDTO.getBALANCE()));
-                payment.setBudget_after_payment(rs.getDouble(PaymentDTO.getBUDGET_AFTER_PAYMENT()));
-                payment.setBudget_before_payment(rs.getDouble(PaymentDTO.getBUDGET_BEFORE_PAYMENT()));
-                payment.setBudget_id(rs.getInt(PaymentDTO.getBUDGET_ID()));
                 payment.setBuy_gold_id(rs.getInt(PaymentDTO.getBUY_GOLD_ID()));
                 payment.setUser_id(rs.getInt(PaymentDTO.getUSER_ID()));
                 payment.setCreated_date(rs.getString(PaymentDTO.getCREATED_DATE()));
                 payment.setCreated_time(rs.getString(PaymentDTO.getCREATED_TIME()));
                 payment.setRaw_date(rs.getString(PaymentDTO.getRAW_DATE()));
+                payment.setTotal_amount(rs.getDouble(PaymentDTO.getTOTAL_AMOUNT()));
 
                 payment.setUser(rs.getString(PaymentDTO.getUSER()));
                 payment.setCustomer(rs.getString(PaymentDTO.getCUSTOMER()));
-                payment.setBudget(rs.getString(PaymentDTO.getBUDGET()));
                 payment.setBuy_gold(rs.getString(PaymentDTO.getBUY_GOLD()));
             }
 
@@ -187,27 +175,21 @@ public class PaymentsRepository implements AnonymousInterface<Payments> {
             String query = "INSERT INTO " + PaymentDTO.getPAYMENT_DB() + " ("
                     + PaymentDTO.getAMOUNT_PAID() + ","
                     + PaymentDTO.getBALANCE() + ","
-                    + PaymentDTO.getBUDGET_AFTER_PAYMENT() + ","
-                    + PaymentDTO.getBUDGET_BEFORE_PAYMENT() + ","
-                    + PaymentDTO.getBUDGET_ID() + ","
                     + PaymentDTO.getBUY_GOLD_ID() + ","
                     + PaymentDTO.getUSER_ID() + ","
                     + PaymentDTO.getRAW_DATE() + ","
                     + PaymentDTO.getCREATED_DATE() + ","
-                    + PaymentDTO.getCREATED_TIME() + " ) VALUES (?,?,?,?,?,?,?,?,?,?)";
+                    + PaymentDTO.getCREATED_TIME() + " ) VALUES (?,?,?,?,?,?,?)";
 
             pst = conn.prepareStatement(query);
 
             pst.setDouble(1, payment.getAmount_paid());
             pst.setDouble(2, payment.getBalance());
-            pst.setDouble(3, payment.getBudget_after_payment());
-            pst.setDouble(4, payment.getBudget_before_payment());
-            pst.setInt(5, payment.getBudget_id());
-            pst.setInt(6, payment.getBuy_gold_id());
-            pst.setInt(7, payment.getUser_id());
-            pst.setString(8, payment.getRaw_date());
-            pst.setString(9, payment.getCreated_date());
-            pst.setString(10, payment.getCreated_time());
+            pst.setInt(3, payment.getBuy_gold_id());
+            pst.setInt(4, payment.getUser_id());
+            pst.setString(5, payment.getRaw_date());
+            pst.setString(6, payment.getCreated_date());
+            pst.setString(7, payment.getCreated_time());
             pst.executeUpdate();
 
             rs = pst.getGeneratedKeys();
@@ -235,9 +217,6 @@ public class PaymentsRepository implements AnonymousInterface<Payments> {
             String query = "UPDATE " + PaymentDTO.getPAYMENT_DB() + " SET "
                     + PaymentDTO.getAMOUNT_PAID() + "='" + payment.getAmount_paid() + "',"
                     + PaymentDTO.getBALANCE() + "='" + payment.getBalance() + "',"
-                    + PaymentDTO.getBUDGET_AFTER_PAYMENT() + "='" + payment.getBudget_after_payment() + "',"
-                    + PaymentDTO.getBUDGET_BEFORE_PAYMENT() + "='" + payment.getBudget_before_payment() + "',"
-                    + PaymentDTO.getBUDGET_ID() + "='" + payment.getBudget_id() + "',"
                     + PaymentDTO.getBUY_GOLD_ID() + "='" + payment.getBuy_gold_id() + "',"
                     + PaymentDTO.getUSER_ID() + "='" + payment.getUser_id() + "',"
                     + PaymentDTO.getRAW_DATE() + "='" + payment.getRaw_date() + "',"
@@ -320,29 +299,6 @@ public class PaymentsRepository implements AnonymousInterface<Payments> {
         return total;
     }
 
-    public double summationOfBudget(int budget_id) {
-        double total = 0;
-        try {
-            String query = "SELECT SUM(" + PaymentDTO.getAMOUNT_PAID() + ") AS total_budget FROM " + PaymentDTO.getPAYMENT_DB() + " WHERE " + PaymentDTO.getBUDGET_ID() + "='" + budget_id + "'";
-            pst = conn.prepareStatement(query);
-            rs = pst.executeQuery();
-            if (rs.next()) {
-                total = rs.getDouble(PaymentDTO.getTOTAL_BUDGET());
-            }
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, e);
-        } finally {
-            try {
-                rs.close();
-                pst.close();
-            } catch (SQLException e) {
-                JOptionPane.showMessageDialog(null, e);
-            }
-        }
-
-        return total;
-    }
-
     public double summationOfPurchasePayment(int buy_gold_id) {
         double total = 0;
         try {
@@ -370,7 +326,7 @@ public class PaymentsRepository implements AnonymousInterface<Payments> {
         Receipt receipt = new Receipt();
 
         try {
-            String query = "SELECT payment.amount_paid,payment.balance,gold.total_amount,gold.base_price,gold.credit_balance FROM " + PaymentDTO.getPAYMENT_DB() + " payment "
+            String query = "SELECT payment.amount_paid,payment.balance,gold.total_amount,gold.base_price FROM " + PaymentDTO.getPAYMENT_DB() + " payment "
                     + "LEFT JOIN " + BuyGoldDTO.getBUY_GOLD_DB() + " gold ON payment.buy_gold_id=gold.id "
                     + "WHERE payment.id = '" + id + "'";
             pst = conn.prepareStatement(query);
@@ -381,7 +337,6 @@ public class PaymentsRepository implements AnonymousInterface<Payments> {
                 receipt.setAmountPaid(rs.getDouble("amount_paid"));
                 receipt.setBasePrice(rs.getDouble("base_price"));
                 receipt.setBalance(rs.getDouble("balance"));
-                receipt.setCredit_balance(rs.getDouble("credit_balance"));
             }
 
         } catch (SQLException e) {
@@ -401,11 +356,10 @@ public class PaymentsRepository implements AnonymousInterface<Payments> {
     public List<Payments> paymentHistory(int buy_gold_id) {
         List<Payments> paymentsList = new ArrayList<>();
         try {
-            String query = "SELECT payment.*,user.fullname AS user,gold.code AS buy_gold,customer.fullname AS customer,budget.name AS budget FROM " + PaymentDTO.getPAYMENT_DB() + " payment "
+            String query = "SELECT payment.*,user.fullname AS user,gold.code AS buy_gold,gold.total_amount,customer.fullname AS customer FROM " + PaymentDTO.getPAYMENT_DB() + " payment "
                     + "LEFT JOIN " + UserDTO.getUSERS_DB() + " user ON payment.user_id=user.id "
                     + "LEFT JOIN " + BuyGoldDTO.getBUY_GOLD_DB() + " gold ON payment.buy_gold_id=gold.id "
                     + "LEFT JOIN " + CustomerDTO.getCUSTOMER_DB() + " customer ON gold.customer_id=customer.id "
-                    + "LEFT JOIN " + BudgetDTO.getBUDGET_DB() + " budget ON payment.budget_id=budget.id "
                     + "WHERE " + PaymentDTO.getBUY_GOLD_ID() + " = '" + buy_gold_id + "' ORDER BY payment.id DESC";
             pst = conn.prepareStatement(query);
             rs = pst.executeQuery();
@@ -416,18 +370,15 @@ public class PaymentsRepository implements AnonymousInterface<Payments> {
                 payment.setId(rs.getInt(PaymentDTO.getID()));
                 payment.setAmount_paid(rs.getDouble(PaymentDTO.getAMOUNT_PAID()));
                 payment.setBalance(rs.getDouble(PaymentDTO.getBALANCE()));
-                payment.setBudget_after_payment(rs.getDouble(PaymentDTO.getBUDGET_AFTER_PAYMENT()));
-                payment.setBudget_before_payment(rs.getDouble(PaymentDTO.getBUDGET_BEFORE_PAYMENT()));
-                payment.setBudget_id(rs.getInt(PaymentDTO.getBUDGET_ID()));
                 payment.setBuy_gold_id(rs.getInt(PaymentDTO.getBUY_GOLD_ID()));
                 payment.setUser_id(rs.getInt(PaymentDTO.getUSER_ID()));
                 payment.setCreated_date(rs.getString(PaymentDTO.getCREATED_DATE()));
                 payment.setCreated_time(rs.getString(PaymentDTO.getCREATED_TIME()));
                 payment.setRaw_date(rs.getString(PaymentDTO.getRAW_DATE()));
+                payment.setTotal_amount(rs.getDouble(PaymentDTO.getTOTAL_AMOUNT()));
 
                 payment.setUser(rs.getString(PaymentDTO.getUSER()));
                 payment.setCustomer(rs.getString(PaymentDTO.getCUSTOMER()));
-                payment.setBudget(rs.getString(PaymentDTO.getBUDGET()));
                 payment.setBuy_gold(rs.getString(PaymentDTO.getBUY_GOLD()));
 
                 paymentsList.add(payment);
@@ -447,37 +398,13 @@ public class PaymentsRepository implements AnonymousInterface<Payments> {
         return paymentsList;
     }
 
-    public double summationOfPayments(String createdDate) {
-        double total = 0;
-        try {
-            String query = "SELECT SUM(" + PaymentDTO.getAMOUNT_PAID() + ") AS total_budget FROM " + PaymentDTO.getPAYMENT_DB() + " WHERE " + PaymentDTO.getCREATED_DATE() + "='" + createdDate + "'";
-            pst = conn.prepareStatement(query);
-            rs = pst.executeQuery();
-            if (rs.next()) {
-                total = rs.getDouble(PaymentDTO.getTOTAL_BUDGET());
-            }
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, e);
-        } finally {
-            try {
-                rs.close();
-                pst.close();
-            } catch (SQLException e) {
-                JOptionPane.showMessageDialog(null, e);
-            }
-        }
-
-        return total;
-    }
-
     public List<Payments> findPaymentBetweenDates(String startDate, String endDate) {
         List<Payments> paymentsList = new ArrayList<>();
         try {
-            String query = "SELECT payment.*,user.fullname AS user,gold.code AS buy_gold,customer.fullname AS customer,budget.name AS budget FROM " + PaymentDTO.getPAYMENT_DB() + " payment "
+            String query = "SELECT payment.*,user.fullname AS user,gold.code AS buy_gold,gold.total_amount,customer.fullname AS customer FROM " + PaymentDTO.getPAYMENT_DB() + " payment "
                     + "LEFT JOIN " + UserDTO.getUSERS_DB() + " user ON payment.user_id=user.id "
                     + "LEFT JOIN " + BuyGoldDTO.getBUY_GOLD_DB() + " gold ON payment.buy_gold_id=gold.id "
                     + "LEFT JOIN " + CustomerDTO.getCUSTOMER_DB() + " customer ON gold.customer_id=customer.id "
-                    + "LEFT JOIN " + BudgetDTO.getBUDGET_DB() + " budget ON payment.budget_id=budget.id "
                     + "WHERE payment.created_date >= '" + startDate + "' AND payment.created_date <= '" + endDate + "' ORDER BY payment.id DESC";
             pst = conn.prepareStatement(query);
             rs = pst.executeQuery();
@@ -488,18 +415,15 @@ public class PaymentsRepository implements AnonymousInterface<Payments> {
                 payment.setId(rs.getInt(PaymentDTO.getID()));
                 payment.setAmount_paid(rs.getDouble(PaymentDTO.getAMOUNT_PAID()));
                 payment.setBalance(rs.getDouble(PaymentDTO.getBALANCE()));
-                payment.setBudget_after_payment(rs.getDouble(PaymentDTO.getBUDGET_AFTER_PAYMENT()));
-                payment.setBudget_before_payment(rs.getDouble(PaymentDTO.getBUDGET_BEFORE_PAYMENT()));
-                payment.setBudget_id(rs.getInt(PaymentDTO.getBUDGET_ID()));
                 payment.setBuy_gold_id(rs.getInt(PaymentDTO.getBUY_GOLD_ID()));
                 payment.setUser_id(rs.getInt(PaymentDTO.getUSER_ID()));
                 payment.setCreated_date(rs.getString(PaymentDTO.getCREATED_DATE()));
                 payment.setCreated_time(rs.getString(PaymentDTO.getCREATED_TIME()));
                 payment.setRaw_date(rs.getString(PaymentDTO.getRAW_DATE()));
+                payment.setTotal_amount(rs.getDouble(PaymentDTO.getTOTAL_AMOUNT()));
 
                 payment.setUser(rs.getString(PaymentDTO.getUSER()));
                 payment.setCustomer(rs.getString(PaymentDTO.getCUSTOMER()));
-                payment.setBudget(rs.getString(PaymentDTO.getBUDGET()));
                 payment.setBuy_gold(rs.getString(PaymentDTO.getBUY_GOLD()));
 
                 paymentsList.add(payment);
@@ -517,6 +441,57 @@ public class PaymentsRepository implements AnonymousInterface<Payments> {
         }
 
         return paymentsList;
+    }
+
+    public double paymentSummation(String createdDate) {
+        double totalPayment = 0;
+        try {
+            String query = "SELECT SUM(" + PaymentDTO.getAMOUNT_PAID() + ") AS total FROM " + PaymentDTO.getPAYMENT_DB() + " WHERE " + PaymentDTO.getRAW_DATE() + " = '" + createdDate + "'";
+            pst = conn.prepareStatement(query);
+            rs = pst.executeQuery();
+
+            if (rs.next()) {
+                totalPayment = rs.getDouble("total");
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
+        } finally {
+            try {
+                rs.close();
+                pst.close();
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, e);
+            }
+        }
+
+        return totalPayment;
+    }
+
+    public double paymentSummationBetweenDates(String startDate, String endDate) {
+        double totalPayment = 0;
+        try {
+            String query = "SELECT SUM(" + PaymentDTO.getAMOUNT_PAID() + ") AS total FROM " + PaymentDTO.getPAYMENT_DB() + " "
+                    + "WHERE " + PaymentDTO.getRAW_DATE() + " >= '" + startDate + "' AND " + PaymentDTO.getRAW_DATE() + " <= '" + endDate + "'";
+            pst = conn.prepareStatement(query);
+            rs = pst.executeQuery();
+
+            if (rs.next()) {
+                totalPayment = rs.getDouble("total");
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
+        } finally {
+            try {
+                rs.close();
+                pst.close();
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, e);
+            }
+        }
+
+        return totalPayment;
     }
 
 }

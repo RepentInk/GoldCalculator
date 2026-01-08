@@ -36,47 +36,44 @@ public class CreditPaymentController {
                 creditPayment.getCreated_time(),
                 helper.priceToString(creditPayment.getPaid()),
                 helper.priceToString(creditPayment.getBalance()),
-                creditPayment.getUser(),
-                this.creditStatus(creditPayment.getPaid_from())
+                creditPayment.getUser()
             };
 
             defaultTableModel.addRow(object);
         }
-
-        defaultTableModel.fireTableDataChanged();
     }
 
     public void viewDetails(
             int credit_id,
             JLabel lblCrediterID,
-            JLabel lblCustomerID,
-            JTextField amountLeft
+            JTextField totalAmount,
+            JTextField amountPaidText,
+            JTextField amountLeftText
     ) {
         Credit credit = creditRepository.find(credit_id);
         lblCrediterID.setText(String.valueOf(credit.getId()));
-        lblCustomerID.setText(String.valueOf(credit.getCustomer_id()));
         double amountPaid = this.getTotalAmountPaid(credit.getId());
-        amountLeft.setText(helper.priceToString(credit.getAmount() - amountPaid));
+        double amountLeft = credit.getTotal_amount() - amountPaid;
+
+        totalAmount.setText(helper.priceToString(credit.getTotal_amount()));
+        amountPaidText.setText(helper.priceToString(amountPaid));
+        amountLeftText.setText(helper.priceToString(amountLeft));
     }
 
     public double getTotalAmountPaid(int credit_id) {
-        double amount_paid = creditPaymentRepository.summationAmountPaid(credit_id, 0);
-        double amount_refund = creditPaymentRepository.summationAmountPaid(credit_id, 1);
-
-        return amount_paid + amount_refund;
+        double amount_paid = creditPaymentRepository.summationAmountPaid(credit_id);
+        return amount_paid;
     }
 
     public void saveUpdate(
             JLabel lblCrediterID,
-            JLabel lblCustomerID,
             JTextField amountPaying,
             JTextField balanceAmount,
             JTable table
     ) {
 
         int credit_id = Integer.parseInt(lblCrediterID.getText());
-        int customer_id = Integer.parseInt(lblCustomerID.getText());
-        double amount_left = amountPaying.getText().isEmpty() ? 0 : helper.parseAmountWithComma(amountPaying.getText());
+        double amount_paid = amountPaying.getText().isEmpty() ? 0 : helper.parseAmountWithComma(amountPaying.getText());
         double balance = balanceAmount.getText().isEmpty() ? 0 : helper.parseAmountWithComma(balanceAmount.getText());
         String created_date = helper.returnDate();
         String raw_date = helper.returnDate();
@@ -84,12 +81,9 @@ public class CreditPaymentController {
 
         CreditPayment creditPayment = new CreditPayment(
                 credit_id,
-                customer_id,
-                amount_left,
+                amount_paid,
                 balance,
-                1,
                 Authuser.getId(),
-                0,
                 created_date,
                 created_time,
                 raw_date
@@ -113,8 +107,7 @@ public class CreditPaymentController {
             creditPayment.getCreated_time(),
             helper.priceToString(creditPayment.getPaid()),
             helper.priceToString(creditPayment.getBalance()),
-            creditPayment.getUser(),
-            this.creditStatus(creditPayment.getPaid_from())
+            creditPayment.getUser()
         };
         tmodel.insertRow(0, object);
     }
@@ -137,9 +130,7 @@ public class CreditPaymentController {
                 customer_id,
                 temporalAmount,
                 balance,
-                0,
                 Authuser.getId(),
-                buy_gold_id,
                 created_date,
                 created_time,
                 raw_date
@@ -147,9 +138,4 @@ public class CreditPaymentController {
 
         creditPaymentRepository.save(creditPayment);
     }
-
-    private String creditStatus(int status) {
-        return status == 1 ? "Refund" : "Paid";
-    }
-
 }

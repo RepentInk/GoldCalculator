@@ -1,7 +1,6 @@
 package Dialogs;
 
 import Controllers.BuyGoldController;
-import Controllers.CreditController;
 import Controllers.CustomerController;
 import Helpers.GoldCalculation;
 import Helpers.HelperFunctions;
@@ -19,7 +18,6 @@ public class BuyGoldForm extends javax.swing.JDialog {
     GoldCalculation goldCalculation = new GoldCalculation();
     HelperFunctions helper = new HelperFunctions();
     BuyGoldController buyGoldController = new BuyGoldController();
-    CreditController creditController = new CreditController();
     private int selectedRow;
 
     /**
@@ -102,6 +100,8 @@ public class BuyGoldForm extends javax.swing.JDialog {
                     "KARAT REGISTRATION",
                     JOptionPane.INFORMATION_MESSAGE
             );
+            txtTop.setText("");
+            txtDown.setText("");
             return;
         }
 
@@ -118,21 +118,15 @@ public class BuyGoldForm extends javax.swing.JDialog {
         double pounds = txtPounds.getText().isEmpty() ? 0 : helper.parseAmountWithComma(txtPounds.getText());
         double karat = txtKarat.getText().isEmpty() ? 0 : helper.parseAmountWithComma(txtKarat.getText());
         double price = txtBasePrice.getText().isEmpty() ? 0 : helper.parseAmountWithComma(txtBasePrice.getText());
-        double credit_balance = txtCreditBalance.getText().isEmpty() ? 0 : helper.parseAmountWithComma(txtCreditBalance.getText());
 
-        double amount = 0, basePrice = 0, amountPayable = 0;
+        double amount = 0, basePrice = 0;
         if (pounds > 0 && karat > 0) {
             amount = goldCalculation.amountCalculation(price, pounds, karat);
             basePrice = goldCalculation.basePriceCalculation(amount, pounds);
         }
 
-        if (credit_balance > 0 && amount > 0) {
-            amountPayable = amount - credit_balance;
-        }
-
         txtTotalAmount.setText(String.valueOf(helper.priceRoundUpWhole(amount)));
         txtBasePriceValue.setText(String.valueOf(helper.priceToStringWithoutRoundUp(basePrice)));
-        txtBalancePayable.setText(String.valueOf(helper.priceToStringWithoutRoundUp(amountPayable)));
     }
 
     private void clearFields() {
@@ -160,7 +154,6 @@ public class BuyGoldForm extends javax.swing.JDialog {
                 txtBasePriceValue,
                 txtBasePrice,
                 txtTotalAmount,
-                txtCreditBalance,
                 BuyGoldScreen.buyGoldTable,
                 this.selectedRow,
                 this
@@ -171,7 +164,8 @@ public class BuyGoldForm extends javax.swing.JDialog {
     public void viewDetails(int rowId, int selectedRow) {
         btnSave.setEnabled(false);
 
-        buyGoldController.onTableClicked(rowId,
+        buyGoldController.onTableClicked(
+                rowId,
                 lblBuyGoldID,
                 lblBuyGoldCode,
                 cmbCustomer,
@@ -182,9 +176,7 @@ public class BuyGoldForm extends javax.swing.JDialog {
                 txtKarat,
                 txtBasePriceValue,
                 txtBasePrice,
-                txtTotalAmount,
-                txtCreditBalance,
-                txtBalancePayable
+                txtTotalAmount
         );
     }
 
@@ -230,17 +222,6 @@ public class BuyGoldForm extends javax.swing.JDialog {
         return message.length() <= 0;
     }
 
-    private void previousBalance() {
-        if (cmbCustomer.getSelectedIndex() == 0) {
-            return;
-        }
-
-        creditController.getCustomerPreviousBalance(
-                cmbCustomer,
-                txtCreditBalance
-        );
-    }
-
     private void clearField() {
         txtTop.setText("");
         txtDown.setText("");
@@ -276,11 +257,6 @@ public class BuyGoldForm extends javax.swing.JDialog {
         btnSave = new javax.swing.JButton();
         lblBuyGoldID = new javax.swing.JLabel();
         lblBuyGoldCode = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
-        txtBalancePayable = new javax.swing.JTextField();
-        txtCreditBalance = new javax.swing.JTextField();
-        jLabel10 = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("GOLD WEIGHT CALCULATION FORM");
@@ -289,11 +265,6 @@ public class BuyGoldForm extends javax.swing.JDialog {
         jLabel1.setText("Customer");
 
         cmbCustomer.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        cmbCustomer.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmbCustomerActionPerformed(evt);
-            }
-        });
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel2.setText("Top:");
@@ -378,55 +349,6 @@ public class BuyGoldForm extends javax.swing.JDialog {
 
         lblBuyGoldCode.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Credit Balance", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 15))); // NOI18N
-
-        txtBalancePayable.setEditable(false);
-        txtBalancePayable.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        txtBalancePayable.setForeground(new java.awt.Color(204, 0, 0));
-        txtBalancePayable.setFocusable(false);
-
-        txtCreditBalance.setEditable(false);
-        txtCreditBalance.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        txtCreditBalance.setFocusable(false);
-
-        jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel10.setText("Credit Balance");
-
-        jLabel11.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel11.setForeground(new java.awt.Color(204, 0, 0));
-        jLabel11.setText("Balance or Refund to Pay");
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(txtCreditBalance, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtBalancePayable)))
-                .addContainerGap())
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel10)
-                    .addComponent(jLabel11))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtCreditBalance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtBalancePayable, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
-        );
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -467,7 +389,6 @@ public class BuyGoldForm extends javax.swing.JDialog {
                                     .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGap(18, 18, 18)
                                     .addComponent(txtBasePriceValue, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(txtBasePrice)
                                 .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(txtTotalAmount))
@@ -515,9 +436,7 @@ public class BuyGoldForm extends javax.swing.JDialog {
                 .addComponent(jLabel9)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtTotalAmount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
                 .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -560,10 +479,6 @@ public class BuyGoldForm extends javax.swing.JDialog {
     private void txtBasePriceKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBasePriceKeyReleased
         this.calculateTotalAmount();
     }//GEN-LAST:event_txtBasePriceKeyReleased
-
-    private void cmbCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbCustomerActionPerformed
-        this.previousBalance();
-    }//GEN-LAST:event_cmbCustomerActionPerformed
 
     /**
      * @param args the command line arguments
@@ -609,8 +524,6 @@ public class BuyGoldForm extends javax.swing.JDialog {
     private javax.swing.JButton btnSave;
     private javax.swing.JComboBox<String> cmbCustomer;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -619,13 +532,10 @@ public class BuyGoldForm extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblBuyGoldCode;
     private javax.swing.JLabel lblBuyGoldID;
-    private javax.swing.JTextField txtBalancePayable;
     private javax.swing.JTextField txtBasePrice;
     private javax.swing.JTextField txtBasePriceValue;
-    private javax.swing.JTextField txtCreditBalance;
     private javax.swing.JTextField txtDensity;
     private javax.swing.JTextField txtDown;
     private javax.swing.JTextField txtKarat;

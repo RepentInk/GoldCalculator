@@ -56,7 +56,11 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jLabel5" min="-2" pref="247" max="-2" attributes="0"/>
-                  <EmptySpace pref="518" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
+                  <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="txtTotalBought" min="-2" pref="210" max="-2" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="btn_addUser" min="-2" pref="120" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -69,6 +73,8 @@
                   <Component id="jLabel5" max="32767" attributes="0"/>
               </Group>
               <Component id="btn_addUser" alignment="0" pref="45" max="32767" attributes="0"/>
+              <Component id="jLabel1" max="32767" attributes="0"/>
+              <Component id="txtTotalBought" alignment="1" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
       </Layout>
@@ -97,6 +103,21 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_addUserActionPerformed"/>
           </Events>
+        </Component>
+        <Component class="javax.swing.JTextField" name="txtTotalBought">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="20" style="1"/>
+            </Property>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel1">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="20" style="1"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Total Bought:"/>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>
@@ -210,6 +231,11 @@
         <Component class="com.toedter.calendar.JDateChooser" name="startDate">
         </Component>
         <Component class="com.toedter.calendar.JDateChooser" name="dateCurrentDate">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="12" style="1"/>
+            </Property>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>
@@ -223,7 +249,7 @@
         <Component class="javax.swing.JTable" name="buyGoldTable">
           <Properties>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-              <Table columnCount="18" rowCount="4">
+              <Table columnCount="16" rowCount="4">
                 <Column editable="false" title="id" type="java.lang.Integer"/>
                 <Column editable="false" title="Code" type="java.lang.String"/>
                 <Column editable="false" title="Customer" type="java.lang.String"/>
@@ -235,8 +261,6 @@
                 <Column editable="false" title="Base Price" type="java.lang.Double"/>
                 <Column editable="false" title="Price" type="java.lang.Double"/>
                 <Column editable="false" title="Amount" type="java.lang.Double"/>
-                <Column editable="false" title="A. Paid" type="java.lang.Double"/>
-                <Column editable="false" title="Balance" type="java.lang.Double"/>
                 <Column editable="false" title="Created By" type="java.lang.String"/>
                 <Column editable="false" title="Date" type="java.lang.String"/>
                 <Column editable="false" title="" type="java.lang.Object"/>
@@ -282,16 +306,6 @@
                   <Renderer/>
                 </Column>
                 <Column maxWidth="70" minWidth="70" prefWidth="-1" resizable="true">
-                  <Title/>
-                  <Editor/>
-                  <Renderer/>
-                </Column>
-                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                  <Title/>
-                  <Editor/>
-                  <Renderer/>
-                </Column>
-                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                   <Title/>
                   <Editor/>
                   <Renderer/>

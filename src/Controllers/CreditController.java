@@ -4,7 +4,6 @@ import Helpers.Authuser;
 import Helpers.HelperFunctions;
 import Helpers.TableActions;
 import ModelDTO.CreditDTO;
-import Models.Budget;
 import Models.Credit;
 import Models.Customer;
 import Repository.AnonymousRepository;
@@ -14,7 +13,6 @@ import Repository.CustomerRepository;
 import java.util.List;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
@@ -29,7 +27,6 @@ public class CreditController {
     CreditRepository creditRepository = new CreditRepository();
     CustomerRepository customerRepository = new CustomerRepository();
     CreditPaymentRepository creditPaymentRepository = new CreditPaymentRepository();
-    BudgetController budgetController = new BudgetController();
     AnonymousRepository anonymousRepository = new AnonymousRepository();
 
     public void populateTable(JTable table, String startDate, String endDate) {
@@ -50,22 +47,21 @@ public class CreditController {
 
         for (Credit credit : credits) {
 
+            double totalPayment = this.getTotalAmountPaid(credit.getId());
+            double balance = credit.getTotal_amount() - totalPayment;
+
             object = new Object[]{
                 credit.getId(),
                 credit.getCode(),
                 credit.getCustomer(),
-                credit.getBudget(),
-                helper.priceToString(credit.getAmount()),
-                helper.priceToString(this.getTotalAmountPaid(credit.getId())),
-                helper.priceToString(credit.getAmount() - this.getTotalAmountPaid(credit.getId())),
-                helper.priceToString(this.getCreditPaymentsPaid(credit.getId())),
-                helper.priceToString(this.getCreditPaymentsRefund(credit.getId())),
+                helper.priceToString(credit.getTotal_amount()),
+                helper.priceToString(totalPayment),
+                helper.priceToString(balance),
                 this.statusOfCredit(credit.isStatus()),
                 credit.getCreated_time(),
                 credit.getCreated_date(),
                 TableActions.View.toString(),
-                TableActions.History.toString(),
-                TableActions.Close.toString()
+                TableActions.Payment.toString()
             };
 
             defaultTableModel.addRow(object);
@@ -78,11 +74,7 @@ public class CreditController {
             JLabel creditID,
             JLabel batchCode,
             JComboBox customer,
-            JComboBox budgetSelected,
-            JTextField totalBudgetBefore,
-            JTextField totalBudgetAfter,
             JTextField totalAmount,
-            JTextField previousAmount,
             JTable table,
             int selectedRow,
             javax.swing.JDialog dialog
@@ -92,15 +84,10 @@ public class CreditController {
         int credit_id = 0;
         String code = batchCode.getText();
         String selected_customer = customer.getSelectedItem().toString();
-        double budget_before = totalBudgetBefore.getText().isEmpty() ? 0 : helper.parseAmountWithComma(totalBudgetBefore.getText());
-        double budget_after = totalBudgetAfter.getText().isEmpty() ? 0 : helper.parseAmountWithComma(totalBudgetAfter.getText());
         double total_amount = totalAmount.getText().isEmpty() ? 0 : helper.parseAmountWithComma(totalAmount.getText());
-        double previous_amount = previousAmount.getText().isEmpty() ? 0 : helper.parseAmountWithComma(previousAmount.getText());
         String created_date = helper.returnDate();
         String raw_date = helper.returnDate();
         String created_time = helper.returnTime();
-
-        Budget budget = budgetController.getSingleBudget(budgetSelected.getSelectedItem().toString());
 
         if (!selected_customer.isEmpty()) {
             String fullName = helper.splitWord(selected_customer, 0, "|");
@@ -113,26 +100,12 @@ public class CreditController {
             credit_id = Integer.parseInt(creditID.getText());
         }
 
-        if (creditRepository.findCustomerCreditExit(customer_id, budget.getId(), helper.returnDate())) {
-            JOptionPane.showMessageDialog(
-                    null,
-                    "Sorry! Credit is already registered for this customer go to history and topup",
-                    "CUSTOMER CREDIT REGISTRATION",
-                    JOptionPane.INFORMATION_MESSAGE
-            );
-            return;
-        }
-
         if (credit_id > 0) {
 
             Credit credit = new Credit(
                     credit_id,
                     customer_id,
-                    budget.getId(),
                     total_amount,
-                    previous_amount,
-                    budget_before,
-                    budget_after,
                     Authuser.getId(),
                     created_date,
                     created_time,
@@ -149,11 +122,7 @@ public class CreditController {
             Credit credit = new Credit(
                     code,
                     customer_id,
-                    budget.getId(),
                     total_amount,
-                    previous_amount,
-                    budget_before,
-                    budget_after,
                     Authuser.getId(),
                     created_date,
                     created_time,
@@ -175,16 +144,16 @@ public class CreditController {
 
         Credit credit = creditRepository.find(credit_id);
 
+        double totalPayment = this.getTotalAmountPaid(credit.getId());
+        double balance = credit.getTotal_amount() - totalPayment;
+
         object = new Object[]{
             credit.getId(),
             credit.getCode(),
             credit.getCustomer(),
-            credit.getBudget(),
-            helper.priceToString(credit.getAmount()),
-            helper.priceToString(this.getTotalAmountPaid(credit.getId())),
-            helper.priceToString(credit.getAmount() - this.getTotalAmountPaid(credit.getId())),
-            helper.priceToString(this.getCreditPaymentsPaid(credit.getId())),
-            helper.priceToString(this.getCreditPaymentsRefund(credit.getId())),
+            helper.priceToString(credit.getTotal_amount()),
+            helper.priceToString(totalPayment),
+            helper.priceToString(balance),
             this.statusOfCredit(credit.isStatus()),
             credit.getCreated_time(),
             credit.getCreated_date(),
@@ -200,18 +169,18 @@ public class CreditController {
 
         Credit credit = creditRepository.find(credit_id);
 
+        double totalPayment = this.getTotalAmountPaid(credit.getId());
+        double balance = credit.getTotal_amount() - totalPayment;
+
         table.setValueAt(credit.getId(), selectedRow, 0);
         table.setValueAt(credit.getCode(), selectedRow, 1);
         table.setValueAt(credit.getCustomer(), selectedRow, 2);
-        table.setValueAt(credit.getBudget(), selectedRow, 3);
-        table.setValueAt(helper.priceToString(credit.getAmount()), selectedRow, 4);
-        table.setValueAt(helper.priceToString(this.getTotalAmountPaid(credit.getId())), selectedRow, 5);
-        table.setValueAt(helper.priceToString(credit.getAmount() - this.getTotalAmountPaid(credit.getId())), selectedRow, 6);
-        table.setValueAt(helper.priceToString(this.getCreditPaymentsPaid(credit_id)), selectedRow, 7);
-        table.setValueAt(helper.priceToString(this.getCreditPaymentsRefund(credit_id)), selectedRow, 8);
-        table.setValueAt(this.statusOfCredit(credit.isStatus()), selectedRow, 9);
-        table.setValueAt(credit.getCreated_time(), selectedRow, 10);
-        table.setValueAt(credit.getCreated_date(), selectedRow, 11);
+        table.setValueAt(helper.priceToString(credit.getTotal_amount()), selectedRow, 3);
+        table.setValueAt(helper.priceToString(totalPayment), selectedRow, 4);
+        table.setValueAt(helper.priceToString(balance), selectedRow, 5);
+        table.setValueAt(this.statusOfCredit(credit.isStatus()), selectedRow, 6);
+        table.setValueAt(credit.getCreated_time(), selectedRow, 7);
+        table.setValueAt(credit.getCreated_date(), selectedRow, 8);
     }
 
     public void deleteItem(JTable table, String rowID, int selectedRow) {
@@ -227,7 +196,7 @@ public class CreditController {
         String phoneNumber = helper.splitWord(customer, 1, "|");
         Customer customerInfo = customerRepository.findByName(fullName.trim(), phoneNumber.trim());
 
-        double amount_paid = creditPaymentRepository.summationOfAmountPaid(customerInfo.getId());
+        double amount_paid = 0;
         double credit_amount = creditRepository.summationOfCredit(customerInfo.getId());
         double balance_payable = credit_amount - amount_paid;
 
@@ -243,21 +212,9 @@ public class CreditController {
         return code;
     }
 
-    private double getCreditPaymentsPaid(int credit_id) {
-        double totalAmount = creditPaymentRepository.summationAmountPaid(credit_id, 0);
-        return totalAmount;
-    }
-
-    private double getCreditPaymentsRefund(int credit_id) {
-        double totalAmount = creditPaymentRepository.summationAmountPaid(credit_id, 1);
-        return totalAmount;
-    }
-
     public double getTotalAmountPaid(int credit_id) {
-        double amount_paid = creditPaymentRepository.summationAmountPaid(credit_id, 0);
-        double amount_refund = creditPaymentRepository.summationAmountPaid(credit_id, 1);
-
-        return amount_paid + amount_refund;
+        double amount_paid = creditPaymentRepository.summationAmountPaid(credit_id);
+        return amount_paid;
     }
 
     public void onTableClicked(
@@ -265,27 +222,16 @@ public class CreditController {
             JLabel creditID,
             JLabel batchCode,
             JComboBox customer,
-            JComboBox budgetSelected,
-            JTextField totalBudgetBefore,
-            JTextField totalBudgetAfter,
-            JTextField totalAmount,
-            JTextField previousAmount,
-            JTextField amountPaid
+            JTextField totalAmount
     ) {
 
         Credit credit = creditRepository.find(credit_id);
         Customer customerInfo = customerRepository.find(credit.getCustomer_id());
-        Budget budget = budgetController.getSingleBudgetWithID(credit.getBudget_id());
 
         creditID.setText(String.valueOf(credit.getId()));
         batchCode.setText(credit.getCode());
         customer.setSelectedItem(customerInfo.getFullname() + " | " + customerInfo.getPhone_number());
-        budgetSelected.setSelectedItem(budget.getId() + " | " + budget.getName());
-        totalBudgetBefore.setText(helper.priceToString(credit.getBudget_before()));
-        totalBudgetAfter.setText(helper.priceToString(credit.getBudget_after()));
-        totalAmount.setText(helper.priceToString(credit.getAmount()));
-        previousAmount.setText(helper.priceToString(credit.getPrevious_balance()));
-        amountPaid.setText(helper.priceToString(credit.getAmount() - credit.getPrevious_balance()));
+        totalAmount.setText(helper.priceToString(credit.getTotal_amount()));
     }
 
     private String statusOfCredit(boolean status) {

@@ -279,20 +279,20 @@ public class CreditScreen extends javax.swing.JPanel {
 
         creditTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "id", "Code", "Customer", "Budget", "Amount", "Total Paid", "Balance", "Paid By Gold", "Refund", "Status", "Time", "Date", "", "", ""
+                "id", "Code", "Customer", "Total Amount", "Total Paid", "Balance", "Status", "Time", "Date", "", ""
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -315,12 +315,12 @@ public class CreditScreen extends javax.swing.JPanel {
             creditTable.getColumnModel().getColumn(0).setMaxWidth(0);
             creditTable.getColumnModel().getColumn(1).setMinWidth(80);
             creditTable.getColumnModel().getColumn(1).setMaxWidth(80);
-            creditTable.getColumnModel().getColumn(9).setMinWidth(80);
-            creditTable.getColumnModel().getColumn(9).setMaxWidth(80);
-            creditTable.getColumnModel().getColumn(12).setMinWidth(70);
-            creditTable.getColumnModel().getColumn(12).setMaxWidth(70);
-            creditTable.getColumnModel().getColumn(13).setMinWidth(70);
-            creditTable.getColumnModel().getColumn(13).setMaxWidth(70);
+            creditTable.getColumnModel().getColumn(6).setMinWidth(80);
+            creditTable.getColumnModel().getColumn(6).setMaxWidth(80);
+            creditTable.getColumnModel().getColumn(9).setMinWidth(70);
+            creditTable.getColumnModel().getColumn(9).setMaxWidth(70);
+            creditTable.getColumnModel().getColumn(10).setMinWidth(70);
+            creditTable.getColumnModel().getColumn(10).setMaxWidth(70);
         }
 
         jLabel32.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N

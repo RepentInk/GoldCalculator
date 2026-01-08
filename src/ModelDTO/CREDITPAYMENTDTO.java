@@ -8,12 +8,9 @@ public class CREDITPAYMENTDTO {
 
     private static final String ID = "id";
     private static final String CREDIT_ID = "credit_id";
-    private static final String CUSTOMER_ID = "customer_id";
     private static final String PAID = "paid";
     private static final String BALANCE = "balance";
-    private static final String PAID_FROM = "paid_from";
     private static final String USER_ID = "user_id";
-    private static final String BUY_GOLD_ID = "buy_gold_id";
     private static final String CREATED_DATE = "created_date";
     private static final String CREATED_TIME = "created_time";
     private static final String RAW_DATE = "raw_date";
@@ -29,20 +26,12 @@ public class CREDITPAYMENTDTO {
         return CREDIT_ID;
     }
 
-    public static String getCUSTOMER_ID() {
-        return CUSTOMER_ID;
-    }
-
     public static String getPAID() {
         return PAID;
     }
 
     public static String getBALANCE() {
         return BALANCE;
-    }
-
-    public static String getPAID_FROM() {
-        return PAID_FROM;
     }
 
     public static String getUSER_ID() {
@@ -67,10 +56,6 @@ public class CREDITPAYMENTDTO {
 
     public static String getUSER() {
         return USER;
-    }
-
-    public static String getBUY_GOLD_ID() {
-        return BUY_GOLD_ID;
     }
 
 }

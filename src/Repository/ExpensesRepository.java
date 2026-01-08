@@ -2,7 +2,6 @@ package Repository;
 
 import Helpers.connectDB;
 import Interfaces.AnonymousInterface;
-import ModelDTO.BudgetDTO;
 import ModelDTO.ExpensesDTO;
 import ModelDTO.ExpensesTypeDTO;
 import ModelDTO.UserDTO;
@@ -33,10 +32,9 @@ public class ExpensesRepository implements AnonymousInterface<Expenses> {
     public List<Expenses> list(String createdDate) {
         List<Expenses> expensesList = new ArrayList<>();
         try {
-            String query = "SELECT expense.*,user.fullname AS user,expenseType.name AS expense_type,budget.name AS budget FROM " + ExpensesDTO.getEXPENSES_DB() + " expense "
+            String query = "SELECT expense.*,user.fullname AS user,expenseType.name AS expense_type FROM " + ExpensesDTO.getEXPENSES_DB() + " expense "
                     + "LEFT JOIN " + UserDTO.getUSERS_DB() + " user ON expense.user_id=user.id "
                     + "LEFT JOIN " + ExpensesTypeDTO.getEXPENSE_TYPE_DB() + " expenseType ON expense.expenses_type_id=expenseType.id "
-                    + "LEFT JOIN " + BudgetDTO.getBUDGET_DB() + " budget ON expense.budget_id=budget.id "
                     + "WHERE expense.created_date = '" + createdDate + "' ORDER BY expense.id DESC";
             pst = conn.prepareStatement(query);
             rs = pst.executeQuery();
@@ -46,17 +44,14 @@ public class ExpensesRepository implements AnonymousInterface<Expenses> {
 
                 expenses.setId(rs.getInt(ExpensesDTO.getID()));
                 expenses.setExpenses_type_id(rs.getInt(ExpensesDTO.getEXPENSE_TYPE_ID()));
-                expenses.setBudget_id(rs.getInt(ExpensesDTO.getBUDGET_ID()));
                 expenses.setAmount(rs.getDouble(ExpensesDTO.getAMOUNT()));
                 expenses.setPaid_to(rs.getString(ExpensesDTO.getPAID_TO()));
-                expenses.setBudget_before(rs.getDouble(ExpensesDTO.getBUDGET_BEFORE()));
-                expenses.setBudget_after(rs.getDouble(ExpensesDTO.getBUDGET_AFTER()));
                 expenses.setUser_id(rs.getInt(ExpensesDTO.getUSER_ID()));
                 expenses.setCreated_time(rs.getString(ExpensesDTO.getCREATED_TIME()));
                 expenses.setCreated_date(rs.getString(ExpensesDTO.getCREATED_DATE()));
+                expenses.setRaw_date(rs.getString(ExpensesDTO.getRAW_DATE()));
 
                 expenses.setUser(rs.getString(ExpensesDTO.getUSER()));
-                expenses.setBudget(rs.getString(ExpensesDTO.getBUDGET()));
                 expenses.setExpense_type(rs.getString(ExpensesDTO.getEXPENSE_TYPE()));
 
                 expensesList.add(expenses);
@@ -81,10 +76,9 @@ public class ExpensesRepository implements AnonymousInterface<Expenses> {
     public List<Expenses> list() {
         List<Expenses> expensesList = new ArrayList<>();
         try {
-            String query = "SELECT expense.*,user.fullname AS user,expenseType.name AS expense_type,budget.name AS budget FROM " + ExpensesDTO.getEXPENSES_DB() + " expense "
+            String query = "SELECT expense.*,user.fullname AS user,expenseType.name AS expense_type FROM " + ExpensesDTO.getEXPENSES_DB() + " expense "
                     + "LEFT JOIN " + UserDTO.getUSERS_DB() + " user ON expense.user_id=user.id "
                     + "LEFT JOIN " + ExpensesTypeDTO.getEXPENSE_TYPE_DB() + " expenseType ON expense.expenses_type_id=expenseType.id "
-                    + "LEFT JOIN " + BudgetDTO.getBUDGET_DB() + " budget ON expense.budget_id=budget.id "
                     + "ORDER BY expense.id DESC";
             pst = conn.prepareStatement(query);
             rs = pst.executeQuery();
@@ -94,17 +88,14 @@ public class ExpensesRepository implements AnonymousInterface<Expenses> {
 
                 expenses.setId(rs.getInt(ExpensesDTO.getID()));
                 expenses.setExpenses_type_id(rs.getInt(ExpensesDTO.getEXPENSE_TYPE_ID()));
-                expenses.setBudget_id(rs.getInt(ExpensesDTO.getBUDGET_ID()));
                 expenses.setAmount(rs.getDouble(ExpensesDTO.getAMOUNT()));
                 expenses.setPaid_to(rs.getString(ExpensesDTO.getPAID_TO()));
-                expenses.setBudget_before(rs.getDouble(ExpensesDTO.getBUDGET_BEFORE()));
-                expenses.setBudget_after(rs.getDouble(ExpensesDTO.getBUDGET_AFTER()));
                 expenses.setUser_id(rs.getInt(ExpensesDTO.getUSER_ID()));
                 expenses.setCreated_time(rs.getString(ExpensesDTO.getCREATED_TIME()));
                 expenses.setCreated_date(rs.getString(ExpensesDTO.getCREATED_DATE()));
+                expenses.setRaw_date(rs.getString(ExpensesDTO.getRAW_DATE()));
 
                 expenses.setUser(rs.getString(ExpensesDTO.getUSER()));
-                expenses.setBudget(rs.getString(ExpensesDTO.getBUDGET()));
                 expenses.setExpense_type(rs.getString(ExpensesDTO.getEXPENSE_TYPE()));
 
                 expensesList.add(expenses);
@@ -130,10 +121,9 @@ public class ExpensesRepository implements AnonymousInterface<Expenses> {
         Expenses expenses = new Expenses();
 
         try {
-            String query = "SELECT expense.*,user.fullname AS user,expenseType.name AS expense_type,budget.name AS budget FROM " + ExpensesDTO.getEXPENSES_DB() + " expense "
+            String query = "SELECT expense.*,user.fullname AS user,expenseType.name AS expense_type FROM " + ExpensesDTO.getEXPENSES_DB() + " expense "
                     + "LEFT JOIN " + UserDTO.getUSERS_DB() + " user ON expense.user_id=user.id "
                     + "LEFT JOIN " + ExpensesTypeDTO.getEXPENSE_TYPE_DB() + " expenseType ON expense.expenses_type_id=expenseType.id "
-                    + "LEFT JOIN " + BudgetDTO.getBUDGET_DB() + " budget ON expense.budget_id=budget.id "
                     + "WHERE expense.id = '" + id + "' ORDER BY expense.id DESC";
             pst = conn.prepareStatement(query);
             rs = pst.executeQuery();
@@ -141,17 +131,14 @@ public class ExpensesRepository implements AnonymousInterface<Expenses> {
             if (rs.next()) {
                 expenses.setId(rs.getInt(ExpensesDTO.getID()));
                 expenses.setExpenses_type_id(rs.getInt(ExpensesDTO.getEXPENSE_TYPE_ID()));
-                expenses.setBudget_id(rs.getInt(ExpensesDTO.getBUDGET_ID()));
                 expenses.setAmount(rs.getDouble(ExpensesDTO.getAMOUNT()));
                 expenses.setPaid_to(rs.getString(ExpensesDTO.getPAID_TO()));
-                expenses.setBudget_before(rs.getDouble(ExpensesDTO.getBUDGET_BEFORE()));
-                expenses.setBudget_after(rs.getDouble(ExpensesDTO.getBUDGET_AFTER()));
                 expenses.setUser_id(rs.getInt(ExpensesDTO.getUSER_ID()));
                 expenses.setCreated_time(rs.getString(ExpensesDTO.getCREATED_TIME()));
                 expenses.setCreated_date(rs.getString(ExpensesDTO.getCREATED_DATE()));
+                expenses.setRaw_date(rs.getString(ExpensesDTO.getRAW_DATE()));
 
                 expenses.setUser(rs.getString(ExpensesDTO.getUSER()));
-                expenses.setBudget(rs.getString(ExpensesDTO.getBUDGET()));
                 expenses.setExpense_type(rs.getString(ExpensesDTO.getEXPENSE_TYPE()));
             }
 
@@ -177,26 +164,22 @@ public class ExpensesRepository implements AnonymousInterface<Expenses> {
 
             String query = "INSERT INTO " + ExpensesDTO.getEXPENSES_DB() + " ("
                     + ExpensesDTO.getEXPENSE_TYPE_ID() + ","
-                    + ExpensesDTO.getBUDGET_ID() + ","
                     + ExpensesDTO.getAMOUNT() + ","
                     + ExpensesDTO.getPAID_TO() + ","
-                    + ExpensesDTO.getBUDGET_BEFORE() + ","
-                    + ExpensesDTO.getBUDGET_AFTER() + ","
                     + ExpensesDTO.getUSER_ID() + ","
                     + ExpensesDTO.getCREATED_TIME() + ","
-                    + ExpensesDTO.getCREATED_DATE() + " ) VALUES (?,?,?,?,?,?,?,?,?)";
+                    + ExpensesDTO.getCREATED_DATE() + ","
+                    + ExpensesDTO.getRAW_DATE() + " ) VALUES (?,?,?,?,?,?,?)";
 
             pst = conn.prepareStatement(query);
 
             pst.setInt(1, expenses.getExpenses_type_id());
-            pst.setInt(2, expenses.getBudget_id());
-            pst.setDouble(3, expenses.getAmount());
-            pst.setString(4, expenses.getPaid_to());
-            pst.setDouble(5, expenses.getBudget_before());
-            pst.setDouble(6, expenses.getBudget_after());
-            pst.setInt(7, expenses.getUser_id());
-            pst.setString(8, expenses.getCreated_time());
-            pst.setString(9, expenses.getCreated_date());
+            pst.setDouble(2, expenses.getAmount());
+            pst.setString(3, expenses.getPaid_to());
+            pst.setInt(4, expenses.getUser_id());
+            pst.setString(5, expenses.getCreated_time());
+            pst.setString(6, expenses.getCreated_date());
+            pst.setString(7, expenses.getRaw_date());
             pst.executeUpdate();
 
             rs = pst.getGeneratedKeys();
@@ -223,14 +206,12 @@ public class ExpensesRepository implements AnonymousInterface<Expenses> {
         try {
             String query = "UPDATE " + ExpensesDTO.getEXPENSES_DB() + " SET "
                     + ExpensesDTO.getEXPENSE_TYPE_ID() + "='" + expenses.getExpenses_type_id() + "',"
-                    + ExpensesDTO.getBUDGET_ID() + "='" + expenses.getBudget_id() + "',"
                     + ExpensesDTO.getPAID_TO() + "='" + expenses.getPaid_to() + "',"
-                    + ExpensesDTO.getBUDGET_BEFORE() + "='" + expenses.getBudget_before() + "',"
-                    + ExpensesDTO.getBUDGET_AFTER() + "='" + expenses.getBudget_after() + "',"
                     + ExpensesDTO.getAMOUNT() + "='" + expenses.getAmount() + "',"
                     + ExpensesDTO.getUSER_ID() + "='" + expenses.getUser_id() + "',"
                     + ExpensesDTO.getCREATED_TIME() + "='" + expenses.getCreated_time() + "',"
-                    + ExpensesDTO.getCREATED_DATE() + "='" + expenses.getCreated_date() + "' WHERE " + ExpensesDTO.getID() + "='" + id + "'";
+                    + ExpensesDTO.getCREATED_TIME() + "='" + expenses.getCreated_date() + "',"
+                    + ExpensesDTO.getCREATED_DATE() + "='" + expenses.getRaw_date() + "' WHERE " + ExpensesDTO.getID() + "='" + id + "'";
 
             pst = conn.prepareStatement(query);
             pst.executeUpdate();
@@ -308,29 +289,6 @@ public class ExpensesRepository implements AnonymousInterface<Expenses> {
         return total;
     }
 
-    public double summationOfBudgetUsed(int budget_id) {
-        double total = 0;
-        try {
-            String query = "SELECT SUM(" + ExpensesDTO.getAMOUNT() + ") AS total FROM " + ExpensesDTO.getEXPENSES_DB() + " WHERE " + ExpensesDTO.getBUDGET_ID() + "='" + budget_id + "'";
-            pst = conn.prepareStatement(query);
-            rs = pst.executeQuery();
-            if (rs.next()) {
-                total = rs.getDouble("total");
-            }
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, e);
-        } finally {
-            try {
-                rs.close();
-                pst.close();
-            } catch (SQLException e) {
-                JOptionPane.showMessageDialog(null, e);
-            }
-        }
-
-        return total;
-    }
-
     public boolean expenseType(int exepenses_type_id) {
         boolean status = false;
 
@@ -361,10 +319,9 @@ public class ExpensesRepository implements AnonymousInterface<Expenses> {
     public List<Expenses> findExpensesBetweenDates(String startDate, String endDate) {
         List<Expenses> expensesList = new ArrayList<>();
         try {
-            String query = "SELECT expense.*,user.fullname AS user,expenseType.name AS expense_type,budget.name AS budget FROM " + ExpensesDTO.getEXPENSES_DB() + " expense "
+            String query = "SELECT expense.*,user.fullname AS user,expenseType.name AS expense_type FROM " + ExpensesDTO.getEXPENSES_DB() + " expense "
                     + "LEFT JOIN " + UserDTO.getUSERS_DB() + " user ON expense.user_id=user.id "
                     + "LEFT JOIN " + ExpensesTypeDTO.getEXPENSE_TYPE_DB() + " expenseType ON expense.expenses_type_id=expenseType.id "
-                    + "LEFT JOIN " + BudgetDTO.getBUDGET_DB() + " budget ON expense.budget_id=budget.id "
                     + "WHERE expense.created_date >= '" + startDate + "' AND expense.created_date <= '" + endDate + "' ORDER BY expense.id DESC";
             pst = conn.prepareStatement(query);
             rs = pst.executeQuery();
@@ -374,17 +331,13 @@ public class ExpensesRepository implements AnonymousInterface<Expenses> {
 
                 expenses.setId(rs.getInt(ExpensesDTO.getID()));
                 expenses.setExpenses_type_id(rs.getInt(ExpensesDTO.getEXPENSE_TYPE_ID()));
-                expenses.setBudget_id(rs.getInt(ExpensesDTO.getBUDGET_ID()));
                 expenses.setAmount(rs.getDouble(ExpensesDTO.getAMOUNT()));
                 expenses.setPaid_to(rs.getString(ExpensesDTO.getPAID_TO()));
-                expenses.setBudget_before(rs.getDouble(ExpensesDTO.getBUDGET_BEFORE()));
-                expenses.setBudget_after(rs.getDouble(ExpensesDTO.getBUDGET_AFTER()));
                 expenses.setUser_id(rs.getInt(ExpensesDTO.getUSER_ID()));
                 expenses.setCreated_time(rs.getString(ExpensesDTO.getCREATED_TIME()));
                 expenses.setCreated_date(rs.getString(ExpensesDTO.getCREATED_DATE()));
 
                 expenses.setUser(rs.getString(ExpensesDTO.getUSER()));
-                expenses.setBudget(rs.getString(ExpensesDTO.getBUDGET()));
                 expenses.setExpense_type(rs.getString(ExpensesDTO.getEXPENSE_TYPE()));
 
                 expensesList.add(expenses);
@@ -404,4 +357,54 @@ public class ExpensesRepository implements AnonymousInterface<Expenses> {
         return expensesList;
     }
 
+    public double expensesSummation(String createdDate) {
+        double totalExpenses = 0;
+        try {
+            String query = "SELECT SUM(" + ExpensesDTO.getAMOUNT() + ") AS total FROM " + ExpensesDTO.getEXPENSES_DB() + " WHERE " + ExpensesDTO.getRAW_DATE() + " = '" + createdDate + "'";
+            pst = conn.prepareStatement(query);
+            rs = pst.executeQuery();
+
+            if (rs.next()) {
+                totalExpenses = rs.getDouble("total");
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
+        } finally {
+            try {
+                rs.close();
+                pst.close();
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, e);
+            }
+        }
+
+        return totalExpenses;
+    }
+
+    public double expensesSummationBetweenDates(String startDate, String endDate) {
+        double totalExpenses = 0;
+        try {
+            String query = "SELECT SUM(" + ExpensesDTO.getAMOUNT() + ") AS total FROM " + ExpensesDTO.getEXPENSES_DB() + " "
+                    + "WHERE " + ExpensesDTO.getRAW_DATE() + " >= '" + startDate + "' AND " + ExpensesDTO.getRAW_DATE() + " <= '" + endDate + "'";
+            pst = conn.prepareStatement(query);
+            rs = pst.executeQuery();
+
+            if (rs.next()) {
+                totalExpenses = rs.getDouble("total");
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
+        } finally {
+            try {
+                rs.close();
+                pst.close();
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, e);
+            }
+        }
+
+        return totalExpenses;
+    }
 }

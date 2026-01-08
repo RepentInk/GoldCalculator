@@ -50,9 +50,6 @@ public class ExpensesController {
                 expense.getExpense_type(),
                 helper.priceToString(expense.getAmount()),
                 expense.getPaid_to(),
-                expense.getBudget(),
-                helper.priceToString(expense.getBudget_before()),
-                helper.priceToString(expense.getBudget_after()),
                 expense.getUser(),
                 expense.getCreated_time(),
                 expense.getCreated_date(),
@@ -61,33 +58,25 @@ public class ExpensesController {
 
             defaultTableModel.addRow(object);
         }
-
-        defaultTableModel.fireTableDataChanged();
     }
 
     public void saveUpdate(
             JLabel expenseID,
             JComboBox expenseType,
-            JComboBox budgetSelected,
             JTextField totalAmount,
             JTextField paidTo,
-            JTextField budgetBefore,
-            JTextField budgetAfter,
             int selectedRow,
             JTable table,
             JDialog dialog
     ) {
-
-        Budget budget = budgetController.getSingleBudget(budgetSelected.getSelectedItem().toString());
         ExpensesType expensesType = expensesTypeController.getSingleExpenseType(expenseType.getSelectedItem().toString());
 
         int expenses_id = 0;
         double expenses_amount = totalAmount.getText().isEmpty() ? 0 : helper.parseAmountWithComma(totalAmount.getText());
-        double budget_before = budgetBefore.getText().isEmpty() ? 0 : helper.parseAmountWithComma(budgetBefore.getText());
-        double budget_after = budgetAfter.getText().isEmpty() ? 0 : helper.parseAmountWithComma(budgetAfter.getText());
         String paid_to = paidTo.getText();
         String created_time = helper.returnTime();
         String created_date = helper.returnDate();
+        String raw_date = helper.returnDate();
 
         if (!expenseID.getText().equals("")) {
             expenses_id = Integer.parseInt(expenseID.getText());
@@ -98,14 +87,12 @@ public class ExpensesController {
             Expenses expenses = new Expenses(
                     expenses_id,
                     expensesType.getId(),
-                    budget.getId(),
                     expenses_amount,
                     paid_to,
-                    budget_before,
-                    budget_after,
                     Authuser.getId(),
                     created_time,
-                    created_date
+                    created_date,
+                    raw_date
             );
 
             expensesRepository.update(expenses, expenses_id);
@@ -118,14 +105,12 @@ public class ExpensesController {
 
             Expenses expenses = new Expenses(
                     expensesType.getId(),
-                    budget.getId(),
                     expenses_amount,
                     paid_to,
-                    budget_before,
-                    budget_after,
                     Authuser.getId(),
                     created_time,
-                    created_date
+                    created_date,
+                    raw_date
             );
 
             int last_insert_id = expensesRepository.save(expenses);
@@ -147,9 +132,6 @@ public class ExpensesController {
             expense.getExpense_type(),
             helper.priceToString(expense.getAmount()),
             expense.getPaid_to(),
-            expense.getBudget(),
-            helper.priceToString(expense.getBudget_before()),
-            helper.priceToString(expense.getBudget_after()),
             expense.getUser(),
             expense.getCreated_time(),
             expense.getCreated_date(),
@@ -166,12 +148,9 @@ public class ExpensesController {
         table.setValueAt(expense.getExpense_type(), selectedRow, 1);
         table.setValueAt(helper.priceToString(expense.getAmount()), selectedRow, 2);
         table.setValueAt(expense.getPaid_to(), selectedRow, 3);
-        table.setValueAt(expense.getBudget(), selectedRow, 4);
-        table.setValueAt(helper.priceToString(expense.getBudget_before()), selectedRow, 5);
-        table.setValueAt(helper.priceToString(expense.getBudget_after()), selectedRow, 6);
-        table.setValueAt(expense.getUser(), selectedRow, 7);
-        table.setValueAt(expense.getCreated_time(), selectedRow, 8);
-        table.setValueAt(expense.getCreated_date(), selectedRow, 9);
+        table.setValueAt(expense.getUser(), selectedRow, 4);
+        table.setValueAt(expense.getCreated_time(), selectedRow, 5);
+        table.setValueAt(expense.getCreated_date(), selectedRow, 6);
     }
 
     public void deleteItem(JTable table, String expensesTypeID, int selectedRow) {
@@ -185,24 +164,17 @@ public class ExpensesController {
             int expenses_id,
             JLabel espensesID,
             JComboBox expenseTypeSelected,
-            JComboBox budgetSelected,
             JTextField totalAmount,
-            JTextField paidTo,
-            JTextField budgetBefore,
-            JTextField budgetAfter
+            JTextField paidTo
     ) {
         Expenses expense = expensesRepository.find(expenses_id);
-        Budget budget = budgetController.getSingleBudgetWithID(expense.getBudget_id());
         ExpensesType expensesType = expensesTypeController.getSingleExpenseTypeID(expense.getExpenses_type_id());
 
         espensesID.setText(String.valueOf(expense.getId()));
         totalAmount.setText(helper.priceToString(expense.getAmount()));
-        budgetBefore.setText(helper.priceToString(expense.getBudget_before()));
-        budgetAfter.setText(helper.priceToString(expense.getBudget_after()));
         paidTo.setText(expense.getPaid_to());
 
         expenseTypeSelected.setSelectedItem(expensesType.getId() + " | " + expensesType.getName());
-        budgetSelected.setSelectedItem(budget.getId() + " | " + budget.getName());
     }
 
     public void setBudgetDetails(

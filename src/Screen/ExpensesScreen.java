@@ -257,20 +257,20 @@ public class ExpensesScreen extends javax.swing.JPanel {
 
         expensesTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "id", "Expense Type", "Amount", "Paid To", "Budget", "Budget BE", "Budget AE", "Created By", "Time", "Date", ""
+                "id", "Expense Type", "Amount", "Paid To", "Created By", "Time", "Date", ""
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.Double.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.Double.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -291,8 +291,8 @@ public class ExpensesScreen extends javax.swing.JPanel {
         if (expensesTable.getColumnModel().getColumnCount() > 0) {
             expensesTable.getColumnModel().getColumn(0).setMinWidth(0);
             expensesTable.getColumnModel().getColumn(0).setMaxWidth(0);
-            expensesTable.getColumnModel().getColumn(10).setMinWidth(80);
-            expensesTable.getColumnModel().getColumn(10).setMaxWidth(80);
+            expensesTable.getColumnModel().getColumn(7).setMinWidth(80);
+            expensesTable.getColumnModel().getColumn(7).setMaxWidth(80);
         }
 
         jLabel32.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N

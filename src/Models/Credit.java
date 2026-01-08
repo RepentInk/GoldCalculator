@@ -9,20 +9,16 @@ public class Credit {
     private int id;
     private String code;
     private int customer_id;
-    private int budget_id;
-    private double amount;
-    private double previous_balance;
-    private double budget_before;
-    private double budget_after;
+    private double total_amount;
     private int user_id;
     private boolean status;
     private String created_date;
     private String created_time;
     private String raw_date;
 
-    private String budget;
     private String customer;
     private String user;
+    private double total_payment;
 
     public Credit() {
     }
@@ -30,11 +26,7 @@ public class Credit {
     public Credit(
             String code,
             int customer_id,
-            int budget_id,
-            double amount,
-            double previous_balance,
-            double budget_before,
-            double budget_after,
+            double total_amount,
             int user_id,
             String created_date,
             String created_time,
@@ -42,11 +34,7 @@ public class Credit {
     ) {
         this.code = code;
         this.customer_id = customer_id;
-        this.budget_id = budget_id;
-        this.amount = amount;
-        this.previous_balance = previous_balance;
-        this.budget_before = budget_before;
-        this.budget_after = budget_after;
+        this.total_amount = total_amount;
         this.user_id = user_id;
         this.created_date = created_date;
         this.created_time = created_time;
@@ -56,11 +44,7 @@ public class Credit {
     public Credit(
             int id,
             int customer_id,
-            int budget_id,
-            double amount,
-            double previous_balance,
-            double budget_before,
-            double budget_after,
+            double total_amount,
             int user_id,
             String created_date,
             String created_time,
@@ -68,11 +52,7 @@ public class Credit {
     ) {
         this.id = id;
         this.customer_id = customer_id;
-        this.budget_id = budget_id;
-        this.amount = amount;
-        this.previous_balance = previous_balance;
-        this.budget_before = budget_before;
-        this.budget_after = budget_after;
+        this.total_amount = total_amount;
         this.user_id = user_id;
         this.created_date = created_date;
         this.created_time = created_time;
@@ -103,44 +83,12 @@ public class Credit {
         this.customer_id = customer_id;
     }
 
-    public int getBudget_id() {
-        return budget_id;
+    public double getTotal_amount() {
+        return total_amount;
     }
 
-    public void setBudget_id(int budget_id) {
-        this.budget_id = budget_id;
-    }
-
-    public double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(double amount) {
-        this.amount = amount;
-    }
-
-    public double getPrevious_balance() {
-        return previous_balance;
-    }
-
-    public void setPrevious_balance(double previous_balance) {
-        this.previous_balance = previous_balance;
-    }
-
-    public double getBudget_before() {
-        return budget_before;
-    }
-
-    public void setBudget_before(double budget_before) {
-        this.budget_before = budget_before;
-    }
-
-    public double getBudget_after() {
-        return budget_after;
-    }
-
-    public void setBudget_after(double budget_after) {
-        this.budget_after = budget_after;
+    public void setTotal_amount(double total_amount) {
+        this.total_amount = total_amount;
     }
 
     public int getUser_id() {
@@ -175,14 +123,6 @@ public class Credit {
         this.raw_date = raw_date;
     }
 
-    public String getBudget() {
-        return budget;
-    }
-
-    public void setBudget(String budget) {
-        this.budget = budget;
-    }
-
     public String getCustomer() {
         return customer;
     }
@@ -205,6 +145,14 @@ public class Credit {
 
     public void setStatus(boolean status) {
         this.status = status;
+    }
+
+    public double getTotal_payment() {
+        return total_payment;
+    }
+
+    public void setTotal_payment(double total_payment) {
+        this.total_payment = total_payment;
     }
 
 }

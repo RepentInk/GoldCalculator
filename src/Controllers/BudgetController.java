@@ -6,7 +6,6 @@ import Helpers.TableActions;
 import Models.Budget;
 import Repository.BudgetRepository;
 import Repository.PaymentsRepository;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -44,21 +43,17 @@ public class BudgetController {
         Object[] object;
 
         for (Budget budget : budgets) {
-            double total_budget_used = this.budgetUsed(budget.getId());
-
             object = new Object[]{
                 budget.getId(),
                 budget.getName(),
+                budget.getSource_of_fund(),
                 helper.priceToString(budget.getTotal_amount()),
-                helper.priceToString(total_budget_used),
-                helper.priceToString(budget.getTotal_amount() - total_budget_used),
                 budget.getUser(),
                 budget.getCreated_time(),
                 budget.getCreated_date(),
                 this.statusOfBudget(budget.isStatus()),
                 TableActions.View.toString(),
-                TableActions.Add.toString(),
-                TableActions.Close.toString()
+                TableActions.Delete.toString()
             };
 
             defaultTableModel.addRow(object);
@@ -75,6 +70,7 @@ public class BudgetController {
             JLabel budgetID,
             JTextField name,
             JTextField totalAmount,
+            JTextField sourceOfFund,
             JTable table,
             int selectedRow,
             javax.swing.JDialog dialog
@@ -82,8 +78,7 @@ public class BudgetController {
 
         int budget_id = 0;
         String budget_name = name.getText().trim();
-        String start_date = helper.returnDate();
-        String end_date = helper.returnDate();
+        String source_of_fund = sourceOfFund.getText().trim();
         double total_amount = totalAmount.getText().isEmpty() ? 0 : helper.parseAmountWithComma(totalAmount.getText());
         String created_date = helper.returnDate();
         String created_time = helper.returnTime();
@@ -99,10 +94,8 @@ public class BudgetController {
                     budget_id,
                     budget_name,
                     total_amount,
-                    0,
+                    source_of_fund,
                     false,
-                    start_date,
-                    end_date,
                     created_date,
                     created_time,
                     raw_date,
@@ -120,10 +113,8 @@ public class BudgetController {
             Budget budget = new Budget(
                     budget_name,
                     total_amount,
-                    0,
+                    source_of_fund,
                     false,
-                    start_date,
-                    end_date,
                     created_date,
                     created_time,
                     raw_date,
@@ -144,37 +135,33 @@ public class BudgetController {
         Object[] object;
 
         Budget budget = budgetRepository.find(budget_id);
-        double total_budget_used = this.budgetUsed(budget.getId());
 
         object = new Object[]{
             budget.getId(),
             budget.getName(),
+            budget.getSource_of_fund(),
             helper.priceToString(budget.getTotal_amount()),
-            helper.priceToString(total_budget_used),
-            helper.priceToString(budget.getTotal_amount() - total_budget_used),
             budget.getUser(),
             budget.getCreated_time(),
             budget.getCreated_date(),
             this.statusOfBudget(budget.isStatus()),
             TableActions.View.toString(),
-            TableActions.Add.toString(),
-            TableActions.Close.toString()
-        };
+            TableActions.Delete.toString(),};
 
         tmodel.insertRow(0, object);
     }
 
     private void populateAfterUpdating(JTable table, int selectedRow, int budget_id) {
-
         Budget budget = budgetRepository.find(budget_id);
-        double total_budget_used = this.budgetUsed(budget.getId());
 
         table.setValueAt(budget.getId(), selectedRow, 0);
         table.setValueAt(budget.getName(), selectedRow, 1);
-        table.setValueAt(helper.priceToString(budget.getTotal_amount()), selectedRow, 2);
-        table.setValueAt(helper.priceToString(total_budget_used), selectedRow, 3);
-        table.setValueAt(helper.priceToString(budget.getTotal_amount() - total_budget_used), selectedRow, 4);
-        table.setValueAt(this.statusOfBudget(budget.isStatus()), selectedRow, 8);
+        table.setValueAt(budget.getSource_of_fund(), selectedRow, 2);
+        table.setValueAt(helper.priceToString(budget.getTotal_amount()), selectedRow, 3);
+        table.setValueAt(budget.getUser(), selectedRow, 4);
+        table.setValueAt(budget.getCreated_time(), selectedRow, 5);
+        table.setValueAt(budget.getCreated_date(), selectedRow, 6);
+        table.setValueAt(this.statusOfBudget(budget.isStatus()), selectedRow, 7);
     }
 
     private double budgetUsed(int id) {
@@ -185,12 +172,6 @@ public class BudgetController {
         DefaultTableModel tmodel = (DefaultTableModel) table.getModel();
         int id = Integer.parseInt(budgetID);
 
-        double total = paymentsRepository.summationOfBudget(id);
-        if (total > 0) {
-            JOptionPane.showMessageDialog(null, "Sorry! This record cannot be deleted because history of payments exist");
-            return;
-        }
-
         budgetRepository.delete(id);
         tmodel.removeRow(selectedRow);
     }
@@ -200,18 +181,15 @@ public class BudgetController {
             JLabel budgetID,
             JTextField name,
             JTextField totalAmount,
-            JTextField amountUsed,
-            JTextField amountLeft
+            JTextField sourceOfFund
     ) {
         Budget budget = budgetRepository.find(budget_id);
 
         budgetID.setText(String.valueOf(budget.getId()));
         name.setText(budget.getName());
-        double total_budget_used = this.budgetUsed(budget.getId());
 
         totalAmount.setText(helper.priceToString(budget.getTotal_amount()));
-        amountUsed.setText(helper.priceToString(total_budget_used));
-        amountLeft.setText(helper.priceToString(budget.getTotal_amount() - total_budget_used));
+        sourceOfFund.setText(budget.getSource_of_fund());
     }
 
     public void populateDropdownData(JComboBox comboBox, String title, String createdDate) {

@@ -42,10 +42,8 @@ public class BudgetRepository implements AnonymousInterface<Budget> {
                 budget.setId(rs.getInt(BudgetDTO.getID()));
                 budget.setName(rs.getString(BudgetDTO.getNAME()));
                 budget.setTotal_amount(rs.getDouble(BudgetDTO.getTOTAL_AMOUNT()));
-                budget.setAmount_forward(rs.getDouble(BudgetDTO.getAMOUNT_FORWARD()));
+                budget.setSource_of_fund(rs.getString(BudgetDTO.getSOURCE_OF_FUND()));
                 budget.setStatus(rs.getBoolean(BudgetDTO.getSTATUS()));
-                budget.setStart_date(rs.getString(BudgetDTO.getSTART_DATE()));
-                budget.setEnd_date(rs.getString(BudgetDTO.getEND_DATE()));
                 budget.setCreated_time(rs.getString(BudgetDTO.getCREATED_TIME()));
                 budget.setCreated_date(rs.getString(BudgetDTO.getCREATED_DATE()));
                 budget.setRaw_date(rs.getString(BudgetDTO.getRAW_DATE()));
@@ -85,10 +83,8 @@ public class BudgetRepository implements AnonymousInterface<Budget> {
                 budget.setId(rs.getInt(BudgetDTO.getID()));
                 budget.setName(rs.getString(BudgetDTO.getNAME()));
                 budget.setTotal_amount(rs.getDouble(BudgetDTO.getTOTAL_AMOUNT()));
-                budget.setAmount_forward(rs.getDouble(BudgetDTO.getAMOUNT_FORWARD()));
+                budget.setSource_of_fund(rs.getString(BudgetDTO.getSOURCE_OF_FUND()));
                 budget.setStatus(rs.getBoolean(BudgetDTO.getSTATUS()));
-                budget.setStart_date(rs.getString(BudgetDTO.getSTART_DATE()));
-                budget.setEnd_date(rs.getString(BudgetDTO.getEND_DATE()));
                 budget.setCreated_time(rs.getString(BudgetDTO.getCREATED_TIME()));
                 budget.setCreated_date(rs.getString(BudgetDTO.getCREATED_DATE()));
                 budget.setRaw_date(rs.getString(BudgetDTO.getRAW_DATE()));
@@ -127,10 +123,8 @@ public class BudgetRepository implements AnonymousInterface<Budget> {
                 budget.setId(rs.getInt(BudgetDTO.getID()));
                 budget.setName(rs.getString(BudgetDTO.getNAME()));
                 budget.setTotal_amount(rs.getDouble(BudgetDTO.getTOTAL_AMOUNT()));
-                budget.setAmount_forward(rs.getDouble(BudgetDTO.getAMOUNT_FORWARD()));
+                budget.setSource_of_fund(rs.getString(BudgetDTO.getSOURCE_OF_FUND()));
                 budget.setStatus(rs.getBoolean(BudgetDTO.getSTATUS()));
-                budget.setStart_date(rs.getString(BudgetDTO.getSTART_DATE()));
-                budget.setEnd_date(rs.getString(BudgetDTO.getEND_DATE()));
                 budget.setCreated_time(rs.getString(BudgetDTO.getCREATED_TIME()));
                 budget.setCreated_date(rs.getString(BudgetDTO.getCREATED_DATE()));
                 budget.setRaw_date(rs.getString(BudgetDTO.getRAW_DATE()));
@@ -161,27 +155,23 @@ public class BudgetRepository implements AnonymousInterface<Budget> {
             String query = "INSERT INTO " + BudgetDTO.getBUDGET_DB() + " ("
                     + BudgetDTO.getNAME() + ","
                     + BudgetDTO.getTOTAL_AMOUNT() + ","
-                    + BudgetDTO.getAMOUNT_FORWARD() + ","
+                    + BudgetDTO.getSOURCE_OF_FUND() + ","
                     + BudgetDTO.getSTATUS() + ","
-                    + BudgetDTO.getSTART_DATE() + ","
-                    + BudgetDTO.getEND_DATE() + ","
                     + BudgetDTO.getUSER_ID() + ","
                     + BudgetDTO.getRAW_DATE() + ","
                     + BudgetDTO.getCREATED_DATE() + ","
-                    + BudgetDTO.getCREATED_TIME() + " ) VALUES (?,?,?,?,?,?,?,?,?,?)";
+                    + BudgetDTO.getCREATED_TIME() + " ) VALUES (?,?,?,?,?,?,?,?)";
 
             pst = conn.prepareStatement(query);
 
             pst.setString(1, budget.getName());
             pst.setDouble(2, budget.getTotal_amount());
-            pst.setDouble(3, budget.getAmount_forward());
+            pst.setString(3, budget.getSource_of_fund());
             pst.setBoolean(4, budget.isStatus());
-            pst.setString(5, budget.getStart_date());
-            pst.setString(6, budget.getEnd_date());
-            pst.setInt(7, budget.getUser_id());
-            pst.setString(8, budget.getRaw_date());
-            pst.setString(9, budget.getCreated_date());
-            pst.setString(10, budget.getCreated_time());
+            pst.setInt(5, budget.getUser_id());
+            pst.setString(6, budget.getRaw_date());
+            pst.setString(7, budget.getCreated_date());
+            pst.setString(8, budget.getCreated_time());
 
             pst.executeUpdate();
 
@@ -210,10 +200,8 @@ public class BudgetRepository implements AnonymousInterface<Budget> {
             String query = "UPDATE " + BudgetDTO.getBUDGET_DB() + " SET "
                     + BudgetDTO.getNAME() + "='" + budget.getName() + "',"
                     + BudgetDTO.getTOTAL_AMOUNT() + "='" + budget.getTotal_amount() + "',"
-                    + BudgetDTO.getAMOUNT_FORWARD() + "='" + budget.getAmount_forward() + "',"
+                    + BudgetDTO.getSOURCE_OF_FUND() + "='" + budget.getSource_of_fund() + "',"
                     + BudgetDTO.getSTATUS() + "='" + budget.isStatus() + "',"
-                    + BudgetDTO.getSTART_DATE() + "='" + budget.getStart_date() + "',"
-                    + BudgetDTO.getEND_DATE() + "='" + budget.getEnd_date() + "',"
                     + BudgetDTO.getUSER_ID() + "='" + budget.getUser_id() + "',"
                     + BudgetDTO.getRAW_DATE() + "='" + budget.getRaw_date() + "',"
                     + BudgetDTO.getCREATED_DATE() + "='" + budget.getCreated_date() + "',"
@@ -307,10 +295,8 @@ public class BudgetRepository implements AnonymousInterface<Budget> {
                 budget.setId(rs.getInt(BudgetDTO.getID()));
                 budget.setName(rs.getString(BudgetDTO.getNAME()));
                 budget.setTotal_amount(rs.getDouble(BudgetDTO.getTOTAL_AMOUNT()));
-                budget.setAmount_forward(rs.getDouble(BudgetDTO.getAMOUNT_FORWARD()));
+                budget.setSource_of_fund(rs.getString(BudgetDTO.getSOURCE_OF_FUND()));
                 budget.setStatus(rs.getBoolean(BudgetDTO.getSTATUS()));
-                budget.setStart_date(rs.getString(BudgetDTO.getSTART_DATE()));
-                budget.setEnd_date(rs.getString(BudgetDTO.getEND_DATE()));
                 budget.setCreated_time(rs.getString(BudgetDTO.getCREATED_TIME()));
                 budget.setCreated_date(rs.getString(BudgetDTO.getCREATED_DATE()));
                 budget.setRaw_date(rs.getString(BudgetDTO.getRAW_DATE()));
@@ -361,10 +347,8 @@ public class BudgetRepository implements AnonymousInterface<Budget> {
                 budget.setId(rs.getInt(BudgetDTO.getID()));
                 budget.setName(rs.getString(BudgetDTO.getNAME()));
                 budget.setTotal_amount(rs.getDouble(BudgetDTO.getTOTAL_AMOUNT()));
-                budget.setAmount_forward(rs.getDouble(BudgetDTO.getAMOUNT_FORWARD()));
+                budget.setSource_of_fund(rs.getString(BudgetDTO.getSOURCE_OF_FUND()));
                 budget.setStatus(rs.getBoolean(BudgetDTO.getSTATUS()));
-                budget.setStart_date(rs.getString(BudgetDTO.getSTART_DATE()));
-                budget.setEnd_date(rs.getString(BudgetDTO.getEND_DATE()));
                 budget.setCreated_time(rs.getString(BudgetDTO.getCREATED_TIME()));
                 budget.setCreated_date(rs.getString(BudgetDTO.getCREATED_DATE()));
                 budget.setRaw_date(rs.getString(BudgetDTO.getRAW_DATE()));
@@ -418,10 +402,8 @@ public class BudgetRepository implements AnonymousInterface<Budget> {
                 budget.setId(rs.getInt(BudgetDTO.getID()));
                 budget.setName(rs.getString(BudgetDTO.getNAME()));
                 budget.setTotal_amount(rs.getDouble(BudgetDTO.getTOTAL_AMOUNT()));
-                budget.setAmount_forward(rs.getDouble(BudgetDTO.getAMOUNT_FORWARD()));
+                budget.setSource_of_fund(rs.getString(BudgetDTO.getSOURCE_OF_FUND()));
                 budget.setStatus(rs.getBoolean(BudgetDTO.getSTATUS()));
-                budget.setStart_date(rs.getString(BudgetDTO.getSTART_DATE()));
-                budget.setEnd_date(rs.getString(BudgetDTO.getEND_DATE()));
                 budget.setCreated_time(rs.getString(BudgetDTO.getCREATED_TIME()));
                 budget.setCreated_date(rs.getString(BudgetDTO.getCREATED_DATE()));
                 budget.setRaw_date(rs.getString(BudgetDTO.getRAW_DATE()));
@@ -444,6 +426,57 @@ public class BudgetRepository implements AnonymousInterface<Budget> {
         }
 
         return budgetsList;
+    }
+
+    public double budgetSummation(String createdDate) {
+        double totalBudget = 0;
+        try {
+            String query = "SELECT SUM(" + BudgetDTO.getTOTAL_AMOUNT() + ") AS total FROM " + BudgetDTO.getBUDGET_DB() + " WHERE " + BudgetDTO.getRAW_DATE() + " = '" + createdDate + "'";
+            pst = conn.prepareStatement(query);
+            rs = pst.executeQuery();
+
+            if (rs.next()) {
+                totalBudget = rs.getDouble("total");
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
+        } finally {
+            try {
+                rs.close();
+                pst.close();
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, e);
+            }
+        }
+
+        return totalBudget;
+    }
+
+    public double budgetSummationBetweenDates(String startDate, String endDate) {
+        double totalBudget = 0;
+        try {
+            String query = "SELECT SUM(" + BudgetDTO.getTOTAL_AMOUNT() + ") AS total FROM " + BudgetDTO.getBUDGET_DB() + " "
+                    + "WHERE " + BudgetDTO.getRAW_DATE() + " >= '" + startDate + "' AND " + BudgetDTO.getRAW_DATE() + " <= '" + endDate + "'";
+            pst = conn.prepareStatement(query);
+            rs = pst.executeQuery();
+
+            if (rs.next()) {
+                totalBudget = rs.getDouble("total");
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
+        } finally {
+            try {
+                rs.close();
+                pst.close();
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, e);
+            }
+        }
+
+        return totalBudget;
     }
 
 }

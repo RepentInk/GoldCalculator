@@ -8,66 +8,55 @@ public class Expenses {
 
     private int id;
     private int expenses_type_id;
-    private int budget_id;
     private double amount;
     private String paid_to;
-    private double budget_before;
-    private double budget_after;
     private int user_id;
     private String created_time;
     private String created_date;
+    private String raw_date;
 
     private String expense_type;
     private String user;
-    private String budget;
 
     public Expenses() {
     }
 
     public Expenses(
             int expenses_type_id,
-            int budget_id,
             double amount,
             String paid_to,
-            double budget_before,
-            double budget_after,
             int user_id,
             String created_time,
-            String created_date
+            String created_date,
+            String raw_date
     ) {
         this.expenses_type_id = expenses_type_id;
-        this.budget_id = budget_id;
         this.amount = amount;
         this.paid_to = paid_to;
-        this.budget_before = budget_before;
-        this.budget_after = budget_after;
         this.user_id = user_id;
         this.created_time = created_time;
         this.created_date = created_date;
+        this.raw_date = raw_date;
     }
 
     public Expenses(
             int id,
             int expenses_type_id,
-            int budget_id,
             double amount,
             String paid_to,
-            double budget_before,
-            double budget_after,
             int user_id,
             String created_time,
-            String created_date
+            String created_date,
+            String raw_date
     ) {
         this.id = id;
         this.expenses_type_id = expenses_type_id;
-        this.budget_id = budget_id;
         this.amount = amount;
         this.paid_to = paid_to;
-        this.budget_before = budget_before;
-        this.budget_after = budget_after;
         this.user_id = user_id;
         this.created_time = created_time;
         this.created_date = created_date;
+        this.raw_date = raw_date;
     }
 
     public int getId() {
@@ -84,14 +73,6 @@ public class Expenses {
 
     public void setExpenses_type_id(int expenses_type_id) {
         this.expenses_type_id = expenses_type_id;
-    }
-
-    public int getBudget_id() {
-        return budget_id;
-    }
-
-    public void setBudget_id(int budget_id) {
-        this.budget_id = budget_id;
     }
 
     public double getAmount() {
@@ -150,28 +131,12 @@ public class Expenses {
         this.user = user;
     }
 
-    public String getBudget() {
-        return budget;
+    public String getRaw_date() {
+        return raw_date;
     }
 
-    public void setBudget(String budget) {
-        this.budget = budget;
-    }
-
-    public double getBudget_before() {
-        return budget_before;
-    }
-
-    public void setBudget_before(double budget_before) {
-        this.budget_before = budget_before;
-    }
-
-    public double getBudget_after() {
-        return budget_after;
-    }
-
-    public void setBudget_after(double budget_after) {
-        this.budget_after = budget_after;
+    public void setRaw_date(String raw_date) {
+        this.raw_date = raw_date;
     }
 
 }

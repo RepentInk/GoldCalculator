@@ -43,7 +43,6 @@ public class CreditPaymentRepository implements AnonymousInterface<CreditPayment
 
                 creditPayment.setId(rs.getInt(CREDITPAYMENTDTO.getID()));
                 creditPayment.setPaid(rs.getDouble(CREDITPAYMENTDTO.getPAID()));
-                creditPayment.setPaid_from(rs.getInt(CREDITPAYMENTDTO.getPAID_FROM()));
                 creditPayment.setBalance(rs.getDouble(CREDITPAYMENTDTO.getBALANCE()));
                 creditPayment.setCreated_date(rs.getString(CREDITPAYMENTDTO.getCREATED_DATE()));
                 creditPayment.setCreated_time(rs.getString(CREDITPAYMENTDTO.getCREATED_TIME()));
@@ -87,7 +86,6 @@ public class CreditPaymentRepository implements AnonymousInterface<CreditPayment
             if (rs.next()) {
                 creditPayment.setId(rs.getInt(CREDITPAYMENTDTO.getID()));
                 creditPayment.setPaid(rs.getDouble(CREDITPAYMENTDTO.getPAID()));
-                creditPayment.setPaid_from(rs.getInt(CREDITPAYMENTDTO.getPAID_FROM()));
                 creditPayment.setBalance(rs.getDouble(CREDITPAYMENTDTO.getBALANCE()));
                 creditPayment.setCreated_date(rs.getString(CREDITPAYMENTDTO.getCREATED_DATE()));
                 creditPayment.setCreated_time(rs.getString(CREDITPAYMENTDTO.getCREATED_TIME()));
@@ -117,28 +115,22 @@ public class CreditPaymentRepository implements AnonymousInterface<CreditPayment
 
             String query = "INSERT INTO " + CREDITPAYMENTDTO.getCREDIT_PAYMENTS_DB() + " ("
                     + CREDITPAYMENTDTO.getCREDIT_ID() + ","
-                    + CREDITPAYMENTDTO.getCUSTOMER_ID() + ","
                     + CREDITPAYMENTDTO.getPAID() + ","
                     + CREDITPAYMENTDTO.getBALANCE() + ","
                     + CREDITPAYMENTDTO.getUSER_ID() + ","
-                    + CREDITPAYMENTDTO.getBUY_GOLD_ID() + ","
-                    + CREDITPAYMENTDTO.getPAID_FROM() + ","
                     + CREDITPAYMENTDTO.getCREATED_DATE() + ","
                     + CREDITPAYMENTDTO.getCREATED_TIME() + ","
-                    + CREDITPAYMENTDTO.getRAW_DATE() + " ) VALUES (?,?,?,?,?,?,?,?,?,?)";
+                    + CREDITPAYMENTDTO.getRAW_DATE() + " ) VALUES (?,?,?,?,?,?,?)";
 
             pst = conn.prepareStatement(query);
 
             pst.setInt(1, creditPayment.getCredit_id());
-            pst.setInt(2, creditPayment.getCustomer_id());
-            pst.setDouble(3, creditPayment.getPaid());
-            pst.setDouble(4, creditPayment.getBalance());
-            pst.setInt(5, creditPayment.getUser_id());
-            pst.setInt(6, creditPayment.getBuy_gold_id());
-            pst.setInt(7, creditPayment.getPaid_from());
-            pst.setString(8, creditPayment.getCreated_date());
-            pst.setString(9, creditPayment.getCreated_time());
-            pst.setString(10, creditPayment.getRaw_date());
+            pst.setDouble(2, creditPayment.getPaid());
+            pst.setDouble(3, creditPayment.getBalance());
+            pst.setInt(4, creditPayment.getUser_id());
+            pst.setString(5, creditPayment.getCreated_date());
+            pst.setString(6, creditPayment.getCreated_time());
+            pst.setString(7, creditPayment.getRaw_date());
             pst.executeUpdate();
 
             rs = pst.getGeneratedKeys();
@@ -180,34 +172,11 @@ public class CreditPaymentRepository implements AnonymousInterface<CreditPayment
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
-    public double summationOfAmountPaid(int customer_id) {
-        double total = 0;
-        try {
-            String query = "SELECT SUM(" + CREDITPAYMENTDTO.getPAID() + ") AS total FROM " + CREDITPAYMENTDTO.getCREDIT_PAYMENTS_DB() + " WHERE " + CREDITPAYMENTDTO.getCUSTOMER_ID() + "='" + customer_id + "'";
-            pst = conn.prepareStatement(query);
-            rs = pst.executeQuery();
-            if (rs.next()) {
-                total = rs.getDouble("total");
-            }
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, e);
-        } finally {
-            try {
-                rs.close();
-                pst.close();
-            } catch (SQLException e) {
-                JOptionPane.showMessageDialog(null, e);
-            }
-        }
-
-        return total;
-    }
-
-    public double summationAmountPaid(int credit_id, int status) {
+    public double summationAmountPaid(int credit_id) {
         double total = 0;
         try {
             String query = "SELECT SUM(" + CREDITPAYMENTDTO.getPAID() + ") AS total FROM " + CREDITPAYMENTDTO.getCREDIT_PAYMENTS_DB() + " "
-                    + "WHERE " + CREDITPAYMENTDTO.getCREDIT_ID() + "='" + credit_id + "' AND " + CREDITPAYMENTDTO.getPAID_FROM() + "='" + status + "'";
+                    + "WHERE " + CREDITPAYMENTDTO.getCREDIT_ID() + "='" + credit_id + "'";
             pst = conn.prepareStatement(query);
             rs = pst.executeQuery();
             if (rs.next()) {
@@ -231,7 +200,7 @@ public class CreditPaymentRepository implements AnonymousInterface<CreditPayment
         double total = 0;
         try {
             String query = "SELECT SUM(" + CREDITPAYMENTDTO.getPAID() + ") AS total FROM " + CREDITPAYMENTDTO.getCREDIT_PAYMENTS_DB() + " "
-                    + "WHERE " + CREDITPAYMENTDTO.getCREATED_DATE() + "='" + createdDate + "' AND " + CREDITPAYMENTDTO.getPAID_FROM() + "='" + status + "'";
+                    + "WHERE " + CREDITPAYMENTDTO.getCREATED_DATE() + "='" + createdDate + "'";
             pst = conn.prepareStatement(query);
             rs = pst.executeQuery();
             if (rs.next()) {
@@ -249,6 +218,57 @@ public class CreditPaymentRepository implements AnonymousInterface<CreditPayment
         }
 
         return total;
+    }
+
+    public double creditPaymentSummation(String createdDate) {
+        double totalCreditPayment = 0;
+        try {
+            String query = "SELECT SUM(" + CREDITPAYMENTDTO.getPAID() + ") AS total FROM " + CREDITPAYMENTDTO.getCREDIT_PAYMENTS_DB() + " WHERE " + CREDITPAYMENTDTO.getRAW_DATE() + " = '" + createdDate + "'";
+            pst = conn.prepareStatement(query);
+            rs = pst.executeQuery();
+
+            if (rs.next()) {
+                totalCreditPayment = rs.getDouble("total");
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
+        } finally {
+            try {
+                rs.close();
+                pst.close();
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, e);
+            }
+        }
+
+        return totalCreditPayment;
+    }
+
+    public double creditPaymentSummationBetweenDates(String startDate, String endDate) {
+        double totalCreditPayment = 0;
+        try {
+            String query = "SELECT SUM(" + CREDITPAYMENTDTO.getPAID() + ") AS total FROM " + CREDITPAYMENTDTO.getCREDIT_PAYMENTS_DB() + " "
+                    + "WHERE " + CREDITPAYMENTDTO.getRAW_DATE() + " >= '" + startDate + "' AND " + CREDITPAYMENTDTO.getRAW_DATE() + " <= '" + endDate + "'";
+            pst = conn.prepareStatement(query);
+            rs = pst.executeQuery();
+
+            if (rs.next()) {
+                totalCreditPayment = rs.getDouble("total");
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
+        } finally {
+            try {
+                rs.close();
+                pst.close();
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, e);
+            }
+        }
+
+        return totalCreditPayment;
     }
 
 }

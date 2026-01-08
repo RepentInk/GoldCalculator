@@ -1,11 +1,9 @@
 package Dialogs;
 
-import Controllers.BudgetController;
 import Controllers.ExpensesController;
 import Controllers.ExpensesTypeController;
 import Helpers.HelperFunctions;
 import Screen.ExpensesScreen;
-import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 
 /**
@@ -13,11 +11,10 @@ import javax.swing.JOptionPane;
  * @author nyark
  */
 public class ExpensesForm extends javax.swing.JDialog {
-    
+
     HelperFunctions helper = new HelperFunctions();
     ExpensesController expensesController = new ExpensesController();
     ExpensesTypeController expensesTypeController = new ExpensesTypeController();
-    BudgetController budgetController = new BudgetController();
     private int selectedRow;
 
     /**
@@ -31,44 +28,29 @@ public class ExpensesForm extends javax.swing.JDialog {
         initComponents();
         setIconImage(helper.setIcon(helper.iconImagePath()));
         lblExpenseID.setVisible(false);
-        
+
         this.populateDropDown();
     }
-    
+
     private void populateDropDown() {
         expensesTypeController.populateDropdownData(cmbExpenseType, "Select expense type");
-        budgetController.populateDropdownData(cmbBudgetSelected, "Select budget", helper.returnDate());
     }
-    
-    private void budgetData() {
-        if (cmbBudgetSelected.getSelectedIndex() == 0) {
-            return;
-        }
-        
-        expensesController.setBudgetDetails(
-                cmbBudgetSelected.getSelectedItem().toString(),
-                txtBudgetBefore
-        );
-    }
-    
+
     private void saveUpdate() {
         if (!this.checkFields()) {
             return;
         }
-        
+
         expensesController.saveUpdate(lblExpenseID,
                 cmbExpenseType,
-                cmbBudgetSelected,
                 txtExpenseAmount,
                 txtPaidTo,
-                txtBudgetBefore,
-                txtBudgetAfter,
                 this.selectedRow,
                 ExpensesScreen.expensesTable,
                 this
         );
     }
-    
+
     public void viewDetails(int expense_id, int selectedRow) {
         this.selectedRow = selectedRow;
         btnSave.setEnabled(false);
@@ -76,66 +58,32 @@ public class ExpensesForm extends javax.swing.JDialog {
                 expense_id,
                 lblExpenseID,
                 cmbExpenseType,
-                cmbBudgetSelected,
                 txtExpenseAmount,
-                txtPaidTo,
-                txtBudgetBefore,
-                txtBudgetAfter
+                txtPaidTo
         );
-        
+
     }
-    
+
     private boolean checkFields() {
         String message = "";
-        
-        if (cmbBudgetSelected.getSelectedIndex() == 0) {
-            message = message + "Budget is required \n";
-        }
-        
+
         if (cmbExpenseType.getSelectedIndex() == 0) {
             message = message + "Expense type is required \n";
         }
-        
+
         if (txtPaidTo.getText().isEmpty()) {
             message = message + "Paid to name is required \n";
         }
-        
+
         if (txtExpenseAmount.getText().isEmpty()) {
             message = message + "Expense amount is required \n";
         }
-        
+
         if (message.length() > 0) {
             JOptionPane.showMessageDialog(this, message, "Form Validation", 0);
         }
-        
+
         return message.length() <= 0;
-    }
-    
-    private void calculateBudgetAfter() {
-        if (txtExpenseAmount.getText().isEmpty()) {
-            getToolkit().beep();
-            return;
-        }
-        
-        double expenses_amount = txtExpenseAmount.getText().isEmpty() ? 0 : Double.parseDouble(txtExpenseAmount.getText());
-        double budget_before = txtBudgetBefore.getText().isEmpty() ? 0 : helper.parseAmountWithComma(txtBudgetBefore.getText());
-        
-        double budget_after = 0;
-        if (expenses_amount > budget_before) {
-            JOptionPane.showMessageDialog(
-                    null,
-                    "Sorry! Expenses amount cannot be more than budget remain amount",
-                    "PAYMENT AMOUNT LIMIT",
-                    JOptionPane.INFORMATION_MESSAGE
-            );
-            return;
-        }
-        
-        if (expenses_amount > 0 && budget_before > 0) {
-            budget_after = budget_before - expenses_amount;
-        }
-        
-        txtBudgetAfter.setText(String.valueOf(helper.priceToString(budget_after)));
     }
 
     /**
@@ -147,12 +95,6 @@ public class ExpensesForm extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        cmbBudgetSelected = new javax.swing.JComboBox<>();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        txtBudgetBefore = new javax.swing.JTextField();
-        txtBudgetAfter = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         cmbExpenseType = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
@@ -165,30 +107,6 @@ public class ExpensesForm extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Expenses Registration Form");
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel1.setText("Budget");
-
-        cmbBudgetSelected.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        cmbBudgetSelected.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmbBudgetSelectedActionPerformed(evt);
-            }
-        });
-
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel2.setText("Total Amount");
-
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel3.setText("Balance");
-
-        txtBudgetBefore.setEditable(false);
-        txtBudgetBefore.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        txtBudgetBefore.setFocusable(false);
-
-        txtBudgetAfter.setEditable(false);
-        txtBudgetAfter.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        txtBudgetAfter.setFocusable(false);
-
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel4.setText("Expenses Type");
 
@@ -198,14 +116,6 @@ public class ExpensesForm extends javax.swing.JDialog {
         jLabel5.setText("Expense Amount");
 
         txtExpenseAmount.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        txtExpenseAmount.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtExpenseAmountKeyReleased(evt);
-            }
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtExpenseAmountKeyTyped(evt);
-            }
-        });
 
         btnSave.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/save.png"))); // NOI18N
@@ -229,18 +139,8 @@ public class ExpensesForm extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(cmbBudgetSelected, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(txtBudgetBefore)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE)
-                            .addComponent(txtBudgetAfter)))
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(cmbExpenseType, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 383, Short.MAX_VALUE)
                     .addComponent(txtExpenseAmount)
                     .addComponent(btnSave, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lblExpenseID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -252,18 +152,6 @@ public class ExpensesForm extends javax.swing.JDialog {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cmbBudgetSelected, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtBudgetBefore, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtBudgetAfter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cmbExpenseType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -277,7 +165,7 @@ public class ExpensesForm extends javax.swing.JDialog {
                 .addComponent(txtPaidTo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lblExpenseID, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -286,25 +174,9 @@ public class ExpensesForm extends javax.swing.JDialog {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtExpenseAmountKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtExpenseAmountKeyTyped
-        char c = evt.getKeyChar();
-        if (!(Character.isDigit(c) || (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE) || (c == KeyEvent.VK_PERIOD) || (c == KeyEvent.VK_ENTER))) {
-            getToolkit().beep();
-            evt.consume();
-        }
-    }//GEN-LAST:event_txtExpenseAmountKeyTyped
-
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         this.saveUpdate();
     }//GEN-LAST:event_btnSaveActionPerformed
-
-    private void cmbBudgetSelectedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbBudgetSelectedActionPerformed
-        this.budgetData();
-    }//GEN-LAST:event_cmbBudgetSelectedActionPerformed
-
-    private void txtExpenseAmountKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtExpenseAmountKeyReleased
-        this.calculateBudgetAfter();
-    }//GEN-LAST:event_txtExpenseAmountKeyReleased
 
     /**
      * @param args the command line arguments
@@ -348,17 +220,11 @@ public class ExpensesForm extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSave;
-    private javax.swing.JComboBox<String> cmbBudgetSelected;
     private javax.swing.JComboBox<String> cmbExpenseType;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel lblExpenseID;
-    private javax.swing.JTextField txtBudgetAfter;
-    private javax.swing.JTextField txtBudgetBefore;
     private javax.swing.JTextField txtExpenseAmount;
     private javax.swing.JTextField txtPaidTo;
     // End of variables declaration//GEN-END:variables

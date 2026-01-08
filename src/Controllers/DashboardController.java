@@ -9,7 +9,9 @@ import Models.Yearly;
 import Repository.BudgetRepository;
 import Repository.BuyGoldRepository;
 import Repository.CreditPaymentRepository;
+import Repository.CreditRepository;
 import Repository.DailyReportRepository;
+import Repository.ExpensesRepository;
 import Repository.MonthlyReportRepository;
 import Repository.PaymentsRepository;
 import Repository.YearlyReportRepository;
@@ -24,67 +26,71 @@ import javax.swing.table.DefaultTableModel;
  * @author nyark
  */
 public class DashboardController {
-
+    
     MonthlyReportRepository monthlyReportRepository = new MonthlyReportRepository();
     YearlyReportRepository yearlyReportRepository = new YearlyReportRepository();
     DailyReportRepository dailyReportRepository = new DailyReportRepository();
+    
     BuyGoldRepository buyGoldRepository = new BuyGoldRepository();
     PaymentsRepository paymentsRepository = new PaymentsRepository();
     BudgetRepository budgetRepository = new BudgetRepository();
+    CreditRepository creditRepository = new CreditRepository();
+    ExpensesRepository expensesRepository = new ExpensesRepository();
     CreditPaymentRepository creditPaymentRepository = new CreditPaymentRepository();
-
+    
     ReportController reportController = new ReportController();
-
+    
     HelperFunctions helper = new HelperFunctions();
-
+    
     public void dashboardData(
-            String createdDate,
-            JTextField totalGoldBought,
-            JTextField totalGoldPayments,
-            JTextField totalGoldBalance,
-            JTextField totalDailyBudget,
-            JTextField totalBudgetUsed,
-            JTextField txtTotalBudgetBalance,
-            JTextField txtBudgetUsedPayment,
-            JTextField txtBudgetUsedCredit,
-            JTextField txtBudgetUsedExpense
+            String startDate,
+            String currentDate,
+            JTextField totalBudgetText,
+            JTextField totalGoldBoughtText,
+            JTextField totalPaymentsText,
+            JTextField totalCreditsText,
+            JTextField totalExpensesText,
+            JTextField totalCreditPaymentText
     ) {
-
-        double total_gold_bought = buyGoldRepository.summationDaily(createdDate);
-        double total_payments_gold = paymentsRepository.summationOfPayments(createdDate);
-        double total_used_to_pay_credit = creditPaymentRepository.summationAmountPaidToday(createdDate, 0);
-        double totalPayments = total_payments_gold + total_used_to_pay_credit;
-
-        Budget budget = budgetRepository.todayBudget(createdDate);
-        double budget_used = reportController.budgetUsedAll(budget.getId());
-        double budgetUsedOnPayment = reportController.budgetUsedOnPayment(budget.getId());
-        double budgetUsedOnCredit = reportController.budgetUsedOnCredit(budget.getId());
-        double budgetUsedOnExpenses = reportController.budgetUsedOnExpenses(budget.getId());
-
-        totalGoldBought.setText(helper.priceToString(total_gold_bought));
-        totalGoldPayments.setText(helper.priceToString(totalPayments));
-        totalGoldBalance.setText(helper.priceToString(total_gold_bought - totalPayments));
-        totalDailyBudget.setText(helper.priceToString(budget.getTotal_amount()));
-        totalBudgetUsed.setText(helper.priceToString(budget_used));
-        txtTotalBudgetBalance.setText(helper.priceToString(budget.getTotal_amount() - budget_used));
-        txtBudgetUsedPayment.setText(helper.priceToString(budgetUsedOnPayment));
-        txtBudgetUsedCredit.setText(helper.priceToString(budgetUsedOnCredit));
-        txtBudgetUsedExpense.setText(helper.priceToString(budgetUsedOnExpenses));
+        double totalBudget = 0, totalGoldBought = 0, totalPayments = 0, totalCredits = 0, totalExpenses = 0, totalCreditPayment = 0;
+        
+        if (!startDate.isEmpty() && !currentDate.isEmpty()) {
+            totalBudget = budgetRepository.budgetSummationBetweenDates(startDate, currentDate);
+            totalGoldBought = buyGoldRepository.buyGoldSummationBetweenDates(startDate, currentDate);
+            totalPayments = paymentsRepository.paymentSummationBetweenDates(startDate, currentDate);
+            totalCredits = creditRepository.paymentSummationBetweenDates(startDate, currentDate);
+            totalExpenses = expensesRepository.expensesSummationBetweenDates(startDate, currentDate);
+            totalCreditPayment = creditPaymentRepository.creditPaymentSummationBetweenDates(startDate, currentDate);
+        } else if (startDate.isEmpty() && !currentDate.isEmpty()) {
+            totalBudget = budgetRepository.budgetSummation(currentDate);
+            totalGoldBought = buyGoldRepository.goldBuySummation(currentDate);
+            totalPayments = paymentsRepository.paymentSummation(currentDate);
+            totalCredits = creditRepository.creditSummation(currentDate);
+            totalExpenses = expensesRepository.expensesSummation(currentDate);
+            totalCreditPayment = creditPaymentRepository.creditPaymentSummation(currentDate);
+        }
+        
+        totalBudgetText.setText(helper.priceToString(totalBudget));
+        totalGoldBoughtText.setText(helper.priceToString(totalGoldBought));
+        totalPaymentsText.setText(helper.priceToString(totalPayments));
+        totalCreditsText.setText(helper.priceToString(totalCredits));
+        totalExpensesText.setText(helper.priceToString(totalExpenses));
+        totalCreditPaymentText.setText(helper.priceToString(totalCreditPayment));
     }
-
+    
     public void populateMonthlyTable(JTable table, String year, boolean showButtonColumn) {
         if (year.equals("")) {
             year = helper.returnCurrentYear();
         }
         List<Monthly> monthlys = monthlyReportRepository.monthlyPurchasesReport(year);
-
+        
         DefaultTableModel defaultTableModel = (DefaultTableModel) table.getModel();
         defaultTableModel.setRowCount(0);
         Object[] object;
-
+        
         for (Monthly monthly : monthlys) {
             double totalPayment = this.getMonthlyPayment(year, monthly.getMonth());
-
+            
             if (showButtonColumn) {
                 object = new Object[]{
                     monthly.getMonth(),
@@ -113,29 +119,29 @@ public class DashboardController {
                     helper.priceToString(monthly.getTotal() - totalPayment)
                 };
             }
-
+            
             defaultTableModel.addRow(object);
         }
-
+        
         defaultTableModel.fireTableDataChanged();
     }
-
+    
     private double getMonthlyPayment(String year, String month) {
         double total = monthlyReportRepository.monthlyPaymentTotal(year, month);
         double totalCreditPayment = monthlyReportRepository.monthlyCreditPaymentTotal(year, month, 0);
         return total + totalCreditPayment;
     }
-
+    
     public void populateYearlyTable(JTable table) {
         List<Yearly> yearlys = yearlyReportRepository.yearlyPurchaseReport();
-
+        
         DefaultTableModel defaultTableModel = (DefaultTableModel) table.getModel();
         defaultTableModel.setRowCount(0);
         Object[] object;
-
+        
         for (Yearly yearly : yearlys) {
             double totalPayment = this.getYearlyPayment(yearly.getYear());
-
+            
             object = new Object[]{
                 yearly.getYear(),
                 helper.priceToStringNotAmount(yearly.getTop()),
@@ -148,29 +154,29 @@ public class DashboardController {
                 helper.priceToString(yearly.getTotal() - totalPayment),
                 TableActions.Monthly.toString()
             };
-
+            
             defaultTableModel.addRow(object);
         }
-
+        
         defaultTableModel.fireTableDataChanged();
     }
-
+    
     private double getYearlyPayment(String year) {
         double total = yearlyReportRepository.yearlyPaymentTotal(year);
         double totalCreditPayment = yearlyReportRepository.yearlyCreditPaymentTotal(year, 0);
         return total + totalCreditPayment;
     }
-
+    
     public void populateDailyTable(JTable table, String month, String year) {
         List<Daily> dailys = dailyReportRepository.dailyPurchasesReport(month, year);
-
+        
         DefaultTableModel defaultTableModel = (DefaultTableModel) table.getModel();
         defaultTableModel.setRowCount(0);
         Object[] object;
-
+        
         for (Daily daily : dailys) {
             double totalPayment = this.getDailyPayment(year, month, daily.getDay());
-
+            
             object = new Object[]{
                 daily.getDay(),
                 helper.priceToStringNotAmount(daily.getTop()),
@@ -182,17 +188,17 @@ public class DashboardController {
                 helper.priceToString(totalPayment),
                 helper.priceToString(daily.getTotal() - totalPayment)
             };
-
+            
             defaultTableModel.addRow(object);
         }
-
+        
         defaultTableModel.fireTableDataChanged();
     }
-
+    
     private double getDailyPayment(String year, String month, String day) {
         double total = dailyReportRepository.dailyPaymentTotal(year, month, day);
         double totalCreditPayment = dailyReportRepository.dailyCreditPaymentTotal(year, month, day, 0);
         return total + totalCreditPayment;
     }
-
+    
 }

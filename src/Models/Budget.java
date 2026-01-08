@@ -9,10 +9,8 @@ public class Budget {
     private int id;
     private String name;
     private double total_amount;
-    private double amount_forward;
+    private String source_of_fund;
     private boolean status;
-    private String start_date;
-    private String end_date;
     private String created_date;
     private String created_time;
     private String raw_date;
@@ -26,10 +24,8 @@ public class Budget {
     public Budget(
             String name,
             double total_amount,
-            double amount_forward,
+            String source_of_fund,
             boolean status,
-            String start_date,
-            String end_date,
             String created_date,
             String created_time,
             String raw_date,
@@ -37,10 +33,8 @@ public class Budget {
     ) {
         this.name = name;
         this.total_amount = total_amount;
-        this.amount_forward = amount_forward;
+        this.source_of_fund = source_of_fund;
         this.status = status;
-        this.start_date = start_date;
-        this.end_date = end_date;
         this.created_date = created_date;
         this.created_time = created_time;
         this.raw_date = raw_date;
@@ -51,10 +45,8 @@ public class Budget {
             int id,
             String name,
             double total_amount,
-            double amount_forward,
+            String source_of_fund,
             boolean status,
-            String start_date,
-            String end_date,
             String created_date,
             String created_time,
             String raw_date,
@@ -63,10 +55,8 @@ public class Budget {
         this.id = id;
         this.name = name;
         this.total_amount = total_amount;
-        this.amount_forward = amount_forward;
+        this.source_of_fund = source_of_fund;
         this.status = status;
-        this.start_date = start_date;
-        this.end_date = end_date;
         this.created_date = created_date;
         this.created_time = created_time;
         this.raw_date = raw_date;
@@ -97,14 +87,6 @@ public class Budget {
         this.total_amount = total_amount;
     }
 
-    public double getAmount_forward() {
-        return amount_forward;
-    }
-
-    public void setAmount_forward(double amount_forward) {
-        this.amount_forward = amount_forward;
-    }
-
     public boolean isStatus() {
         return status;
     }
@@ -113,20 +95,12 @@ public class Budget {
         this.status = status;
     }
 
-    public String getStart_date() {
-        return start_date;
+    public String getSource_of_fund() {
+        return source_of_fund;
     }
 
-    public void setStart_date(String start_date) {
-        this.start_date = start_date;
-    }
-
-    public String getEnd_date() {
-        return end_date;
-    }
-
-    public void setEnd_date(String end_date) {
-        this.end_date = end_date;
+    public void setSource_of_fund(String source_of_fund) {
+        this.source_of_fund = source_of_fund;
     }
 
     public String getCreated_date() {

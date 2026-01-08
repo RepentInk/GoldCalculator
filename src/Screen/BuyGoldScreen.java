@@ -39,11 +39,15 @@ public class BuyGoldScreen extends javax.swing.JPanel {
         lblEndDate.setVisible(false);
         startDate.setVisible(false);
         lblStartDate.setVisible(false);
+
+        this.sumupGoldBought();
     }
 
     private void addForm() {
         BuyGoldForm buyGoldForm = new BuyGoldForm(new Dashboard(), true);
         buyGoldForm.setVisible(true);
+
+        this.sumupGoldBought();
     }
 
     private void populateData(String startDate, String endDate) {
@@ -82,10 +86,12 @@ public class BuyGoldScreen extends javax.swing.JPanel {
         }
 
         this.countRow();
+        this.sumupGoldBought();
     }
 
     private void refresh() {
         this.populateData("", helper.returnDate());
+        this.sumupGoldBought();
     }
 
     private void countRow() {
@@ -100,6 +106,7 @@ public class BuyGoldScreen extends javax.swing.JPanel {
                 return;
             }
             this.populateData(startDateValue, endDate);
+            this.sumupGoldBought();
         });
 
         startDate.addPropertyChangeListener((PropertyChangeEvent evt) -> {
@@ -109,6 +116,7 @@ public class BuyGoldScreen extends javax.swing.JPanel {
                 return;
             }
             this.populateData(startDateValue, endDate);
+            this.sumupGoldBought();
         });
     }
 
@@ -126,6 +134,11 @@ public class BuyGoldScreen extends javax.swing.JPanel {
         }
     }
 
+    private void sumupGoldBought() {
+        Double total = helper.summationOfTableColumnReturnDouble(buyGoldTable, 10);
+        txtTotalBought.setText(helper.priceToString(total));
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -138,6 +151,8 @@ public class BuyGoldScreen extends javax.swing.JPanel {
         jPanel30 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         btn_addUser = new javax.swing.JButton();
+        txtTotalBought = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
         jPanel37 = new javax.swing.JPanel();
         txtSearch = new javax.swing.JTextField();
         lbl_SearchIcon1 = new javax.swing.JLabel();
@@ -170,6 +185,11 @@ public class BuyGoldScreen extends javax.swing.JPanel {
             }
         });
 
+        txtTotalBought.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        jLabel1.setText("Total Bought:");
+
         javax.swing.GroupLayout jPanel30Layout = new javax.swing.GroupLayout(jPanel30);
         jPanel30.setLayout(jPanel30Layout);
         jPanel30Layout.setHorizontalGroup(
@@ -177,7 +197,11 @@ public class BuyGoldScreen extends javax.swing.JPanel {
             .addGroup(jPanel30Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 518, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtTotalBought, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btn_addUser, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -187,6 +211,8 @@ public class BuyGoldScreen extends javax.swing.JPanel {
                 .addGap(2, 2, 2)
                 .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addComponent(btn_addUser, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(txtTotalBought, javax.swing.GroupLayout.Alignment.TRAILING)
         );
 
         jPanel37.setBorder(javax.swing.BorderFactory.createTitledBorder("Search"));
@@ -221,6 +247,8 @@ public class BuyGoldScreen extends javax.swing.JPanel {
                 filterCheckBoxActionPerformed(evt);
             }
         });
+
+        dateCurrentDate.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
 
         javax.swing.GroupLayout jPanel37Layout = new javax.swing.GroupLayout(jPanel37);
         jPanel37.setLayout(jPanel37Layout);
@@ -262,20 +290,20 @@ public class BuyGoldScreen extends javax.swing.JPanel {
 
         buyGoldTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "id", "Code", "Customer", "Top", "Down", "Pounds", "Density", "Karat", "Base Price", "Price", "Amount", "A. Paid", "Balance", "Created By", "Date", "", "", ""
+                "id", "Code", "Customer", "Top", "Down", "Pounds", "Density", "Karat", "Base Price", "Price", "Amount", "Created By", "Date", "", "", ""
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -308,14 +336,14 @@ public class BuyGoldScreen extends javax.swing.JPanel {
             buyGoldTable.getColumnModel().getColumn(6).setMaxWidth(70);
             buyGoldTable.getColumnModel().getColumn(7).setMinWidth(70);
             buyGoldTable.getColumnModel().getColumn(7).setMaxWidth(70);
-            buyGoldTable.getColumnModel().getColumn(14).setMinWidth(90);
-            buyGoldTable.getColumnModel().getColumn(14).setMaxWidth(90);
-            buyGoldTable.getColumnModel().getColumn(15).setMinWidth(60);
-            buyGoldTable.getColumnModel().getColumn(15).setMaxWidth(60);
-            buyGoldTable.getColumnModel().getColumn(16).setMinWidth(70);
-            buyGoldTable.getColumnModel().getColumn(16).setMaxWidth(70);
-            buyGoldTable.getColumnModel().getColumn(17).setMinWidth(70);
-            buyGoldTable.getColumnModel().getColumn(17).setMaxWidth(70);
+            buyGoldTable.getColumnModel().getColumn(12).setMinWidth(90);
+            buyGoldTable.getColumnModel().getColumn(12).setMaxWidth(90);
+            buyGoldTable.getColumnModel().getColumn(13).setMinWidth(60);
+            buyGoldTable.getColumnModel().getColumn(13).setMaxWidth(60);
+            buyGoldTable.getColumnModel().getColumn(14).setMinWidth(70);
+            buyGoldTable.getColumnModel().getColumn(14).setMaxWidth(70);
+            buyGoldTable.getColumnModel().getColumn(15).setMinWidth(70);
+            buyGoldTable.getColumnModel().getColumn(15).setMaxWidth(70);
         }
 
         jLabel32.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -392,6 +420,7 @@ public class BuyGoldScreen extends javax.swing.JPanel {
     public static javax.swing.JTable buyGoldTable;
     private com.toedter.calendar.JDateChooser dateCurrentDate;
     private javax.swing.JCheckBox filterCheckBox;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel30;
@@ -403,5 +432,6 @@ public class BuyGoldScreen extends javax.swing.JPanel {
     private javax.swing.JLabel lbl_SearchIcon1;
     private com.toedter.calendar.JDateChooser startDate;
     private javax.swing.JTextField txtSearch;
+    private javax.swing.JTextField txtTotalBought;
     // End of variables declaration//GEN-END:variables
 }

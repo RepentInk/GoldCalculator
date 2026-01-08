@@ -41,6 +41,7 @@ public class BudgetForm extends javax.swing.JDialog {
                 lblBudgetID,
                 txtBudgetName,
                 txtTotalAmount,
+                txtSource,
                 DailyBudgetScreen.dailyBudgetTable,
                 this.selectedRow,
                 this
@@ -71,13 +72,11 @@ public class BudgetForm extends javax.swing.JDialog {
         this.selectedRow = selectedRow;
         btnSave.setEnabled(false);
 
-        budgetController.onTableClick(
-                budgetID,
+        budgetController.onTableClick(budgetID,
                 lblBudgetID,
                 txtBudgetName,
                 txtTotalAmount,
-                txtAmountUsed,
-                txtAmountLeft
+                txtSource
         );
 
     }
@@ -86,8 +85,7 @@ public class BudgetForm extends javax.swing.JDialog {
         lblBudgetID.setText("");
         txtBudgetName.setText("");
         txtTotalAmount.setText("");
-        txtAmountUsed.setText("0");
-        txtAmountLeft.setText("0");
+        txtSource.setText("");
     }
 
     /**
@@ -104,9 +102,7 @@ public class BudgetForm extends javax.swing.JDialog {
         jLabel4 = new javax.swing.JLabel();
         txtTotalAmount = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        txtAmountUsed = new javax.swing.JTextField();
-        jLabel6 = new javax.swing.JLabel();
-        txtAmountLeft = new javax.swing.JTextField();
+        txtSource = new javax.swing.JTextField();
         btnSave = new javax.swing.JButton();
         lblBudgetID = new javax.swing.JLabel();
 
@@ -131,18 +127,9 @@ public class BudgetForm extends javax.swing.JDialog {
         });
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel5.setText("Amount Used");
+        jLabel5.setText("Source of fund");
 
-        txtAmountUsed.setEditable(false);
-        txtAmountUsed.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        txtAmountUsed.setText("0");
-
-        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel6.setText("Amount Left");
-
-        txtAmountLeft.setEditable(false);
-        txtAmountLeft.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        txtAmountLeft.setText("0");
+        txtSource.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
 
         btnSave.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/save.png"))); // NOI18N
@@ -165,9 +152,7 @@ public class BudgetForm extends javax.swing.JDialog {
                     .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 421, Short.MAX_VALUE)
                     .addComponent(txtTotalAmount)
                     .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtAmountUsed)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtAmountLeft)
+                    .addComponent(txtSource)
                     .addComponent(btnSave, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lblBudgetID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -186,11 +171,7 @@ public class BudgetForm extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(txtAmountUsed, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel6)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(txtAmountLeft, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtSource, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(lblBudgetID, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -262,11 +243,9 @@ public class BudgetForm extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel lblBudgetID;
-    private javax.swing.JTextField txtAmountLeft;
-    private javax.swing.JTextField txtAmountUsed;
     private javax.swing.JTextField txtBudgetName;
+    private javax.swing.JTextField txtSource;
     private javax.swing.JTextField txtTotalAmount;
     // End of variables declaration//GEN-END:variables
 }
