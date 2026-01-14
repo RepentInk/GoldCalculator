@@ -36,7 +36,9 @@ public class DailyReportRepository {
                     + "SUM(" + BuyGoldDTO.getDOWN() + ") AS down, "
                     + "SUM(" + BuyGoldDTO.getDENSITY() + ") AS density, "
                     + "SUM(" + BuyGoldDTO.getKARAT() + ") AS karat, "
-                    + "SUM(" + BuyGoldDTO.getPOUNDS() + ") AS pounds "
+                    + "SUM(" + BuyGoldDTO.getPOUNDS() + ") AS pounds, "
+                    + "SUM(" + BuyGoldDTO.getTOTAL_WEIGHT() + ") AS weight, "
+                    + "SUM(" + BuyGoldDTO.getTOTAL_AMOUNT() + ") AS total_amount "
                     + "FROM " + BuyGoldDTO.getBUY_GOLD_DB() + " WHERE "
                     + "strftime('%m'," + BuyGoldDTO.getRAW_DATE() + ")='" + month + "' AND strftime('%Y'," + BuyGoldDTO.getRAW_DATE() + ")='" + year + "' GROUP BY day ORDER BY day DESC";
             pst = conn.prepareStatement(query);
@@ -52,6 +54,53 @@ public class DailyReportRepository {
                 daily.setDensity(rs.getDouble("density"));
                 daily.setKarat(rs.getDouble("karat"));
                 daily.setPounds(rs.getDouble("pounds"));
+                daily.setWeight(rs.getDouble("weight"));
+                daily.setTotalAmount(rs.getDouble("total_amount"));
+                dailyList.add(daily);
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
+        } finally {
+            try {
+                rs.close();
+                pst.close();
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, e);
+            }
+        }
+
+        return dailyList;
+    }
+    
+     public List<Daily> dailyPurchases(String currentDate) {
+        List<Daily> dailyList = new ArrayList<>();
+        try {
+            String query = "SELECT id," + BuyGoldDTO.getRAW_DATE() + " AS day, "
+                    + "SUM(" + BuyGoldDTO.getTOTAL_AMOUNT() + ") AS total, "
+                    + "SUM(" + BuyGoldDTO.getTOP() + ") AS top, "
+                    + "SUM(" + BuyGoldDTO.getDOWN() + ") AS down, "
+                    + "SUM(" + BuyGoldDTO.getDENSITY() + ") AS density, "
+                    + "SUM(" + BuyGoldDTO.getKARAT() + ") AS karat, "
+                    + "SUM(" + BuyGoldDTO.getPOUNDS() + ") AS pounds, "
+                    + "SUM(" + BuyGoldDTO.getTOTAL_WEIGHT() + ") AS weight, "
+                    + "SUM(" + BuyGoldDTO.getTOTAL_AMOUNT() + ") AS total_amount "
+                    + "FROM " + BuyGoldDTO.getBUY_GOLD_DB() + " WHERE " + BuyGoldDTO.getRAW_DATE() + "='" + currentDate + "' GROUP BY day ORDER BY day DESC";
+            pst = conn.prepareStatement(query);
+            rs = pst.executeQuery();
+
+            while (rs.next()) {
+                Daily daily = new Daily();
+
+                daily.setDay(rs.getString("day"));
+                daily.setTotal(rs.getDouble("total"));
+                daily.setTop(rs.getDouble("top"));
+                daily.setDown(rs.getDouble("down"));
+                daily.setDensity(rs.getDouble("density"));
+                daily.setKarat(rs.getDouble("karat"));
+                daily.setPounds(rs.getDouble("pounds"));
+                daily.setWeight(rs.getDouble("weight"));
+                daily.setTotalAmount(rs.getDouble("total_amount"));
                 dailyList.add(daily);
             }
 

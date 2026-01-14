@@ -4,6 +4,7 @@ import ModelDTO.BuyGoldDTO;
 import ModelDTO.CustomerDTO;
 import ModelDTO.PaymentDTO;
 import ModelDTO.UserDTO;
+import Models.BuyGold;
 import Models.Receipt;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -54,6 +55,19 @@ public class Report {
         return query;
     }
 
+    public String getSingleBuyGolds(String startDate, String endDate) {
+        String query = "SELECT SUM(" + BuyGoldDTO.getTOP() + ") AS top, "
+                + "SUM(" + BuyGoldDTO.getDOWN() + ") AS down, "
+                + "SUM(" + BuyGoldDTO.getDENSITY() + ") AS density, "
+                + "SUM(" + BuyGoldDTO.getKARAT() + ") AS karat, "
+                + "SUM(" + BuyGoldDTO.getPOUNDS() + ") AS pounds, "
+                + "SUM(" + BuyGoldDTO.getTOTAL_WEIGHT() + ") AS totalWeight, "
+                + "SUM(" + BuyGoldDTO.getTOTAL_AMOUNT() + ") AS totalAmount "
+                + " FROM " + BuyGoldDTO.getBUY_GOLD_DB() + " WHERE " + BuyGoldDTO.getRAW_DATE() + " >= '" + startDate + "' AND " + BuyGoldDTO.getRAW_DATE() + " <= '" + endDate + "'";
+
+        return query;
+    }
+
     public void paymentReceiptPrint(String sql, Receipt receipt) {
         try {
             InputStream url = getClass().getResourceAsStream("/Report_80/Receipt.jrxml");
@@ -78,6 +92,34 @@ public class Report {
             JasperViewer jasperReport = new JasperViewer(print, false);
             jasperReport.setSize(600, 600);
             jasperReport.setTitle("Payment Receipt Preview");
+            jasperReport.setLocationRelativeTo(null);
+            jasperReport.setVisible(true);
+
+        } catch (JRException e) {
+            e.getLocalizedMessage();
+        }
+    }
+
+    public void printGoldCalculation(String sql, BuyGold buyGold, String title) {
+        try {
+            InputStream url = getClass().getResourceAsStream("/Report_80/GoldReceipt.jrxml");
+            JasperDesign reportDesign = JRXmlLoader.load(url);
+            JRDesignQuery newQuery = new JRDesignQuery();
+            newQuery.setText(sql);
+            reportDesign.setQuery(newQuery);
+
+            HashMap<String, Object> para = new HashMap<>();
+            para.put("name", ShopData.getName());
+            para.put("location", ShopData.getLocation());
+            para.put("contacts", ShopData.getContacts());
+            para.put("title", title);
+            para.put("totalAmount", helper.priceToString(buyGold.getTotal_amount()));
+
+            JasperReport report = JasperCompileManager.compileReport(reportDesign);
+            JasperPrint print = JasperFillManager.fillReport(report, para, conn);
+            JasperViewer jasperReport = new JasperViewer(print, false);
+            jasperReport.setSize(600, 600);
+            jasperReport.setTitle("Gold Summation Report Preview");
             jasperReport.setLocationRelativeTo(null);
             jasperReport.setVisible(true);
 

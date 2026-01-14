@@ -26,10 +26,10 @@ public class ActionsColumns {
                 column = new int[]{9, 10};
                 break;
             case Monthly:
-                column = new int[]{10};
+                column = new int[]{9};
                 break;
             case Yearly:
-                column = new int[]{9};
+                column = new int[]{8};
                 break;
             case Credit:
                 column = new int[]{9, 10};

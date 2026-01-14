@@ -36,8 +36,9 @@ public class YearlyReportRepository {
                     + "SUM(" + BuyGoldDTO.getDOWN() + ") AS down, "
                     + "SUM(" + BuyGoldDTO.getDENSITY() + ") AS density, "
                     + "SUM(" + BuyGoldDTO.getKARAT() + ") AS karat, "
-                    + "SUM(" + BuyGoldDTO.getPOUNDS() + ") AS pounds, "
-                    + "SUM(" + BuyGoldDTO.getTOTAL_AMOUNT() + ") AS total FROM " + BuyGoldDTO.getBUY_GOLD_DB() + " GROUP BY year ORDER BY year DESC";
+                    + "SUM(" + BuyGoldDTO.getPOUNDS() + ") AS pounds,"
+                    + "SUM(" + BuyGoldDTO.getTOTAL_WEIGHT() + ") AS weight, "
+                    + "SUM(" + BuyGoldDTO.getTOTAL_AMOUNT() + ") AS total_amount FROM " + BuyGoldDTO.getBUY_GOLD_DB() + " GROUP BY year ORDER BY year DESC";
             pst = conn.prepareStatement(sql);
             rs = pst.executeQuery();
 
@@ -51,6 +52,8 @@ public class YearlyReportRepository {
                 yearly.setDensity(rs.getDouble("density"));
                 yearly.setKarat(rs.getDouble("karat"));
                 yearly.setPounds(rs.getDouble("pounds"));
+                yearly.setWeight(rs.getDouble("weight"));
+                yearly.setTotalAmount(rs.getDouble("total_amount"));
                 yearlyList.add(yearly);
             }
         } catch (SQLException e) {

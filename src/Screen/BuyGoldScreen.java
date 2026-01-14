@@ -129,7 +129,6 @@ public class BuyGoldScreen extends javax.swing.JPanel {
             lblEndDate.setVisible(false);
             startDate.setVisible(false);
             lblStartDate.setVisible(false);
-
             startDate.setCalendar(null);
         }
     }
@@ -185,10 +184,14 @@ public class BuyGoldScreen extends javax.swing.JPanel {
             }
         });
 
+        txtTotalBought.setEditable(false);
         txtTotalBought.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        txtTotalBought.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtTotalBought.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        txtTotalBought.setFocusable(false);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        jLabel1.setText("Total Bought:");
+        jLabel1.setText("Total GH₵:");
 
         javax.swing.GroupLayout jPanel30Layout = new javax.swing.GroupLayout(jPanel30);
         jPanel30.setLayout(jPanel30Layout);
@@ -235,7 +238,7 @@ public class BuyGoldScreen extends javax.swing.JPanel {
         });
 
         lblEndDate.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        lblEndDate.setText("End Date:");
+        lblEndDate.setText("Current Date:");
 
         lblStartDate.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblStartDate.setText("Start Date:");
@@ -248,7 +251,11 @@ public class BuyGoldScreen extends javax.swing.JPanel {
             }
         });
 
-        dateCurrentDate.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        startDate.setDateFormatString("yyyy-MM-dd");
+        startDate.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+
+        dateCurrentDate.setDateFormatString("yyyy-MM-dd");
+        dateCurrentDate.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
 
         javax.swing.GroupLayout jPanel37Layout = new javax.swing.GroupLayout(jPanel37);
         jPanel37.setLayout(jPanel37Layout);
@@ -263,13 +270,13 @@ public class BuyGoldScreen extends javax.swing.JPanel {
                 .addComponent(btnRefresh1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(filterCheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
-                .addComponent(lblStartDate, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(startDate, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblEndDate, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addComponent(lblStartDate, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(startDate, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lblEndDate, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(4, 4, 4)
                 .addComponent(dateCurrentDate, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );

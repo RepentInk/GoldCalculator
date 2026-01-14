@@ -22,11 +22,8 @@ import javax.swing.table.DefaultTableModel;
 public class PaymentController {
 
     BuyGoldController buyGoldController = new BuyGoldController();
-    BudgetController budgetController = new BudgetController();
-    HelperFunctions helper = new HelperFunctions();
     PaymentsRepository paymentsRepository = new PaymentsRepository();
-
-    ReportController reportController = new ReportController();
+    HelperFunctions helper = new HelperFunctions();
 
     public void populateTable(JTable table, String startDate, String endDate) {
         if (endDate.equals("")) {
@@ -151,15 +148,6 @@ public class PaymentController {
         totalAmount.setText(helper.priceToString(buyGold.getTotal_amount()));
         amountPaid.setText(helper.priceToString(total_payment));
         amountRemains.setText(helper.priceToString(amount_remains));
-    }
-
-    public void setBudgetDetails(
-            String budget_selected,
-            JTextField amountBeforePayment
-    ) {
-        Budget budget = budgetController.getSingleBudget(budget_selected);
-        double budget_used = reportController.budgetUsedAll(budget.getId());
-        amountBeforePayment.setText(helper.priceToString(budget.getTotal_amount() - budget_used));
     }
 
     private void populateAfterSaving(JTable table, int payment_id) {

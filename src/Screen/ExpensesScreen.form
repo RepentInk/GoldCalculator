@@ -54,6 +54,10 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jLabel5" min="-2" pref="247" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
+                  <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="txtTotalExpenses" min="-2" pref="184" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
                   <Component id="btn_addExpenses" min="-2" pref="120" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -66,6 +70,8 @@
                   <Component id="jLabel5" max="32767" attributes="0"/>
               </Group>
               <Component id="btn_addExpenses" alignment="0" pref="45" max="32767" attributes="0"/>
+              <Component id="txtTotalExpenses" alignment="0" max="32767" attributes="0"/>
+              <Component id="jLabel1" alignment="0" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
       </Layout>
@@ -95,6 +101,24 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_addExpensesActionPerformed"/>
           </Events>
         </Component>
+        <Component class="javax.swing.JTextField" name="txtTotalExpenses">
+          <Properties>
+            <Property name="editable" type="boolean" value="false"/>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="20" style="1"/>
+            </Property>
+            <Property name="horizontalAlignment" type="int" value="0"/>
+            <Property name="focusable" type="boolean" value="false"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel1">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="18" style="1"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Total GH&#x20b5;:"/>
+          </Properties>
+        </Component>
       </SubComponents>
     </Container>
     <Container class="javax.swing.JPanel" name="jPanel37">
@@ -118,12 +142,12 @@
                   <Component id="btnRefresh" min="-2" pref="33" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="filterCheckBox" max="32767" attributes="0"/>
-                  <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="lblStartDate" min="-2" pref="62" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="startDate" min="-2" pref="161" max="-2" attributes="0"/>
+                  <Component id="startDate" min="-2" pref="157" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="lblEndDate" min="-2" pref="54" max="-2" attributes="0"/>
+                  <Component id="lblEndDate" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="dateCurrentDate" min="-2" pref="141" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
@@ -132,25 +156,24 @@
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" attributes="0">
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                          <Component id="lbl_SearchIcon" alignment="0" max="32767" attributes="0"/>
-                          <Component id="txtSearch" alignment="0" max="32767" attributes="0"/>
-                          <Component id="btnRefresh" alignment="0" max="32767" attributes="0"/>
-                          <Component id="dateCurrentDate" alignment="1" max="32767" attributes="0"/>
-                      </Group>
-                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                          <Component id="lblEndDate" alignment="1" max="32767" attributes="0"/>
-                          <Component id="startDate" alignment="1" max="32767" attributes="0"/>
-                          <Component id="filterCheckBox" alignment="1" min="-2" pref="31" max="-2" attributes="0"/>
+              <Group type="102" alignment="0" attributes="0">
+                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                      <Component id="lblStartDate" alignment="0" max="32767" attributes="0"/>
+                      <Component id="startDate" alignment="0" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                              <Component id="lbl_SearchIcon" alignment="0" max="32767" attributes="0"/>
+                              <Component id="txtSearch" alignment="0" max="32767" attributes="0"/>
+                              <Component id="btnRefresh" alignment="0" max="32767" attributes="0"/>
+                              <Component id="dateCurrentDate" alignment="1" max="32767" attributes="0"/>
+                          </Group>
+                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                              <Component id="lblEndDate" alignment="1" max="32767" attributes="0"/>
+                              <Component id="filterCheckBox" alignment="0" pref="31" max="32767" attributes="0"/>
+                          </Group>
                       </Group>
                   </Group>
                   <EmptySpace min="0" pref="7" max="32767" attributes="0"/>
-              </Group>
-              <Group type="102" alignment="1" attributes="0">
-                  <Component id="lblStartDate" max="32767" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -224,7 +247,7 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Segoe UI" size="12" style="1"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="End Date:"/>
+            <Property name="text" type="java.lang.String" value="Current Date:"/>
           </Properties>
         </Component>
       </SubComponents>

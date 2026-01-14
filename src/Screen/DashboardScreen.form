@@ -56,7 +56,7 @@
       <Properties>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-            <TitledBorder title="Statistics">
+            <TitledBorder title="Statistics on gold purchases">
               <Font PropertyName="font" name="Segoe UI" size="15" style="1"/>
             </TitledBorder>
           </Border>
@@ -68,11 +68,107 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
       <SubComponents>
+        <Container class="javax.swing.JPanel" name="jPanel11">
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
+              <JTabbedPaneConstraints tabName="Daily">
+                <Property name="tabTitle" type="java.lang.String" value="Daily"/>
+              </JTabbedPaneConstraints>
+            </Constraint>
+          </Constraints>
+
+          <Layout>
+            <DimensionLayout dim="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="jScrollPane3" alignment="0" pref="917" max="32767" attributes="0"/>
+              </Group>
+            </DimensionLayout>
+            <DimensionLayout dim="1">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="jScrollPane3" alignment="1" pref="357" max="32767" attributes="0"/>
+              </Group>
+            </DimensionLayout>
+          </Layout>
+          <SubComponents>
+            <Container class="javax.swing.JScrollPane" name="jScrollPane3">
+              <AuxValues>
+                <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+              </AuxValues>
+
+              <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+              <SubComponents>
+                <Component class="javax.swing.JTable" name="dailyGoldBuying">
+                  <Properties>
+                    <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
+                      <Table columnCount="8" rowCount="4">
+                        <Column editable="false" title="Day" type="java.lang.String"/>
+                        <Column editable="false" title="Top" type="java.lang.Double"/>
+                        <Column editable="false" title="Down" type="java.lang.Double"/>
+                        <Column editable="false" title="Density" type="java.lang.Double"/>
+                        <Column editable="false" title="Karat" type="java.lang.Double"/>
+                        <Column editable="false" title="Pounds" type="java.lang.Double"/>
+                        <Column editable="false" title="Weight" type="java.lang.Double"/>
+                        <Column editable="false" title="Amount" type="java.lang.Double"/>
+                      </Table>
+                    </Property>
+                    <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
+                      <TableColumnModel selectionModel="0">
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                          <Title/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                          <Title/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                          <Title/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                          <Title/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                          <Title/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                          <Title/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                          <Title/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                          <Title/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
+                      </TableColumnModel>
+                    </Property>
+                    <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
+                      <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
+                    </Property>
+                  </Properties>
+                </Component>
+              </SubComponents>
+            </Container>
+          </SubComponents>
+        </Container>
         <Container class="javax.swing.JPanel" name="jPanel4">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Monthly Purchases">
-                <Property name="tabTitle" type="java.lang.String" value="Monthly Purchases"/>
+              <JTabbedPaneConstraints tabName="Monthly">
+                <Property name="tabTitle" type="java.lang.String" value="Monthly"/>
               </JTabbedPaneConstraints>
             </Constraint>
           </Constraints>
@@ -100,7 +196,7 @@
                 <Component class="javax.swing.JTable" name="monthlyGoldBuying">
                   <Properties>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                      <Table columnCount="11" rowCount="4">
+                      <Table columnCount="10" rowCount="4">
                         <Column editable="false" title="Month" type="java.lang.Integer"/>
                         <Column editable="false" title="Month Name" type="java.lang.String"/>
                         <Column editable="false" title="Top" type="java.lang.Double"/>
@@ -108,9 +204,8 @@
                         <Column editable="false" title="Density" type="java.lang.Double"/>
                         <Column editable="false" title="Karat" type="java.lang.Double"/>
                         <Column editable="false" title="Pounds" type="java.lang.Double"/>
-                        <Column editable="false" title="T. Amount" type="java.lang.Double"/>
-                        <Column editable="false" title="T. Payments" type="java.lang.Double"/>
-                        <Column editable="false" title="Balance" type="java.lang.Double"/>
+                        <Column editable="false" title="Weight" type="java.lang.Double"/>
+                        <Column editable="false" title="Amount" type="java.lang.Double"/>
                         <Column editable="false" title="" type="java.lang.Object"/>
                       </Table>
                     </Property>
@@ -161,13 +256,8 @@
                           <Editor/>
                           <Renderer/>
                         </Column>
-                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                          <Title/>
-                          <Editor/>
-                          <Renderer/>
-                        </Column>
                         <Column maxWidth="70" minWidth="70" prefWidth="-1" resizable="true">
-                          <Title/>
+                          <Title value=""/>
                           <Editor/>
                           <Renderer/>
                         </Column>
@@ -188,8 +278,8 @@
         <Container class="javax.swing.JPanel" name="jPanel5">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Yearly Purchases">
-                <Property name="tabTitle" type="java.lang.String" value="Yearly Purchases"/>
+              <JTabbedPaneConstraints tabName="Yearly">
+                <Property name="tabTitle" type="java.lang.String" value="Yearly"/>
               </JTabbedPaneConstraints>
             </Constraint>
           </Constraints>
@@ -217,27 +307,21 @@
                 <Component class="javax.swing.JTable" name="yearlyGoldBuying">
                   <Properties>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                      <Table columnCount="10" rowCount="4">
+                      <Table columnCount="9" rowCount="4">
                         <Column editable="false" title="Year" type="java.lang.Integer"/>
                         <Column editable="false" title="Top" type="java.lang.Double"/>
                         <Column editable="false" title="Down" type="java.lang.Double"/>
                         <Column editable="false" title="Density" type="java.lang.Double"/>
                         <Column editable="false" title="Karat" type="java.lang.Double"/>
                         <Column editable="false" title="Pounds" type="java.lang.Double"/>
-                        <Column editable="false" title="Total" type="java.lang.Double"/>
-                        <Column editable="false" title="T. Payments" type="java.lang.Double"/>
-                        <Column editable="false" title="Balance" type="java.lang.Double"/>
+                        <Column editable="false" title="Weight" type="java.lang.Double"/>
+                        <Column editable="false" title="Amount" type="java.lang.Double"/>
                         <Column editable="false" title="" type="java.lang.Object"/>
                       </Table>
                     </Property>
                     <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                       <TableColumnModel selectionModel="0">
                         <Column maxWidth="70" minWidth="70" prefWidth="-1" resizable="true">
-                          <Title/>
-                          <Editor/>
-                          <Renderer/>
-                        </Column>
-                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                           <Title/>
                           <Editor/>
                           <Renderer/>
@@ -295,50 +379,6 @@
               </SubComponents>
             </Container>
           </SubComponents>
-        </Container>
-        <Container class="javax.swing.JPanel" name="jPanel11">
-          <Constraints>
-            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Daily Gold">
-                <Property name="tabTitle" type="java.lang.String" value="Daily Gold"/>
-              </JTabbedPaneConstraints>
-            </Constraint>
-          </Constraints>
-
-          <Layout>
-            <DimensionLayout dim="0">
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="917" max="32767" attributes="0"/>
-              </Group>
-            </DimensionLayout>
-            <DimensionLayout dim="1">
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="357" max="32767" attributes="0"/>
-              </Group>
-            </DimensionLayout>
-          </Layout>
-        </Container>
-        <Container class="javax.swing.JPanel" name="jPanel12">
-          <Constraints>
-            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Monthly Gold">
-                <Property name="tabTitle" type="java.lang.String" value="Monthly Gold"/>
-              </JTabbedPaneConstraints>
-            </Constraint>
-          </Constraints>
-
-          <Layout>
-            <DimensionLayout dim="0">
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="917" max="32767" attributes="0"/>
-              </Group>
-            </DimensionLayout>
-            <DimensionLayout dim="1">
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="357" max="32767" attributes="0"/>
-              </Group>
-            </DimensionLayout>
-          </Layout>
         </Container>
       </SubComponents>
     </Container>

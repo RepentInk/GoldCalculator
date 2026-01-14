@@ -40,11 +40,15 @@ public class CreditScreen extends javax.swing.JPanel {
         lblEndDate.setVisible(false);
         startDate.setVisible(false);
         lblStartDate.setVisible(false);
+
+        this.sumUpTotalAmount();
     }
 
     private void addForm() {
         CreditForm creditForm = new CreditForm(new Dashboard(), true);
         creditForm.setVisible(true);
+
+        this.sumUpTotalAmount();
     }
 
     private void populateData(String startDate, String endDate) {
@@ -68,6 +72,7 @@ public class CreditScreen extends javax.swing.JPanel {
 
     private void refresh() {
         this.populateData("", helper.returnDate());
+        this.sumUpTotalAmount();
     }
 
     private void onTableClicked() {
@@ -92,7 +97,7 @@ public class CreditScreen extends javax.swing.JPanel {
         } else if (creditTable.getSelectedColumn() == columns[2]) {
             JLabel label = new JLabel("Are you sure you want to close this creditter?.");
             label.setFont(new Font("serif", Font.BOLD, 16));
-            int ask = JOptionPane.showConfirmDialog(null, label, "CLOSE DAILY BUDGET", JOptionPane.OK_OPTION);
+            int ask = JOptionPane.showConfirmDialog(null, label, "CLOSE CREDIT", JOptionPane.OK_OPTION);
             if (ask == 0) {
                 creditController.changeStatus(table_id, 1, creditTable, creditTable.getSelectedRow());
             }
@@ -110,6 +115,7 @@ public class CreditScreen extends javax.swing.JPanel {
                 return;
             }
             this.populateData(startDateValue, endDate);
+            this.sumUpTotalAmount();
         });
 
         startDate.addPropertyChangeListener((PropertyChangeEvent evt) -> {
@@ -119,6 +125,7 @@ public class CreditScreen extends javax.swing.JPanel {
                 return;
             }
             this.populateData(startDateValue, endDate);
+            this.sumUpTotalAmount();
         });
     }
 
@@ -136,6 +143,11 @@ public class CreditScreen extends javax.swing.JPanel {
         }
     }
 
+    private void sumUpTotalAmount() {
+        double total = helper.summationOfTableColumnReturnDouble(creditTable, 3);
+        txtTotalCredit.setText(helper.priceToString(total));
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -148,6 +160,8 @@ public class CreditScreen extends javax.swing.JPanel {
         jPanel30 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         btn_addCredit = new javax.swing.JButton();
+        txtTotalCredit = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
         jPanel37 = new javax.swing.JPanel();
         txtSearch = new javax.swing.JTextField();
         lbl_SearchIcon = new javax.swing.JLabel();
@@ -178,6 +192,14 @@ public class CreditScreen extends javax.swing.JPanel {
             }
         });
 
+        txtTotalCredit.setEditable(false);
+        txtTotalCredit.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        txtTotalCredit.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtTotalCredit.setFocusable(false);
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel1.setText("Total Amount GH₵:");
+
         javax.swing.GroupLayout jPanel30Layout = new javax.swing.GroupLayout(jPanel30);
         jPanel30.setLayout(jPanel30Layout);
         jPanel30Layout.setHorizontalGroup(
@@ -185,7 +207,11 @@ public class CreditScreen extends javax.swing.JPanel {
             .addGroup(jPanel30Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 546, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtTotalCredit, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btn_addCredit, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -195,6 +221,8 @@ public class CreditScreen extends javax.swing.JPanel {
                 .addGap(2, 2, 2)
                 .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addComponent(btn_addCredit, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
+            .addComponent(txtTotalCredit)
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         jPanel37.setBorder(javax.swing.BorderFactory.createTitledBorder("Search"));
@@ -234,7 +262,7 @@ public class CreditScreen extends javax.swing.JPanel {
         startDate.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
 
         lblEndDate.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        lblEndDate.setText("End Date:");
+        lblEndDate.setText("Current Date:");
 
         javax.swing.GroupLayout jPanel37Layout = new javax.swing.GroupLayout(jPanel37);
         jPanel37.setLayout(jPanel37Layout);
@@ -249,12 +277,12 @@ public class CreditScreen extends javax.swing.JPanel {
                 .addComponent(btnRefresh, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(filterCheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE)
-                .addGap(60, 60, 60)
+                .addGap(31, 31, 31)
                 .addComponent(lblStartDate, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(startDate, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblEndDate, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lblEndDate, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(dateCurrentDate, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -271,9 +299,8 @@ public class CreditScreen extends javax.swing.JPanel {
                     .addGroup(jPanel37Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addComponent(lblEndDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(startDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel37Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblStartDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(filterCheckBox, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(filterCheckBox, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblStartDate, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGap(0, 7, Short.MAX_VALUE))
         );
 
@@ -397,6 +424,7 @@ public class CreditScreen extends javax.swing.JPanel {
     public static javax.swing.JTable creditTable;
     private com.toedter.calendar.JDateChooser dateCurrentDate;
     private javax.swing.JCheckBox filterCheckBox;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel30;
@@ -408,5 +436,6 @@ public class CreditScreen extends javax.swing.JPanel {
     private javax.swing.JLabel lbl_SearchIcon;
     private com.toedter.calendar.JDateChooser startDate;
     private javax.swing.JTextField txtSearch;
+    private javax.swing.JTextField txtTotalCredit;
     // End of variables declaration//GEN-END:variables
 }

@@ -35,11 +35,15 @@ public class ExpensesScreen extends javax.swing.JPanel {
         lblEndDate.setVisible(false);
         startDate.setVisible(false);
         lblStartDate.setVisible(false);
+
+        this.sumUpTotalAmount();
     }
 
     private void addForm() {
         ExpensesForm expensesForm = new ExpensesForm(new Dashboard(), true);
         expensesForm.setVisible(true);
+        
+         this.sumUpTotalAmount();
     }
 
     private void populateData(String startDate, String endDate) {
@@ -55,6 +59,7 @@ public class ExpensesScreen extends javax.swing.JPanel {
     private void searchTable(String searchItem) {
         helper.searchItem(expensesTable, searchItem, searchTableVector);
         this.countRow();
+        this.sumUpTotalAmount();
     }
 
     public void onTableClicked() {
@@ -73,6 +78,7 @@ public class ExpensesScreen extends javax.swing.JPanel {
 
     private void refresh() {
         this.populateData("", helper.returnDate());
+        this.sumUpTotalAmount();
     }
 
     private void countRow() {
@@ -87,6 +93,7 @@ public class ExpensesScreen extends javax.swing.JPanel {
                 return;
             }
             this.populateData(startDateValue, endDate);
+            this.sumUpTotalAmount();
         });
 
         startDate.addPropertyChangeListener((PropertyChangeEvent evt) -> {
@@ -96,6 +103,7 @@ public class ExpensesScreen extends javax.swing.JPanel {
                 return;
             }
             this.populateData(startDateValue, endDate);
+            this.sumUpTotalAmount();
         });
     }
 
@@ -113,6 +121,12 @@ public class ExpensesScreen extends javax.swing.JPanel {
         }
     }
 
+    private void sumUpTotalAmount() {
+        double total = helper.summationOfTableColumnReturnDouble(expensesTable, 2);
+
+        txtTotalExpenses.setText(helper.priceToString(total));
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -125,6 +139,8 @@ public class ExpensesScreen extends javax.swing.JPanel {
         jPanel30 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         btn_addExpenses = new javax.swing.JButton();
+        txtTotalExpenses = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
         jPanel37 = new javax.swing.JPanel();
         txtSearch = new javax.swing.JTextField();
         lbl_SearchIcon = new javax.swing.JLabel();
@@ -155,6 +171,14 @@ public class ExpensesScreen extends javax.swing.JPanel {
             }
         });
 
+        txtTotalExpenses.setEditable(false);
+        txtTotalExpenses.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        txtTotalExpenses.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtTotalExpenses.setFocusable(false);
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel1.setText("Total GH₵:");
+
         javax.swing.GroupLayout jPanel30Layout = new javax.swing.GroupLayout(jPanel30);
         jPanel30.setLayout(jPanel30Layout);
         jPanel30Layout.setHorizontalGroup(
@@ -163,6 +187,10 @@ public class ExpensesScreen extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtTotalExpenses, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btn_addExpenses, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -172,6 +200,8 @@ public class ExpensesScreen extends javax.swing.JPanel {
                 .addGap(2, 2, 2)
                 .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addComponent(btn_addExpenses, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
+            .addComponent(txtTotalExpenses)
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         jPanel37.setBorder(javax.swing.BorderFactory.createTitledBorder("Search"));
@@ -211,7 +241,7 @@ public class ExpensesScreen extends javax.swing.JPanel {
         startDate.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
 
         lblEndDate.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        lblEndDate.setText("End Date:");
+        lblEndDate.setText("Current Date:");
 
         javax.swing.GroupLayout jPanel37Layout = new javax.swing.GroupLayout(jPanel37);
         jPanel37.setLayout(jPanel37Layout);
@@ -226,12 +256,12 @@ public class ExpensesScreen extends javax.swing.JPanel {
                 .addComponent(btnRefresh, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(filterCheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(36, 36, 36)
+                .addGap(18, 18, 18)
                 .addComponent(lblStartDate, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(startDate, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(startDate, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblEndDate, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblEndDate)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(dateCurrentDate, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -239,20 +269,19 @@ public class ExpensesScreen extends javax.swing.JPanel {
         jPanel37Layout.setVerticalGroup(
             jPanel37Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel37Layout.createSequentialGroup()
-                .addGroup(jPanel37Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel37Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(lbl_SearchIcon, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(txtSearch, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(btnRefresh, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(dateCurrentDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel37Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(lblEndDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(startDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(filterCheckBox, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(jPanel37Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(lblStartDate, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(startDate, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel37Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel37Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(lbl_SearchIcon, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtSearch, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnRefresh, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(dateCurrentDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(jPanel37Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(lblEndDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(filterCheckBox, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE))))
                 .addGap(0, 7, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel37Layout.createSequentialGroup()
-                .addComponent(lblStartDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
         );
 
         expensesTable.setModel(new javax.swing.table.DefaultTableModel(
@@ -369,6 +398,7 @@ public class ExpensesScreen extends javax.swing.JPanel {
     public static javax.swing.JLabel expensesRowCount;
     public static javax.swing.JTable expensesTable;
     private javax.swing.JCheckBox filterCheckBox;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel30;
@@ -380,5 +410,6 @@ public class ExpensesScreen extends javax.swing.JPanel {
     private javax.swing.JLabel lbl_SearchIcon;
     private com.toedter.calendar.JDateChooser startDate;
     private javax.swing.JTextField txtSearch;
+    private javax.swing.JTextField txtTotalExpenses;
     // End of variables declaration//GEN-END:variables
 }

@@ -67,25 +67,19 @@
             <Component class="javax.swing.JTable" name="dailyGoldBuyingTable">
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                  <Table columnCount="9" rowCount="4">
+                  <Table columnCount="8" rowCount="4">
                     <Column editable="false" title="Day" type="java.lang.String"/>
                     <Column editable="false" title="Top" type="java.lang.Double"/>
                     <Column editable="false" title="Down" type="java.lang.Double"/>
                     <Column editable="false" title="Density" type="java.lang.Double"/>
                     <Column editable="false" title="Karat" type="java.lang.Double"/>
                     <Column editable="false" title="Pounds" type="java.lang.Double"/>
+                    <Column editable="false" title="Weight" type="java.lang.Double"/>
                     <Column editable="false" title="Amount" type="java.lang.Double"/>
-                    <Column editable="false" title="Payment" type="java.lang.Double"/>
-                    <Column editable="false" title="Balance" type="java.lang.Double"/>
                   </Table>
                 </Property>
                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                   <TableColumnModel selectionModel="0">
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                      <Title/>
-                      <Editor/>
-                      <Renderer/>
-                    </Column>
                     <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                       <Title/>
                       <Editor/>

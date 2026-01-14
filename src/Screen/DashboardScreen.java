@@ -30,6 +30,7 @@ public class DashboardScreen extends javax.swing.JPanel {
         txtCurrentDate.setDate(helper.convertChooserDate(helper.returnDate()));
         this.populateMonthlyData();
         this.populateYearlyData();
+        this.populateDataDaily();
         this.onDateChooserAction();
     }
 
@@ -85,6 +86,11 @@ public class DashboardScreen extends javax.swing.JPanel {
         new AddButton().addBtnItemsTable(yearlyGoldBuying, ActionsColumns.tableActionColumn(ModelType.Yearly));
     }
 
+    private void populateDataDaily() {
+        dashboardController.populateDailyPerDayTable(dailyGoldBuying, helper.returnDate());
+        helper.TableColor(dailyGoldBuying);
+    }
+
     private void onMonthlyTableClicked() {
         int[] columns = ActionsColumns.tableActionColumn(ModelType.Monthly);
         String tableID = monthlyGoldBuying.getModel().getValueAt(monthlyGoldBuying.getSelectedRow(), 0).toString();
@@ -118,14 +124,15 @@ public class DashboardScreen extends javax.swing.JPanel {
 
         jDialog1 = new javax.swing.JDialog();
         jTabbedPane1 = new javax.swing.JTabbedPane();
+        jPanel11 = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        dailyGoldBuying = new javax.swing.JTable();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         monthlyGoldBuying = new javax.swing.JTable();
         jPanel5 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         yearlyGoldBuying = new javax.swing.JTable();
-        jPanel11 = new javax.swing.JPanel();
-        jPanel12 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -163,25 +170,66 @@ public class DashboardScreen extends javax.swing.JPanel {
             .addGap(0, 300, Short.MAX_VALUE)
         );
 
-        jTabbedPane1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Statistics", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 15))); // NOI18N
+        jTabbedPane1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Statistics on gold purchases", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 15))); // NOI18N
         jTabbedPane1.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
 
-        monthlyGoldBuying.setModel(new javax.swing.table.DefaultTableModel(
+        dailyGoldBuying.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Month", "Month Name", "Top", "Down", "Density", "Karat", "Pounds", "T. Amount", "T. Payments", "Balance", ""
+                "Day", "Top", "Down", "Density", "Karat", "Pounds", "Weight", "Amount"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Object.class
+                java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane3.setViewportView(dailyGoldBuying);
+
+        javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
+        jPanel11.setLayout(jPanel11Layout);
+        jPanel11Layout.setHorizontalGroup(
+            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 917, Short.MAX_VALUE)
+        );
+        jPanel11Layout.setVerticalGroup(
+            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 357, Short.MAX_VALUE)
+        );
+
+        jTabbedPane1.addTab("Daily", jPanel11);
+
+        monthlyGoldBuying.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "Month", "Month Name", "Top", "Down", "Density", "Karat", "Pounds", "Weight", "Amount", ""
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Object.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -201,8 +249,9 @@ public class DashboardScreen extends javax.swing.JPanel {
         if (monthlyGoldBuying.getColumnModel().getColumnCount() > 0) {
             monthlyGoldBuying.getColumnModel().getColumn(0).setMinWidth(70);
             monthlyGoldBuying.getColumnModel().getColumn(0).setMaxWidth(70);
-            monthlyGoldBuying.getColumnModel().getColumn(10).setMinWidth(70);
-            monthlyGoldBuying.getColumnModel().getColumn(10).setMaxWidth(70);
+            monthlyGoldBuying.getColumnModel().getColumn(9).setMinWidth(70);
+            monthlyGoldBuying.getColumnModel().getColumn(9).setMaxWidth(70);
+            monthlyGoldBuying.getColumnModel().getColumn(9).setHeaderValue("");
         }
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -216,24 +265,24 @@ public class DashboardScreen extends javax.swing.JPanel {
             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 357, Short.MAX_VALUE)
         );
 
-        jTabbedPane1.addTab("Monthly Purchases", jPanel4);
+        jTabbedPane1.addTab("Monthly", jPanel4);
 
         yearlyGoldBuying.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Year", "Top", "Down", "Density", "Karat", "Pounds", "Total", "T. Payments", "Balance", ""
+                "Year", "Top", "Down", "Density", "Karat", "Pounds", "Weight", "Amount", ""
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Object.class
+                java.lang.Integer.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -253,8 +302,8 @@ public class DashboardScreen extends javax.swing.JPanel {
         if (yearlyGoldBuying.getColumnModel().getColumnCount() > 0) {
             yearlyGoldBuying.getColumnModel().getColumn(0).setMinWidth(70);
             yearlyGoldBuying.getColumnModel().getColumn(0).setMaxWidth(70);
-            yearlyGoldBuying.getColumnModel().getColumn(9).setMinWidth(70);
-            yearlyGoldBuying.getColumnModel().getColumn(9).setMaxWidth(70);
+            yearlyGoldBuying.getColumnModel().getColumn(8).setMinWidth(70);
+            yearlyGoldBuying.getColumnModel().getColumn(8).setMaxWidth(70);
         }
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
@@ -268,33 +317,7 @@ public class DashboardScreen extends javax.swing.JPanel {
             .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 357, Short.MAX_VALUE)
         );
 
-        jTabbedPane1.addTab("Yearly Purchases", jPanel5);
-
-        javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
-        jPanel11.setLayout(jPanel11Layout);
-        jPanel11Layout.setHorizontalGroup(
-            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 917, Short.MAX_VALUE)
-        );
-        jPanel11Layout.setVerticalGroup(
-            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 357, Short.MAX_VALUE)
-        );
-
-        jTabbedPane1.addTab("Daily Gold", jPanel11);
-
-        javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
-        jPanel12.setLayout(jPanel12Layout);
-        jPanel12Layout.setHorizontalGroup(
-            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 917, Short.MAX_VALUE)
-        );
-        jPanel12Layout.setVerticalGroup(
-            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 357, Short.MAX_VALUE)
-        );
-
-        jTabbedPane1.addTab("Monthly Gold", jPanel12);
+        jTabbedPane1.addTab("Yearly", jPanel5);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Total Summations", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 15))); // NOI18N
 
@@ -617,17 +640,18 @@ public class DashboardScreen extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void monthlyGoldBuyingMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_monthlyGoldBuyingMouseClicked
-        this.onMonthlyTableClicked();
-    }//GEN-LAST:event_monthlyGoldBuyingMouseClicked
-
     private void yearlyGoldBuyingMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_yearlyGoldBuyingMouseClicked
         this.onYearlyTableClicked();
     }//GEN-LAST:event_yearlyGoldBuyingMouseClicked
 
+    private void monthlyGoldBuyingMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_monthlyGoldBuyingMouseClicked
+        this.onMonthlyTableClicked();
+    }//GEN-LAST:event_monthlyGoldBuyingMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnRefreshBtn;
+    private javax.swing.JTable dailyGoldBuying;
     private javax.swing.JDialog jDialog1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel16;
@@ -639,7 +663,6 @@ public class DashboardScreen extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel11;
-    private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel20;
     private javax.swing.JPanel jPanel21;
@@ -651,6 +674,7 @@ public class DashboardScreen extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable monthlyGoldBuying;
     private com.toedter.calendar.JDateChooser txtCurrentDate;

@@ -3,7 +3,6 @@ package Controllers;
 import Helpers.Authuser;
 import Helpers.HelperFunctions;
 import Helpers.TableActions;
-import Models.Budget;
 import Models.Expenses;
 import Models.ExpensesType;
 import Repository.ExpensesRepository;
@@ -22,11 +21,8 @@ import javax.swing.table.DefaultTableModel;
 public class ExpensesController {
 
     ExpensesRepository expensesRepository = new ExpensesRepository();
-    BudgetController budgetController = new BudgetController();
     ExpensesTypeController expensesTypeController = new ExpensesTypeController();
-
     HelperFunctions helper = new HelperFunctions();
-    ReportController reportController = new ReportController();
 
     public void populateData(JTable table, String startDate, String endDate) {
         if (endDate.equals("")) {
@@ -175,15 +171,6 @@ public class ExpensesController {
         paidTo.setText(expense.getPaid_to());
 
         expenseTypeSelected.setSelectedItem(expensesType.getId() + " | " + expensesType.getName());
-    }
-
-    public void setBudgetDetails(
-            String budget_selected,
-            JTextField amountBeforePayment
-    ) {
-        Budget budget = budgetController.getSingleBudget(budget_selected);
-        double budget_used = reportController.budgetUsedAll(budget.getId());
-        amountBeforePayment.setText(helper.priceToString(budget.getTotal_amount() - budget_used));
     }
 
 }

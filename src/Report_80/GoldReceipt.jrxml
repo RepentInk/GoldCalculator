@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" language="java" pageWidth="229" pageHeight="381" columnWidth="207" leftMargin="11" rightMargin="11" topMargin="5" bottomMargin="5" uuid="5ae1cb6c-b77c-4de7-8107-34d1772e4146">
+	<property name="ireport.zoom" value="3.138428376721004"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="name" class="java.lang.String"/>
+	<parameter name="location" class="java.lang.String"/>
+	<parameter name="contacts" class="java.lang.String"/>
+	<parameter name="title" class="java.lang.String"/>
+	<parameter name="totalAmount" class="java.lang.String"/>
+	<field name="top" class="java.lang.String"/>
+	<field name="down" class="java.lang.String"/>
+	<field name="karat" class="java.lang.String"/>
+	<field name="pounds" class="java.lang.String"/>
+	<field name="totalWeight" class="java.lang.String"/>
+	<field name="density" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="66" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="207" height="15" uuid="ea19e23c-d56d-41d6-866f-6530808f2216"/>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="15" width="207" height="15" uuid="0d40ce2f-3e0b-4656-87ec-a6294a899e97"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{location}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="30" width="207" height="15" uuid="bff6145a-e923-468f-8660-a78c261836cb"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{contacts}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="46" width="207" height="15" uuid="6822b2ff-8641-4b29-8f8e-4a591072cc77"/>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{title}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="1" y="61" width="206" height="1" uuid="da513a7f-f658-421a-9f2a-ff51a66ba7f6"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+		</band>
+	</title>
+	<summary>
+		<band height="114" splitType="Stretch">
+			<textField>
+				<reportElement x="96" y="0" width="111" height="15" uuid="13a43629-dd2f-4b46-b830-2cf1673b26af"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{top}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="96" y="14" width="111" height="15" uuid="44e92877-ef4a-4b5f-acfc-40ce1bf3b926"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{down}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="96" y="28" width="111" height="15" uuid="d81835a4-8371-41c3-ae63-bd6350a7311d"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{density}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="96" y="42" width="111" height="15" uuid="22f670ab-ca3d-47ee-a37e-d48432da47ab"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{karat}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="96" y="56" width="111" height="15" uuid="a549c06b-bbf0-4f9c-92e3-dd97982aa088"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pounds}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="96" y="70" width="111" height="15" uuid="0ad3f09d-65cd-4ec1-9a2a-7f7f781a2553"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{totalWeight}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="-1" width="96" height="15" uuid="65affc44-78e1-4fe8-8437-731eac8e988b"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Top]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="14" width="96" height="15" uuid="3409ab08-ac15-4fbe-a622-1fed333d073d"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Down]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="29" width="96" height="13" uuid="33eb3025-f41c-4c6b-a9d8-755e4ff56cc3"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Density]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="42" width="96" height="14" uuid="cfefad7c-04de-4a20-bc1e-f658b95a5863"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Karat]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="56" width="96" height="15" uuid="397d5afb-a94d-4d7c-813e-e2df5f168e9d"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Pounds]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="71" width="96" height="15" uuid="8a841a32-0d6f-449f-94a8-2f38def21d8a"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total Weight]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="85" width="96" height="15" uuid="856b55b6-0640-44e9-b6b0-4d3dba13efef"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total Amount]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="96" y="85" width="111" height="15" uuid="b831d253-170b-4815-a1f9-5ce701dbf8c1"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{totalAmount}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="1" y="101" width="206" height="1" uuid="bee04e6b-dff1-4cd5-9bf0-7fa58e777972"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="1" y="103" width="206" height="10" uuid="f259fb8f-aa09-436d-899b-a416502f63ad"/>
+				<textElement textAlignment="Center">
+					<font size="6" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Developed by Inksoft contact 0544474706 / 0500383888]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

@@ -417,7 +417,7 @@ public class BuyGoldRepository implements AnonymousInterface<BuyGold> {
 
             if (rs.next()) {
                 receipt.setTotalAmount(rs.getDouble("total_amount"));
-                receipt.setAmountPaid(rs.getDouble("paid"));
+                receipt.setAmountPaid(rs.getDouble("amount_paid"));
                 receipt.setBasePrice(rs.getDouble("base_price"));
                 receipt.setBalance(rs.getDouble("balance"));
             }
@@ -534,6 +534,45 @@ public class BuyGoldRepository implements AnonymousInterface<BuyGold> {
         }
 
         return totalGoldBought;
+    }
+
+    public BuyGold goldSummation(String startDate, String endDate) {
+        BuyGold buyGold = new BuyGold();
+
+        try {
+            String query = "SELECT SUM(" + BuyGoldDTO.getTOP() + ") AS top, "
+                    + "SUM(" + BuyGoldDTO.getDOWN() + ") AS down, "
+                    + "SUM(" + BuyGoldDTO.getDENSITY() + ") AS density, "
+                    + "SUM(" + BuyGoldDTO.getKARAT() + ") AS karat, "
+                    + "SUM(" + BuyGoldDTO.getPOUNDS() + ") AS pounds, "
+                    + "SUM(" + BuyGoldDTO.getTOTAL_WEIGHT() + ") AS total_weight, "
+                    + "SUM(" + BuyGoldDTO.getTOTAL_AMOUNT() + ") AS total_amount "
+                    + " FROM " + BuyGoldDTO.getBUY_GOLD_DB() + " WHERE " + BuyGoldDTO.getRAW_DATE() + " >= '" + startDate + "' AND " + BuyGoldDTO.getRAW_DATE() + " <= '" + endDate + "'";
+            pst = conn.prepareStatement(query);
+            rs = pst.executeQuery();
+
+            if (rs.next()) {
+                buyGold.setTop(rs.getDouble(BuyGoldDTO.getTOP()));
+                buyGold.setDown(rs.getDouble(BuyGoldDTO.getDOWN()));
+                buyGold.setDensity(rs.getDouble(BuyGoldDTO.getDENSITY()));
+                buyGold.setKarat(rs.getDouble(BuyGoldDTO.getKARAT()));
+                buyGold.setPounds(rs.getDouble(BuyGoldDTO.getPOUNDS()));
+                buyGold.setTotal_weight(rs.getDouble(BuyGoldDTO.getTOTAL_WEIGHT()));
+                buyGold.setTotal_amount(rs.getDouble(BuyGoldDTO.getTOTAL_AMOUNT()));
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
+        } finally {
+            try {
+                rs.close();
+                pst.close();
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, e);
+            }
+        }
+
+        return buyGold;
     }
 
 }

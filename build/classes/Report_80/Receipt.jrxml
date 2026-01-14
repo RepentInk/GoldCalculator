@@ -223,7 +223,7 @@
 				<textFieldExpression><![CDATA[$F{Karat}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="108" y="94" width="50" height="15" uuid="f17f599a-f59b-4cb0-8704-d9efdb04685e"/>
+				<reportElement x="107" y="94" width="51" height="15" uuid="f17f599a-f59b-4cb0-8704-d9efdb04685e"/>
 				<textElement>
 					<font size="9" isBold="true"/>
 				</textElement>

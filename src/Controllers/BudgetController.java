@@ -5,11 +5,9 @@ import Helpers.HelperFunctions;
 import Helpers.TableActions;
 import Models.Budget;
 import Repository.BudgetRepository;
-import Repository.PaymentsRepository;
 import java.util.List;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
@@ -22,9 +20,6 @@ public class BudgetController {
 
     BudgetRepository budgetRepository = new BudgetRepository();
     HelperFunctions helper = new HelperFunctions();
-    PaymentsRepository paymentsRepository = new PaymentsRepository();
-
-    ReportController reportController = new ReportController();
 
     public void populateTable(JTable table, String startDate, String endDate) {
         if (endDate.equals("")) {
@@ -164,10 +159,6 @@ public class BudgetController {
         table.setValueAt(this.statusOfBudget(budget.isStatus()), selectedRow, 7);
     }
 
-    private double budgetUsed(int id) {
-        return reportController.budgetUsedAll(id);
-    }
-
     public void deleteItem(JTable table, String budgetID, int selectedRow) {
         DefaultTableModel tmodel = (DefaultTableModel) table.getModel();
         int id = Integer.parseInt(budgetID);
@@ -211,14 +202,6 @@ public class BudgetController {
     public Budget getSingleBudgetWithID(int budget_id) {
         Budget budget = budgetRepository.find(budget_id);
         return budget;
-    }
-
-    public void calculateAmountForward(JTextField amountForward) {
-        Budget budget = budgetRepository.lastBudget();
-        double budgetUsed = this.budgetUsed(budget.getId());
-        double balance = budget.getTotal_amount() - budgetUsed;
-
-        amountForward.setText(helper.priceToString(balance));
     }
 
     public void changeStatus(

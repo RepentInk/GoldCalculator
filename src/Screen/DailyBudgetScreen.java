@@ -2,7 +2,6 @@ package Screen;
 
 import Components.AddButton;
 import Controllers.BudgetController;
-import Dialogs.BudgetAddUpForm;
 import Dialogs.BudgetForm;
 import Helpers.ActionsColumns;
 import Helpers.HelperFunctions;
@@ -140,7 +139,7 @@ public class DailyBudgetScreen extends javax.swing.JPanel {
     private void sumUpTotalAmount() {
         Double total = helper.summationOfTableColumnReturnDouble(dailyBudgetTable, 3);
 
-        txtTotalAmount.setText(String.valueOf(total));
+        txtTotalAmount.setText(helper.priceToString(total));
     }
 
     /**
@@ -178,7 +177,7 @@ public class DailyBudgetScreen extends javax.swing.JPanel {
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/budget.png"))); // NOI18N
-        jLabel5.setText("Daily Budget");
+        jLabel5.setText("Budget");
 
         btn_addUser.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         btn_addUser.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/add.png"))); // NOI18N
@@ -190,11 +189,13 @@ public class DailyBudgetScreen extends javax.swing.JPanel {
         });
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel1.setText("Total:");
+        jLabel1.setText("Total GH₵:");
 
         txtTotalAmount.setEditable(false);
         txtTotalAmount.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        txtTotalAmount.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtTotalAmount.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        txtTotalAmount.setFocusable(false);
 
         javax.swing.GroupLayout jPanel30Layout = new javax.swing.GroupLayout(jPanel30);
         jPanel30.setLayout(jPanel30Layout);
@@ -259,7 +260,7 @@ public class DailyBudgetScreen extends javax.swing.JPanel {
         startDate.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
 
         lblEndDate.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        lblEndDate.setText("End Date:");
+        lblEndDate.setText("Current Date:");
 
         javax.swing.GroupLayout jPanel37Layout = new javax.swing.GroupLayout(jPanel37);
         jPanel37.setLayout(jPanel37Layout);
@@ -272,14 +273,14 @@ public class DailyBudgetScreen extends javax.swing.JPanel {
                 .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnRefresh1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(filterCheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(filterCheckBox)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
                 .addComponent(lblStartDate, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(startDate, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblEndDate, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblEndDate, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(4, 4, 4)
                 .addComponent(dateCurrentDate, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())

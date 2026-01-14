@@ -36,7 +36,9 @@ public class MonthlyReportRepository {
                     + "SUM(" + BuyGoldDTO.getDOWN() + ") AS down, "
                     + "SUM(" + BuyGoldDTO.getDENSITY() + ") AS density, "
                     + "SUM(" + BuyGoldDTO.getKARAT() + ") AS karat, "
-                    + "SUM(" + BuyGoldDTO.getPOUNDS() + ") AS pounds "
+                    + "SUM(" + BuyGoldDTO.getPOUNDS() + ") AS pounds, "
+                    + "SUM(" + BuyGoldDTO.getTOTAL_WEIGHT() + ") AS weight, "
+                    + "SUM(" + BuyGoldDTO.getTOTAL_AMOUNT() + ") AS total_amount "
                     + "FROM " + BuyGoldDTO.getBUY_GOLD_DB() + " WHERE strftime('%Y'," + BuyGoldDTO.getRAW_DATE() + ")='" + year + "' GROUP BY month ORDER BY month DESC";
             pst = conn.prepareStatement(query);
             rs = pst.executeQuery();
@@ -51,6 +53,8 @@ public class MonthlyReportRepository {
                 month.setDensity(rs.getDouble("density"));
                 month.setKarat(rs.getDouble("karat"));
                 month.setPounds(rs.getDouble("pounds"));
+                month.setWeight(rs.getDouble("weight"));
+                month.setTotalAmount(rs.getDouble("total_amount"));
                 monthlyList.add(month);
             }
 
