@@ -61,7 +61,8 @@ public class CreditController {
                 credit.getCreated_time(),
                 credit.getCreated_date(),
                 TableActions.View.toString(),
-                TableActions.Payment.toString()
+                TableActions.Payment.toString(),
+                TableActions.Delete.toString()
             };
 
             defaultTableModel.addRow(object);
@@ -159,7 +160,7 @@ public class CreditController {
             credit.getCreated_date(),
             TableActions.View.toString(),
             TableActions.History.toString(),
-            TableActions.Close.toString()
+            TableActions.Delete.toString()
         };
 
         tmodel.insertRow(0, object);

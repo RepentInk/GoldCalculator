@@ -11,6 +11,7 @@ import Main.Dashboard;
 import Models.Receipt;
 import java.beans.PropertyChangeEvent;
 import java.util.Vector;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
@@ -79,6 +80,11 @@ public class PaymentsScreen extends javax.swing.JPanel {
             String sql = report.receiptData(table_id);
             Receipt receipt = paymentController.getSinglePayment(table_id);
             report.paymentReceiptPrint(sql, receipt);
+        } else if (paymentsTable.getSelectedColumn() == columns[2]) {
+            int ask = JOptionPane.showConfirmDialog(null, "Are you sure you want to remove this record?", "DELETE RECORDS", JOptionPane.YES_NO_OPTION);
+            if (ask == 0) {
+                paymentController.deleteItem(paymentsTable, tableID, paymentsTable.getSelectedRow());
+            }
         }
 
         this.countRow();
@@ -294,20 +300,20 @@ public class PaymentsScreen extends javax.swing.JPanel {
 
         paymentsTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Id", "Code", "Customer", "Total Amount", "Amount Paid", "Balance", "Created By", "Time", "Date", "", ""
+                "Id", "Code", "Customer", "Total Amount", "Amount Paid", "Balance", "Created By", "Time", "Date", "", "", ""
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -338,6 +344,9 @@ public class PaymentsScreen extends javax.swing.JPanel {
             paymentsTable.getColumnModel().getColumn(9).setMaxWidth(60);
             paymentsTable.getColumnModel().getColumn(10).setMinWidth(60);
             paymentsTable.getColumnModel().getColumn(10).setMaxWidth(60);
+            paymentsTable.getColumnModel().getColumn(11).setMinWidth(70);
+            paymentsTable.getColumnModel().getColumn(11).setPreferredWidth(70);
+            paymentsTable.getColumnModel().getColumn(11).setMaxWidth(70);
         }
 
         jLabel32.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N

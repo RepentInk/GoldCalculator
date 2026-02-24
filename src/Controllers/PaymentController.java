@@ -53,7 +53,8 @@ public class PaymentController {
                 payment.getCreated_time(),
                 payment.getCreated_date(),
                 TableActions.View.toString(),
-                TableActions.Print.toString()
+                TableActions.Print.toString(),
+                TableActions.Delete.toString()
             };
 
             defaultTableModel.addRow(object);
@@ -131,6 +132,10 @@ public class PaymentController {
         buyGoldController.populateDropdownData(cmdGoldPurchase, "Select Purchase", createdDate);
     }
 
+    public void plopulateBaseOnSearch(JComboBox cmdGoldPurchase, String startDate, String endDate) {
+        buyGoldController.populatePurchaseBetweenDates(cmdGoldPurchase, "Select Purchase", startDate, endDate);
+    }
+
     public void setPurchaseDetails(
             String purchase,
             JTextField totalAmount,
@@ -167,7 +172,8 @@ public class PaymentController {
             payment.getCreated_time(),
             payment.getCreated_date(),
             TableActions.View.toString(),
-            TableActions.Print.toString()
+            TableActions.Print.toString(),
+            TableActions.Delete.toString()
         };
 
         tmodel.insertRow(0, object);
@@ -213,7 +219,8 @@ public class PaymentController {
         double total_payment = paymentsRepository.summationOfPurchasePayment(buyGold.getId());
 
         paymentID.setText(String.valueOf(payment.getId()));
-        buyGoldSelected.setSelectedItem(buyGold.getCode() + " | " + buyGold.getCustomer());
+        buyGoldSelected.addItem(buyGold.getCode() + " | " + buyGold.getCustomer());
+        buyGoldSelected.setSelectedIndex(1);
 
         totalAmount.setText(helper.priceToString(buyGold.getTotal_amount()));
         amountPaid.setText(helper.priceToString(total_payment));

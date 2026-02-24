@@ -70,7 +70,6 @@ public class BudgetForm extends javax.swing.JDialog {
 
     public void viewDetails(int budgetID, int selectedRow) {
         this.selectedRow = selectedRow;
-        btnSave.setEnabled(false);
 
         budgetController.onTableClick(budgetID,
                 lblBudgetID,
@@ -192,7 +191,7 @@ public class BudgetForm extends javax.swing.JDialog {
     }//GEN-LAST:event_txtTotalAmountKeyTyped
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-        int ask = JOptionPane.showConfirmDialog(null, "Are you sure you want to save this record?, record cannot be deleted", "DELETE RECORDS", JOptionPane.YES_NO_OPTION);
+        int ask = JOptionPane.showConfirmDialog(null, "Are you sure you want to save this record?", "CONIRMATION SAVING", JOptionPane.YES_NO_OPTION);
         if (ask == 0) {
             this.saveData();
         }

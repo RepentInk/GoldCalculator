@@ -56,7 +56,6 @@ public class CreditForm extends javax.swing.JDialog {
 
     public void viewDetails(int selectedRowID, int selectedRow) {
         this.selectedRow = selectedRow;
-        btnSave.setEnabled(false);
 
         creditController.onTableClicked(
                 selectedRowID,
@@ -169,7 +168,7 @@ public class CreditForm extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-        int ask = JOptionPane.showConfirmDialog(null, "Are you sure you want to save this record?, record cannot be deleted", "DELETE RECORDS", JOptionPane.YES_NO_OPTION);
+        int ask = JOptionPane.showConfirmDialog(null, "Are you sure you want to save this record?", "CONFIRMATION TO SAVE", JOptionPane.YES_NO_OPTION);
         if (ask == 0) {
             this.saveUpdate();
         }

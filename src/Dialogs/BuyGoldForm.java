@@ -162,8 +162,6 @@ public class BuyGoldForm extends javax.swing.JDialog {
     }
 
     public void viewDetails(int rowId, int selectedRow) {
-        btnSave.setEnabled(false);
-
         buyGoldController.onTableClicked(
                 rowId,
                 lblBuyGoldID,
@@ -470,7 +468,7 @@ public class BuyGoldForm extends javax.swing.JDialog {
     }//GEN-LAST:event_txtDownKeyReleased
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-        int ask = JOptionPane.showConfirmDialog(null, "Are you sure you want to save this record?, record cannot be deleted", "DELETE RECORDS", JOptionPane.YES_NO_OPTION);
+        int ask = JOptionPane.showConfirmDialog(null, "Are you sure you want to save this record?", "CONFIRMATION BEFORE SAVING", JOptionPane.YES_NO_OPTION);
         if (ask == 0) {
             this.saveData();
         }

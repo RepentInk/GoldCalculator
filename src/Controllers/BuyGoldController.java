@@ -12,6 +12,7 @@ import Repository.BuyGoldRepository;
 import Repository.CustomerRepository;
 import Repository.PaymentsRepository;
 import java.util.List;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -65,7 +66,8 @@ public class BuyGoldController {
                 buyGold.getCreated_date(),
                 TableActions.View.toString(),
                 TableActions.History.toString(),
-                TableActions.Print.toString()
+                TableActions.Print.toString(),
+                TableActions.Delete.toString()
             };
 
             defaultTableModel.addRow(object);
@@ -191,7 +193,8 @@ public class BuyGoldController {
             buyGold.getCreated_date(),
             TableActions.View.toString(),
             TableActions.History.toString(),
-            TableActions.Print.toString()
+            TableActions.Print.toString(),
+            TableActions.Delete.toString()
         };
 
         tmodel.insertRow(0, object);
@@ -277,6 +280,20 @@ public class BuyGoldController {
 
         for (BuyGold buyGold : listBuyGolds) {
             comboBox.addItem(buyGold.getCode() + " | " + buyGold.getCustomer());
+        }
+    }
+
+    public void populatePurchaseBetweenDates(JComboBox comboBox, String title, String startDate, String endDate) {
+        List<BuyGold> listBuyGolds = buyGoldRepository.findBuyGoldBetweenDates(startDate, endDate);
+
+        DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) comboBox.getModel();
+        comboBox.setSelectedIndex(0);
+
+        for (BuyGold buyGold : listBuyGolds) {
+            String item = buyGold.getCode() + " | " + buyGold.getCustomer();
+            if (model.getIndexOf(item) == -1) {
+                comboBox.addItem(item);
+            }
         }
     }
 
