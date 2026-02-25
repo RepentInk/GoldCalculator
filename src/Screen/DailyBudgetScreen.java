@@ -302,20 +302,20 @@ public class DailyBudgetScreen extends javax.swing.JPanel {
 
         dailyBudgetTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Id", "Name", "Source of fund", "Amount", "Created By", "Time", "Date", "Status", "", ""
+                "Id", "Name", "Source of fund", "Amount", "Created By", "Time", "Date", "", ""
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -342,12 +342,10 @@ public class DailyBudgetScreen extends javax.swing.JPanel {
             dailyBudgetTable.getColumnModel().getColumn(5).setMaxWidth(100);
             dailyBudgetTable.getColumnModel().getColumn(6).setMinWidth(100);
             dailyBudgetTable.getColumnModel().getColumn(6).setMaxWidth(100);
-            dailyBudgetTable.getColumnModel().getColumn(7).setMinWidth(80);
-            dailyBudgetTable.getColumnModel().getColumn(7).setMaxWidth(80);
-            dailyBudgetTable.getColumnModel().getColumn(8).setMinWidth(70);
-            dailyBudgetTable.getColumnModel().getColumn(8).setMaxWidth(70);
-            dailyBudgetTable.getColumnModel().getColumn(9).setMinWidth(80);
-            dailyBudgetTable.getColumnModel().getColumn(9).setMaxWidth(80);
+            dailyBudgetTable.getColumnModel().getColumn(7).setMinWidth(70);
+            dailyBudgetTable.getColumnModel().getColumn(7).setMaxWidth(70);
+            dailyBudgetTable.getColumnModel().getColumn(8).setMinWidth(80);
+            dailyBudgetTable.getColumnModel().getColumn(8).setMaxWidth(80);
         }
 
         jLabel32.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N

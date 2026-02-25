@@ -49,7 +49,8 @@ public class ExpensesController {
                 expense.getUser(),
                 expense.getCreated_time(),
                 expense.getCreated_date(),
-                TableActions.View.toString()
+                TableActions.View.toString(),
+                TableActions.Delete.toString()
             };
 
             defaultTableModel.addRow(object);
@@ -131,7 +132,8 @@ public class ExpensesController {
             expense.getUser(),
             expense.getCreated_time(),
             expense.getCreated_date(),
-            TableActions.View.toString()
+            TableActions.View.toString(),
+            TableActions.Delete.toString()
         };
         tmodel.insertRow(0, object);
     }

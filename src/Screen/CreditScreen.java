@@ -95,11 +95,11 @@ public class CreditScreen extends javax.swing.JPanel {
             creditPaymentsHistory.populateData(table_id);
             creditPaymentsHistory.setVisible(true);
         } else if (creditTable.getSelectedColumn() == columns[2]) {
-            JLabel label = new JLabel("Are you sure you want to close this creditter?.");
+            JLabel label = new JLabel("Are you sure you want to delete this record.");
             label.setFont(new Font("serif", Font.BOLD, 16));
-            int ask = JOptionPane.showConfirmDialog(null, label, "CLOSE CREDIT", JOptionPane.OK_OPTION);
+            int ask = JOptionPane.showConfirmDialog(null, label, "DELETE CONFIRMATION", JOptionPane.OK_OPTION);
             if (ask == 0) {
-                creditController.changeStatus(table_id, 1, creditTable, creditTable.getSelectedRow());
+                creditController.deleteItem(creditTable, tableID, creditTable.getSelectedRow());
             }
         }
 

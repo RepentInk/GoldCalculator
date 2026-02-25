@@ -53,7 +53,7 @@ public class ExpensesForm extends javax.swing.JDialog {
 
     public void viewDetails(int expense_id, int selectedRow) {
         this.selectedRow = selectedRow;
-        btnSave.setEnabled(false);
+      
         expensesController.onTableClicked(
                 expense_id,
                 lblExpenseID,

@@ -14,7 +14,7 @@ public class ActionsColumns {
                 column = new int[]{6, 7};
                 break;
             case Budget:
-                column = new int[]{8, 9 };
+                column = new int[]{7, 8};
                 break;
             case BuyGold:
                 column = new int[]{13, 14, 15, 16};
@@ -38,7 +38,7 @@ public class ActionsColumns {
                 column = new int[]{4, 5};
                 break;
             case Expenses:
-                column = new int[]{7};
+                column = new int[]{7, 8};
                 break;
             default:
                 throw new AssertionError();

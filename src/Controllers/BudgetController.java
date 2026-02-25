@@ -46,7 +46,6 @@ public class BudgetController {
                 budget.getUser(),
                 budget.getCreated_time(),
                 budget.getCreated_date(),
-                this.statusOfBudget(budget.isStatus()),
                 TableActions.View.toString(),
                 TableActions.Delete.toString()
             };
@@ -139,7 +138,6 @@ public class BudgetController {
             budget.getUser(),
             budget.getCreated_time(),
             budget.getCreated_date(),
-            this.statusOfBudget(budget.isStatus()),
             TableActions.View.toString(),
             TableActions.Delete.toString(),};
 

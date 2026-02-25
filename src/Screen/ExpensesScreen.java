@@ -7,8 +7,11 @@ import Helpers.ActionsColumns;
 import Helpers.HelperFunctions;
 import Helpers.ModelType;
 import Main.Dashboard;
+import java.awt.Font;
 import java.beans.PropertyChangeEvent;
 import java.util.Vector;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
@@ -42,8 +45,8 @@ public class ExpensesScreen extends javax.swing.JPanel {
     private void addForm() {
         ExpensesForm expensesForm = new ExpensesForm(new Dashboard(), true);
         expensesForm.setVisible(true);
-        
-         this.sumUpTotalAmount();
+
+        this.sumUpTotalAmount();
     }
 
     private void populateData(String startDate, String endDate) {
@@ -71,6 +74,13 @@ public class ExpensesScreen extends javax.swing.JPanel {
             ExpensesForm expensesForm = new ExpensesForm(new Dashboard(), true);
             expensesForm.viewDetails(table_id, expensesTable.getSelectedRow());
             expensesForm.setVisible(true);
+        } else if (expensesTable.getSelectedColumn() == columns[1]) {
+            JLabel label = new JLabel("Are you sure you want to delete this record.");
+            label.setFont(new Font("serif", Font.BOLD, 16));
+            int ask = JOptionPane.showConfirmDialog(null, label, "DELETE CONFIRMATION", JOptionPane.OK_OPTION);
+            if (ask == 0) {
+                expensesController.deleteItem(expensesTable, tableID, expensesTable.getSelectedRow());
+            }
         }
 
         this.countRow();
@@ -286,20 +296,20 @@ public class ExpensesScreen extends javax.swing.JPanel {
 
         expensesTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "id", "Expense Type", "Amount", "Paid To", "Created By", "Time", "Date", ""
+                "id", "Expense Type", "Amount", "Paid To", "Created By", "Time", "Date", "", ""
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.Double.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.Double.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -322,6 +332,9 @@ public class ExpensesScreen extends javax.swing.JPanel {
             expensesTable.getColumnModel().getColumn(0).setMaxWidth(0);
             expensesTable.getColumnModel().getColumn(7).setMinWidth(80);
             expensesTable.getColumnModel().getColumn(7).setMaxWidth(80);
+            expensesTable.getColumnModel().getColumn(8).setMinWidth(70);
+            expensesTable.getColumnModel().getColumn(8).setPreferredWidth(70);
+            expensesTable.getColumnModel().getColumn(8).setMaxWidth(70);
         }
 
         jLabel32.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
